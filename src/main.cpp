@@ -1,8 +1,9 @@
 #include "definitions.hpp"
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
+#include "gameObject.hpp"
 #include "components/TransformComponent.hpp"
 #include "components/RenderComponent.hpp"
-#include "gameObject.hpp"
+#include "components/CircleRenderer.hpp"
 
 main()
 {
@@ -17,20 +18,35 @@ main()
 	SearchAndSetResourceDir("resources");
 
 	GameObject *base = new GameObject("Player");
-	base->AddComponent<RenderComponent>();
-	base->GetTransform()->GetPos() = raylib::Vector2(200, 200);
+	base->AddComponent<CircleRenderer>(raylib::Vector2(0, 0), 10, WHITE);
+	base->GetTransform()->GetPos() = raylib::Vector2(50, SCREEN_H * 0.5f);
 
-	GameObject *child = new GameObject("Orbit");
-	child->AddComponent<RenderComponent>();
-	child->GetTransform()->GetPos() = raylib::Vector2(100, 0);
+	GameObject *parent = base;
+	GameObject *child;
 
-	base->GetTransform()->AddChild(child->GetTransform());
+	for (int i = 0; i < 20; i++)
+	{
+		child = new GameObject();
+		child->GetTransform()->GetPos() = raylib::Vector2(50, 0);
+		child->AddComponent<CircleRenderer>(raylib::Vector2(), 20, raylib::Color(raylib::Vector3((360 / 20) * i, 1.f, 1.f)));
+
+		parent->GetTransform()->AddChild(child->GetTransform());
+		parent = child;
+	}
 
 	// game loop
 	while (!WindowShouldClose()) // run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		// Update
-		child->GetTransform()->GetPos() = raylib::Vector2(cos(GetTime()) * 100, sin(GetTime()) * 100);
+		TransformComponent *curTransform = base->GetTransform()->GetChild(0);
+		int id = 1;
+
+		while (curTransform != nullptr)
+		{
+			curTransform->GetPos().y = sin(GetTime() * id * 0.5f) * id * 2;
+			curTransform = curTransform->GetChild(0);
+			id++;
+		}
 
 		// IMPORTANT: Keep at the end of the update
 		GameObject::UpdateAll();
@@ -41,8 +57,6 @@ main()
 		ClearBackground(BLACK);
 
 		GameObject::RenderAll();
-
-		DrawLineEx(raylib::Vector2(50, 600), raylib::Vector2(500, 600), 10, RED);
 
 		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();

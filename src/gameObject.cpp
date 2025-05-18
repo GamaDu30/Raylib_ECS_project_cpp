@@ -40,25 +40,11 @@ TransformComponent *GameObject::GetTransform()
     return m_transform;
 }
 
-template <typename T>
-T *GameObject::GetComponent()
-{
-    for (Component *comp : m_components)
-    {
-        if (T *casted = dynamic_cast<T *>(comp))
-        {
-            return casted;
-        }
-    }
-
-    return nullptr;
-}
-
 void GameObject::Update()
 {
-    for (auto curComponent : m_components)
+    for (auto component : m_components)
     {
-        curComponent->Update();
+        component->Update();
     }
 }
 

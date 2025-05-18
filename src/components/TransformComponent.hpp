@@ -34,6 +34,9 @@ public:
     void RemoveChild(TransformComponent *childToRemove);
     void RemoveChild(int id);
 
+    std::vector<TransformComponent *> GetChildren();
+    TransformComponent *GetChild(int id);
+
     void SetParent(TransformComponent *newParent);
 
     raylib::Matrix GetMatrix();

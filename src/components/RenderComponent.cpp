@@ -35,8 +35,4 @@ void RenderComponent::Render()
     }
 
     transform->PushMatrix();
-
-    DrawCircle(0, 0, 50, WHITE);
-
-    rlPopMatrix();
 }

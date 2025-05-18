@@ -30,8 +30,8 @@ public:
 
     template <typename... Components>
     void AddComponents();
-    template <typename T>
-    void AddComponent();
+    template <typename T, typename... Args>
+    void AddComponent(Args &&...args);
     template <typename T>
     T *GetComponent();
 
@@ -45,10 +45,10 @@ inline void GameObject::AddComponents()
     (GameObject::AddComponent<Components>(), ...);
 }
 
-template <typename T>
-void GameObject::AddComponent()
+template <typename T, typename... Args>
+void GameObject::AddComponent(Args &&...args)
 {
-    T *newComponent = new T();
+    T *newComponent = new T(std::forward<Args>(args)...);
 
     if constexpr (std::is_same_v<T, TransformComponent>)
     {
@@ -72,4 +72,18 @@ void GameObject::AddComponent()
 
     newComponent->Init(this);
     m_components.push_back(newComponent);
+}
+
+template <typename T>
+T *GameObject::GetComponent()
+{
+    for (Component *comp : m_components)
+    {
+        if (T *casted = dynamic_cast<T *>(comp))
+        {
+            return casted;
+        }
+    }
+
+    return nullptr;
 }

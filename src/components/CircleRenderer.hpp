@@ -3,20 +3,16 @@
 
 class CircleRenderer : public RenderComponent
 {
-    bool filled;
-    raylib::Vector2 center;
-    float radius;
-    raylib::Color color;
+    raylib::Vector2 m_pos;
+    float m_radius;
+    raylib::Color m_color;
+    bool m_isFilled;
 
 public:
-    CircleRenderer(Vector2 c, float r, Color col, bool fill = true)
-        : center(c), radius(r), color(col), filled(fill) {}
+    CircleRenderer(raylib::Vector2 pos, float radius, raylib::Color color, bool isFilled = true)
+        : m_pos(pos), m_radius(radius), m_color(color), m_isFilled(isFilled) {}
 
-    virtual void Render() override
-    {
-        if (filled)
-            DrawCircleV(center, radius, color);
-        else
-            DrawCircleLines((int)center.x, (int)center.y, radius, color);
-    }
+    virtual void Render();
+
+    raylib::Vector2 &GetPos();
 };

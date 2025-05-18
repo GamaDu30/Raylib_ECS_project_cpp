@@ -95,6 +95,27 @@ void TransformComponent::RemoveChild(int id)
     }
 }
 
+std::vector<TransformComponent *> TransformComponent::GetChildren()
+{
+    return m_children;
+}
+
+TransformComponent *TransformComponent::GetChild(int id)
+{
+    if (id < 0 || id >= m_children.size())
+    {
+        TraceLog(LOG_ERROR, "TransformComponent::GetChild id provided is out of bound: %d", id);
+        return nullptr;
+    }
+
+    if (m_children.size() == 0)
+    {
+        return nullptr;
+    }
+
+    return m_children[id];
+}
+
 void TransformComponent::SetParent(TransformComponent *newParent)
 {
     if (m_parent == newParent)
