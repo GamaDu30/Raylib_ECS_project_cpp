@@ -28,7 +28,7 @@ main()
 	{
 		child = new GameObject();
 		child->GetTransform()->GetPos() = raylib::Vector2(50, 0);
-		child->AddComponent<CircleRenderer>(raylib::Vector2(), 20, raylib::Color(raylib::Vector3((360 / 20) * i, 1.f, 1.f)));
+		child->AddComponent<CircleRenderer>(raylib::Vector2(), 20, raylib::Color(raylib::Vector3((360 / 20) * i, 1.f, 1.f)), i % 2 == 0);
 
 		parent->GetTransform()->AddChild(child->GetTransform());
 		parent = child;
