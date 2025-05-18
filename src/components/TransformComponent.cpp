@@ -17,9 +17,13 @@ void TransformComponent::Update()
 {
     Component::Update();
 
-    if (m_lastPos != m_pos)
+    // TODO: Change with getter/setter
+    if (m_lastPos != m_pos || m_lastScale != m_scale || m_lastRotation != m_rotation)
     {
         m_lastPos = m_pos;
+        m_lastScale = m_scale;
+        m_lastRotation = m_rotation;
+
         m_isDirty = true;
     }
 
@@ -38,16 +42,24 @@ void TransformComponent::Destroy()
 
 void TransformComponent::UpdateLocalMatrix()
 {
-    m_matrix = MatrixMultiply(
-        MatrixTranslate(m_pos.x, m_pos.y, 0),
-        MatrixMultiply(
-            MatrixRotateZ(m_rotation),
-            MatrixScale(m_scale.x, m_scale.y, 1)));
+    m_matrix = MatrixMultiply(MatrixMultiply(
+                                  MatrixScale(m_scale.x, m_scale.y, 1), MatrixRotateZ(m_rotation)),
+                              MatrixTranslate(m_pos.x, m_pos.y, m_pos.z));
 }
 
-raylib::Vector2 &TransformComponent::GetPos()
+raylib::Vector3 &TransformComponent::GetPos()
 {
     return m_pos;
+}
+
+raylib::Vector2 &TransformComponent::GetScale()
+{
+    return m_scale;
+}
+
+float &TransformComponent::GetRotation()
+{
+    return m_rotation;
 }
 
 void TransformComponent::SetDirty()

@@ -4,6 +4,7 @@
 #include "components/TransformComponent.hpp"
 #include "components/RenderComponent.hpp"
 #include "components/CircleRenderer.hpp"
+#include "components/SpriteRenderer.hpp"
 
 main()
 {
@@ -17,36 +18,19 @@ main()
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
 
-	GameObject *base = new GameObject("Player");
-	base->AddComponent<CircleRenderer>(raylib::Vector2(0, 0), 10, WHITE);
-	base->GetTransform()->GetPos() = raylib::Vector2(50, SCREEN_H * 0.5f);
+	GameObject *bunny = new GameObject("RABBIT");
+	bunny->AddComponent<SpriteRenderer>("wabbit_alpha.png", Anchor::Center);
+	bunny->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, SCREEN_H * 0.5f);
+	bunny->GetTransform()->GetScale() = raylib::Vector2(10, 10);
 
-	GameObject *parent = base;
-	GameObject *child;
-
-	for (int i = 0; i < 20; i++)
-	{
-		child = new GameObject();
-		child->GetTransform()->GetPos() = raylib::Vector2(50, 0);
-		child->AddComponent<CircleRenderer>(raylib::Vector2(), 20, raylib::Color(raylib::Vector3((360 / 20) * i, 1.f, 1.f)), i % 2 == 0);
-
-		parent->GetTransform()->AddChild(child->GetTransform());
-		parent = child;
-	}
+	GameObject *centerPoint = new GameObject("Point Central");
+	centerPoint->AddComponent<CircleRenderer>(raylib::Vector2(), 5, WHITE);
+	centerPoint->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, SCREEN_H * 0.5f);
 
 	// game loop
 	while (!WindowShouldClose()) // run the loop until the user presses ESCAPE or presses the Close button on the window
 	{
 		// Update
-		TransformComponent *curTransform = base->GetTransform()->GetChild(0);
-		int id = 1;
-
-		while (curTransform != nullptr)
-		{
-			curTransform->GetPos().y = sin(GetTime() * id * 0.5f) * id * 2;
-			curTransform = curTransform->GetChild(0);
-			id++;
-		}
 
 		// IMPORTANT: Keep at the end of the update
 		GameObject::UpdateAll();
@@ -66,3 +50,10 @@ main()
 	CloseWindow();
 	return 0;
 }
+
+// TODO:
+// Manage Z-order
+// Make collision component
+// Manage scene
+// Make GameObject destroy function
+// Move anchor to all renderer

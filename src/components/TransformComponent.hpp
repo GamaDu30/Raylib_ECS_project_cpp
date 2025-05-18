@@ -5,10 +5,13 @@
 
 class TransformComponent : public Component
 {
-    raylib::Vector2 m_pos = raylib::Vector2();
-    raylib::Vector2 m_lastPos = raylib::Vector2();
+    raylib::Vector3 m_pos = raylib::Vector3();
     float m_rotation = 0.f;
     raylib::Vector2 m_scale = raylib::Vector2(1, 1);
+
+    raylib::Vector3 m_lastPos = raylib::Vector3();
+    float m_lastRotation = 0.f;
+    raylib::Vector2 m_lastScale = raylib::Vector2(1, 1);
 
     raylib::Matrix m_matrix;
 
@@ -26,7 +29,9 @@ public:
     virtual void Update();
     virtual void Destroy();
 
-    raylib::Vector2 &GetPos();
+    raylib::Vector3 &GetPos();
+    raylib::Vector2 &GetScale();
+    float &GetRotation();
 
     void SetDirty();
 

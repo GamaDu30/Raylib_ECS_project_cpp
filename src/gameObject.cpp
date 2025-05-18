@@ -71,8 +71,17 @@ void GameObject::Render()
 
 void GameObject::RenderAll()
 {
+    std::sort(m_gameObjects.begin(), m_gameObjects.end(),
+              [](GameObject *a, GameObject *b)
+              {
+                  return a->GetTransform()->GetPos().z < b->GetTransform()->GetPos().z;
+              });
+
     for (auto gameObject : m_gameObjects)
     {
         gameObject->Render();
+        TraceLog(LOG_DEBUG, (gameObject->GetName() + " z: %f").c_str(), gameObject->GetTransform()->GetPos().z);
     }
+
+    TraceLog(LOG_DEBUG, "");
 }

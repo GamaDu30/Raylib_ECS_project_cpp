@@ -1,5 +1,20 @@
 #include "components/CircleRenderer.hpp"
 
+void CircleRenderer::Init(GameObject *owner)
+{
+    RenderComponent::Init(owner);
+}
+
+void CircleRenderer::Update()
+{
+    RenderComponent::Update();
+}
+
+void CircleRenderer::Destroy()
+{
+    RenderComponent::Update();
+}
+
 void CircleRenderer::Render()
 {
     RenderComponent::Render();
