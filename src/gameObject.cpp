@@ -27,6 +27,13 @@ GameObject::GameObject(std::string name)
 
 GameObject::~GameObject()
 {
+    for (Component *component : m_components)
+    {
+        m_components.erase(std::remove(m_components.begin(), m_components.end(), component), m_components.end());
+    }
+
+    m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transform), m_components.end());
+
     m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), this), m_gameObjects.end());
 }
 
@@ -42,7 +49,7 @@ TransformComponent *GameObject::GetTransform()
 
 void GameObject::Update()
 {
-    for (auto component : m_components)
+    for (Component *component : m_components)
     {
         component->Update();
     }
@@ -50,7 +57,7 @@ void GameObject::Update()
 
 void GameObject::UpdateAll()
 {
-    for (auto gameObject : m_gameObjects)
+    for (GameObject *gameObject : m_gameObjects)
     {
         gameObject->Update();
     }
@@ -58,7 +65,7 @@ void GameObject::UpdateAll()
 
 void GameObject::Render()
 {
-    for (auto curComponent : m_components)
+    for (Component *curComponent : m_components)
     {
         RenderComponent *renderComponent = dynamic_cast<RenderComponent *>(curComponent);
 
