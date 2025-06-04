@@ -87,8 +87,5 @@ void GameObject::RenderAll()
     for (auto gameObject : m_gameObjects)
     {
         gameObject->Render();
-        TraceLog(LOG_DEBUG, (gameObject->GetName() + " z: %f").c_str(), gameObject->GetTransform()->GetPos().z);
     }
-
-    TraceLog(LOG_DEBUG, "");
 }
