@@ -44,7 +44,7 @@ void TransformComponent::UpdateLocalMatrix()
 {
     m_matrix = MatrixMultiply(MatrixMultiply(
                                   MatrixScale(m_scale.x, m_scale.y, 1), MatrixRotateZ(m_rotation)),
-                              MatrixTranslate(m_pos.x, m_pos.y, m_pos.z));
+                              MatrixTranslate(m_pos.x, m_pos.y, 0));
 }
 
 raylib::Vector3 &TransformComponent::GetPos()

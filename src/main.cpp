@@ -52,7 +52,6 @@ main()
 }
 
 // TODO:
-// Manage Z-order
 // Make collision component
 // Manage scene
 // Make GameObject destroy function
