@@ -5,8 +5,6 @@ class SpriteRenderer : public RenderComponent
 {
     raylib::Texture2D m_texture;
 
-    Anchor m_anchor;
-
 public:
     SpriteRenderer(std::string fileName, Anchor anchor = Anchor::Center);
 

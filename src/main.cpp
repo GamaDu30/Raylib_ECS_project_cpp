@@ -54,5 +54,3 @@ main()
 // TODO:
 // Make collision component
 // Manage scene
-// Make GameObject destroy function
-// Move anchor to all renderer

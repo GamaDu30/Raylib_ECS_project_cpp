@@ -4,8 +4,9 @@
 
 std::vector<RenderComponent *> RenderComponent::m_renderers = {};
 
-RenderComponent::RenderComponent()
+RenderComponent::RenderComponent(Anchor anchor = Anchor::Center)
 {
+    m_anchor = anchor;
     m_renderers.push_back(this);
 }
 

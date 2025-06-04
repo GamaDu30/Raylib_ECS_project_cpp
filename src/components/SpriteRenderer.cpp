@@ -2,7 +2,7 @@
 #include "components/TransformComponent.hpp"
 #include "gameObject.hpp"
 
-SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor)
+SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor) : RenderComponent::RenderComponent(anchor)
 {
     m_texture = LoadTexture(fileLocation.c_str());
     m_anchor = anchor;

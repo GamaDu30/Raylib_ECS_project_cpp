@@ -9,8 +9,8 @@ class CircleRenderer : public RenderComponent
     bool m_isFilled;
 
 public:
-    CircleRenderer(raylib::Vector2 pos, float radius, raylib::Color color, bool isFilled = true)
-        : m_pos(pos), m_radius(radius), m_color(color), m_isFilled(isFilled) {}
+    CircleRenderer(raylib::Vector2 pos, float radius, raylib::Color color, Anchor anchor = Anchor::Center, bool isFilled = true)
+        : RenderComponent(anchor), m_pos(pos), m_radius(radius), m_color(color), m_isFilled(isFilled) {}
 
     virtual void Init(GameObject *owner);
     virtual void Update();

@@ -9,8 +9,11 @@ class RenderComponent : public Component
 {
     static std::vector<RenderComponent *> m_renderers;
 
+protected:
+    Anchor m_anchor;
+
 public:
-    RenderComponent();
+    RenderComponent(Anchor anchor);
 
     virtual void Init(GameObject *owner);
     virtual void Update();
