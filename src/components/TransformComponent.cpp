@@ -1,5 +1,5 @@
 #include "components/TransformComponent.hpp"
-#include "gameObject.hpp"
+#include "global/gameObject.hpp"
 #include "algorithm"
 #include "TransformComponent.hpp"
 

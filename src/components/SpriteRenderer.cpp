@@ -1,6 +1,6 @@
 #include "components/SpriteRenderer.hpp"
 #include "components/TransformComponent.hpp"
-#include "gameObject.hpp"
+#include "global/gameObject.hpp"
 
 SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor) : RenderComponent::RenderComponent(anchor)
 {

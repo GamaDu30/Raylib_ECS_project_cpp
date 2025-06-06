@@ -1,6 +1,6 @@
 #include "components/RenderComponent.hpp"
 #include "components/TransformComponent.hpp"
-#include "gameObject.hpp"
+#include "global/gameObject.hpp"
 
 std::vector<RenderComponent *> RenderComponent::m_renderers = {};
 

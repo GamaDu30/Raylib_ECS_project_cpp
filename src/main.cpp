@@ -1,6 +1,6 @@
-#include "definitions.hpp"
+#include "global/definitions.hpp"
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
-#include "gameObject.hpp"
+#include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
 #include "components/RenderComponent.hpp"
 #include "components/CircleRenderer.hpp"
@@ -28,7 +28,7 @@ main()
 	centerPoint->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, SCREEN_H * 0.5f);
 
 	// game loop
-	while (!WindowShouldClose()) // run the loop until the user presses ESCAPE or presses the Close button on the window
+	while (!WindowShouldClose())
 	{
 		// Update
 
@@ -54,3 +54,4 @@ main()
 // TODO:
 // Make collision component
 // Manage scene
+// Make camera

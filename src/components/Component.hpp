@@ -1,6 +1,6 @@
 #pragma once
 
-#include "definitions.hpp"
+#include "global/definitions.hpp"
 
 class GameObject;
 

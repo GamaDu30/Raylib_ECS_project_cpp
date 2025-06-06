@@ -1,4 +1,4 @@
-#include "definitions.hpp"
+#include "global/definitions.hpp"
 #include "components/RenderComponent.hpp"
 
 class SpriteRenderer : public RenderComponent

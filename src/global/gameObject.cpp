@@ -1,4 +1,4 @@
-#include "gameObject.hpp"
+#include "global/gameObject.hpp"
 #include "algorithm"
 #include "components/TransformComponent.hpp"
 #include "components/RenderComponent.hpp"
