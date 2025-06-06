@@ -33,7 +33,6 @@ GameObject::~GameObject()
     }
 
     m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transform), m_components.end());
-
     m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), this), m_gameObjects.end());
 }
 

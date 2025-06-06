@@ -5,6 +5,7 @@
 #include "components/RenderComponent.hpp"
 #include "components/CircleRenderer.hpp"
 #include "components/SpriteRenderer.hpp"
+#include "global/Scene.hpp"
 
 main()
 {
@@ -18,14 +19,14 @@ main()
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
 
-	GameObject *bunny = new GameObject("RABBIT");
-	bunny->AddComponent<SpriteRenderer>("wabbit_alpha.png", Anchor::Center);
-	bunny->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, SCREEN_H * 0.5f);
-	bunny->GetTransform()->GetScale() = raylib::Vector2(10, 10);
+	GameObject *circle = new GameObject();
+	circle->AddComponent<CircleRenderer>(raylib::Vector2(50, 50), 25, WHITE);
 
-	GameObject *centerPoint = new GameObject("Point Central");
-	centerPoint->AddComponent<CircleRenderer>(raylib::Vector2(), 5, WHITE);
-	centerPoint->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, SCREEN_H * 0.5f);
+	Scene *scene = new Scene("Game");
+	scene->AddGameObject(circle);
+
+	// const char *cwd = GetWorkingDirectory();
+	// TraceLog(LOG_INFO, "Current working directory: %s", cwd);
 
 	// game loop
 	while (!WindowShouldClose())
@@ -33,20 +34,17 @@ main()
 		// Update
 
 		// IMPORTANT: Keep at the end of the update
-		GameObject::UpdateAll();
+		scene->Update();
 
 		// Draw
 		BeginDrawing();
-		// Setup the back buffer for drawing (clear color and depth buffers)
 		ClearBackground(BLACK);
 
-		GameObject::RenderAll();
+		scene->Render();
 
-		// end the frame and get ready for the next one  (display frame, poll input, etc...)
 		EndDrawing();
 	}
 
-	// destroy the window and cleanup the OpenGL context
 	CloseWindow();
 	return 0;
 }
