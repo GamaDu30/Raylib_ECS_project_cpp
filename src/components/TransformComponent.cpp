@@ -141,7 +141,6 @@ void TransformComponent::SetParent(TransformComponent *newParent)
     }
 
     m_parent = newParent;
-    m_isDirty = true;
 }
 
 raylib::Matrix TransformComponent::GetMatrix()

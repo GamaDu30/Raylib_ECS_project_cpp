@@ -4,6 +4,7 @@
 Component::Component()
 {
     // TraceLog(LOG_DEBUG, "Component Constructor");
+    m_isDirty = false;
 }
 
 Component::~Component()

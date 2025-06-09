@@ -15,8 +15,6 @@ class TransformComponent : public Component
 
     raylib::Matrix m_matrix;
 
-    bool m_isDirty = false;
-
     std::vector<TransformComponent *> m_children = {};
     TransformComponent *m_parent = nullptr;
 

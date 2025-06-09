@@ -8,6 +8,7 @@ class Component
 {
 protected:
     GameObject *m_owner;
+    bool m_isDirty;
 
 public:
     Component();
