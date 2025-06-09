@@ -1,5 +1,5 @@
 #include "global/definitions.hpp"
-#include "components/RenderComponent.hpp"
+#include "components/Renderer/RenderComponent.hpp"
 
 class SpriteRenderer : public RenderComponent
 {

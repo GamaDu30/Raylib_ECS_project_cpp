@@ -1,7 +1,7 @@
 #include "global/gameObject.hpp"
 #include "algorithm"
 #include "components/TransformComponent.hpp"
-#include "components/RenderComponent.hpp"
+#include "components/Renderer/RenderComponent.hpp"
 
 std::vector<GameObject *> GameObject::m_gameObjects = {};
 unsigned int GameObject::m_curUID = 0;

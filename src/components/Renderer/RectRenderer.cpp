@@ -1,4 +1,4 @@
-#include "components/RectRenderer.hpp"
+#include "components/Renderer/RectRenderer.hpp"
 
 void RectRenderer::Init(GameObject *owner)
 {

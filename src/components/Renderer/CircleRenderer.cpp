@@ -1,4 +1,4 @@
-#include "components/CircleRenderer.hpp"
+#include "components/Renderer/CircleRenderer.hpp"
 
 void CircleRenderer::Init(GameObject *owner)
 {

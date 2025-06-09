@@ -1,4 +1,4 @@
-#include "components/SpriteRenderer.hpp"
+#include "components/Renderer/SpriteRenderer.hpp"
 #include "components/TransformComponent.hpp"
 #include "global/gameObject.hpp"
 
