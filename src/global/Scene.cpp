@@ -2,19 +2,22 @@
 #include "global/gameObject.hpp"
 #include "Scene.hpp"
 #include <algorithm>
+#include "components/TransformComponent.hpp"
+#include "components/CameraComponent.hpp"
 
 unsigned int Scene::m_curUID = 0;
 
-Scene::Scene(std::string name = "")
+Scene::Scene(std::string name)
 {
     if (name == "")
     {
-        name = "Scene" + std::to_string(m_curUID);
+        name = "Scene_" + std::to_string(m_curUID);
         m_curUID++;
     }
 
     m_name = name;
     m_gameObjects = {};
+    m_camComp = nullptr;
 }
 
 Scene::~Scene()
@@ -23,12 +26,46 @@ Scene::~Scene()
 
 void Scene::Update()
 {
-    GameObject::UpdateAll();
+    for (GameObject *curGo : m_gameObjects)
+    {
+        curGo->Update();
+    }
 }
 
 void Scene::Render()
 {
-    GameObject::RenderAll();
+    if (m_camComp == nullptr)
+    {
+        SetCam();
+
+        if (m_camComp == nullptr)
+        {
+            TraceLog(LOG_ERROR, "There is no gameobject with a camera component present in the scene");
+            return;
+        }
+    }
+
+    std::sort(m_gameObjects.begin(), m_gameObjects.end(),
+              [](GameObject *a, GameObject *b)
+              {
+                  return a->GetTransform()->GetPos().z < b->GetTransform()->GetPos().z;
+              });
+
+    m_camComp->PushMatrix();
+
+    for (GameObject *curGo : m_gameObjects)
+    {
+        curGo->Render();
+    }
+
+    rlPopMatrix();
+}
+
+GameObject *Scene::CreateGameObject(std::string name)
+{
+    GameObject *newGo = new GameObject(name);
+    AddGameObject(newGo);
+    return newGo;
 }
 
 void Scene::AddGameObject(GameObject *newGameObject)
@@ -45,4 +82,20 @@ void Scene::AddGameObject(GameObject *newGameObject)
 void Scene::RemoveGameObject(GameObject *gameObject)
 {
     m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), gameObject), m_gameObjects.end());
+}
+
+void Scene::SetCam()
+{
+    for (GameObject *curGo : m_gameObjects)
+    {
+        CameraComponent *camComp = curGo->GetComponent<CameraComponent>();
+
+        if (camComp != nullptr)
+        {
+            m_camComp = camComp;
+            return;
+        }
+    }
+
+    TraceLog(LOG_ERROR, "No Cam found for the scene");
 }

@@ -6,6 +6,19 @@
 std::vector<GameObject *> GameObject::m_gameObjects = {};
 unsigned int GameObject::m_curUID = 0;
 
+GameObject *GameObject::Find(std::string name)
+{
+    for (GameObject *curGo : m_gameObjects)
+    {
+        if (curGo->GetName() == name)
+        {
+            return curGo;
+        }
+    }
+
+    return nullptr;
+}
+
 GameObject::GameObject(std::string name)
 {
     m_name = name;
@@ -32,7 +45,7 @@ GameObject::~GameObject()
         m_components.erase(std::remove(m_components.begin(), m_components.end(), component), m_components.end());
     }
 
-    m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transform), m_components.end());
+    m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transformComp), m_components.end());
     m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), this), m_gameObjects.end());
 }
 
@@ -43,7 +56,7 @@ std::string GameObject::GetName()
 
 TransformComponent *GameObject::GetTransform()
 {
-    return m_transform;
+    return m_transformComp;
 }
 
 void GameObject::Update()
@@ -51,14 +64,6 @@ void GameObject::Update()
     for (Component *component : m_components)
     {
         component->Update();
-    }
-}
-
-void GameObject::UpdateAll()
-{
-    for (GameObject *gameObject : m_gameObjects)
-    {
-        gameObject->Update();
     }
 }
 
@@ -72,19 +77,5 @@ void GameObject::Render()
         {
             renderComponent->Render();
         }
-    }
-}
-
-void GameObject::RenderAll()
-{
-    std::sort(m_gameObjects.begin(), m_gameObjects.end(),
-              [](GameObject *a, GameObject *b)
-              {
-                  return a->GetTransform()->GetPos().z < b->GetTransform()->GetPos().z;
-              });
-
-    for (auto gameObject : m_gameObjects)
-    {
-        gameObject->Render();
     }
 }

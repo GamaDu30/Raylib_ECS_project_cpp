@@ -9,24 +9,22 @@ class GameObject
 {
     static std::vector<GameObject *> m_gameObjects;
     static unsigned int m_curUID;
+    static GameObject *Find(std::string name);
 
     std::string m_name;
     std::vector<Component *> m_components = {};
 
-    TransformComponent *m_transform;
+    TransformComponent *m_transformComp;
 
     bool m_isInit = false;
 
 protected:
-    void Update();
-    void Render();
-
 public:
     GameObject(std::string name = "");
     ~GameObject();
 
-    static void UpdateAll();
-    static void RenderAll();
+    void Update();
+    void Render();
 
     template <typename... Components>
     void AddComponents();
@@ -58,7 +56,7 @@ void GameObject::AddComponent(Args &&...args)
             return;
         }
 
-        m_transform = newComponent;
+        m_transformComp = newComponent;
     }
 
     for (auto curComponent : m_components)
