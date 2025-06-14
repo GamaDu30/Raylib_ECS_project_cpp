@@ -2,18 +2,18 @@
 
 #include "components/Collider/ColliderComponent.hpp"
 
-class CircleCollider : public ColliderComponent
+class RectCollider : public ColliderComponent
 {
-    float m_radius;
+    raylib::Vector2 m_size;
 
 protected:
     virtual void IsColliding(ColliderComponent *other);
-    virtual void IsColliding(CircleCollider *other);
     virtual void IsColliding(RectCollider *other);
+    virtual void IsColliding(CircleCollider *other);
 
 public:
-    CircleCollider(raylib::Vector2 offset, float radius);
-    ~CircleCollider();
+    RectCollider(raylib::Vector2 size, raylib::Vector2 pos = raylib::Vector2());
+    ~RectCollider();
 
     virtual void Init(GameObject *owner);
     virtual void Update();

@@ -2,9 +2,9 @@
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
 
-CircleCollider::CircleCollider(raylib::Vector2 pos, float radius)
+CircleCollider::CircleCollider(raylib::Vector2 offset, float radius)
 {
-    m_pos = pos;
+    m_offset = offset;
     m_radius = radius;
 }
 
@@ -25,27 +25,17 @@ void CircleCollider::Destroy()
 {
 }
 
-void CircleCollider::IsColliding(ColliderComponent *collider)
+void CircleCollider::IsColliding(ColliderComponent *other)
 {
-    collider->IsColliding(this);
+    other->IsColliding(this);
 }
 
-void CircleCollider::IsColliding(CircleCollider *circle)
+void CircleCollider::IsColliding(CircleCollider *other)
 {
-    float d = circle->m_owner->GetTransform()->GetPos().Distance(this->m_owner->GetTransform()->GetPos());
-    if (d <= m_radius + circle->m_radius)
-    {
-        if (m_isColliding)
-        {
-            return;
-        }
+    float d = other->m_owner->GetTransform()->GetPos().Distance(this->m_owner->GetTransform()->GetPos());
+    ColliderComponent::HandleCollisionState(d <= m_radius + other->m_radius, other);
+}
 
-        m_isColliding = true;
-        this->m_owner->OnCollisionEnter(circle);
-    }
-    else if (m_isColliding)
-    {
-        m_isColliding = false;
-        this->m_owner->OnCollisionExit(circle);
-    }
+void CircleCollider::IsColliding(RectCollider *other)
+{
 }

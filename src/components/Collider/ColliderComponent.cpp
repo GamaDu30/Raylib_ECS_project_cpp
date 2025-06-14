@@ -1,5 +1,7 @@
 #include "components/Collider/ColliderComponent.hpp"
 #include "algorithm"
+#include "global/gameObject.hpp"
+#include "components/TransformComponent.hpp"
 
 std::vector<ColliderComponent *> ColliderComponent::m_colliders = {};
 
@@ -42,5 +44,31 @@ void ColliderComponent::CheckCollisions()
 
             col1->IsColliding(col2);
         }
+    }
+}
+
+raylib::Vector2 ColliderComponent::GetPos()
+{
+    return raylib::Vector2(
+        m_owner->GetTransform()->GetPos().x + m_offset.x,
+        m_owner->GetTransform()->GetPos().y + m_offset.y);
+}
+
+void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent *other)
+{
+    if (curColState)
+    {
+        if (m_isColliding)
+        {
+            return;
+        }
+
+        m_isColliding = true;
+        this->m_owner->OnCollisionEnter(other);
+    }
+    else if (m_isColliding)
+    {
+        m_isColliding = false;
+        this->m_owner->OnCollisionExit(other);
     }
 }
