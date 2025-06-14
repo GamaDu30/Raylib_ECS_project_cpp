@@ -4,6 +4,7 @@
 #include "components/component.hpp"
 
 class TransformComponent;
+class ColliderComponent;
 
 class GameObject
 {
@@ -35,6 +36,9 @@ public:
 
     std::string GetName();
     TransformComponent *GetTransform();
+
+    void OnCollisionEnter(ColliderComponent *collider);
+    void OnCollisionExit(ColliderComponent *collider);
 };
 
 template <typename... Components>

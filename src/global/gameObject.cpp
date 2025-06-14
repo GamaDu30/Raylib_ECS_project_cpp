@@ -2,6 +2,7 @@
 #include "algorithm"
 #include "components/TransformComponent.hpp"
 #include "components/Renderer/RenderComponent.hpp"
+#include "components/Collider/ColliderComponent.hpp"
 
 std::vector<GameObject *> GameObject::m_gameObjects = {};
 unsigned int GameObject::m_curUID = 0;
@@ -57,6 +58,16 @@ std::string GameObject::GetName()
 TransformComponent *GameObject::GetTransform()
 {
     return m_transformComp;
+}
+
+void GameObject::OnCollisionEnter(ColliderComponent *collider)
+{
+    TraceLog(LOG_DEBUG, (m_name + " COL ENTER").c_str());
+}
+
+void GameObject::OnCollisionExit(ColliderComponent *collider)
+{
+    TraceLog(LOG_DEBUG, (m_name + " COL EXIT").c_str());
 }
 
 void GameObject::Update()
