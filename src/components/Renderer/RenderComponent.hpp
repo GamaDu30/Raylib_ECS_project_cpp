@@ -11,13 +11,17 @@ class RenderComponent : public Component
 
 protected:
     Anchor m_anchor;
+    raylib::Vector2 m_offset;
+    raylib::Color m_color;
 
 public:
-    RenderComponent(Anchor anchor);
+    RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
 
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();
 
     virtual void Render();
+
+    void SetColor(raylib::Color color);
 };

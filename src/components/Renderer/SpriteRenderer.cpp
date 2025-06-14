@@ -2,10 +2,9 @@
 #include "components/TransformComponent.hpp"
 #include "global/gameObject.hpp"
 
-SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor) : RenderComponent::RenderComponent(anchor)
+SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor, raylib::Color color, raylib::Vector2 offset) : RenderComponent::RenderComponent(anchor, offset, color)
 {
     m_texture = LoadTexture(fileLocation.c_str());
-    m_anchor = anchor;
 }
 
 void SpriteRenderer::Init(GameObject *owner)

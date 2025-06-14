@@ -1,16 +1,16 @@
+#pragma once
+
 #include "global/definitions.hpp"
 #include "components/Renderer/RenderComponent.hpp"
 
 class CircleRenderer : public RenderComponent
 {
-    raylib::Vector2 m_pos;
     float m_radius;
-    raylib::Color m_color;
     bool m_isFilled;
 
 public:
-    CircleRenderer(raylib::Vector2 pos, float radius, raylib::Color color = WHITE, Anchor anchor = Anchor::Center, bool isFilled = true)
-        : RenderComponent(anchor), m_pos(pos), m_radius(radius), m_color(color), m_isFilled(isFilled) {}
+    CircleRenderer(float radius, raylib::Vector2 offset = raylib::Vector2(), raylib::Color color = WHITE, Anchor anchor = Anchor::Center, bool isFilled = true)
+        : RenderComponent(anchor, offset, color), m_radius(radius), m_isFilled(isFilled) {}
 
     virtual void Init(GameObject *owner);
     virtual void Update();

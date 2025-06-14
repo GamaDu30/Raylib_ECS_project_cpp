@@ -24,15 +24,15 @@ void CircleRenderer::Render()
     offset *= -2;
     offset += raylib::Vector2(1, 1);
 
-    rlTranslatef(m_pos.x + m_radius * offset.x, m_pos.y + m_radius * offset.y, 0);
+    rlTranslatef(m_offset.x + m_radius * offset.x, m_offset.y + m_radius * offset.y, 0);
 
     if (m_isFilled)
     {
-        DrawCircleV(m_pos, m_radius, m_color);
+        DrawCircleV(m_offset, m_radius, m_color);
     }
     else
     {
-        DrawCircleLines((int)m_pos.x, (int)m_pos.y, m_radius, m_color);
+        DrawCircleLines((int)m_offset.x, (int)m_offset.y, m_radius, m_color);
     }
 
     rlPopMatrix();
@@ -40,5 +40,5 @@ void CircleRenderer::Render()
 
 raylib::Vector2 &CircleRenderer::GetPos()
 {
-    return m_pos;
+    return m_offset;
 }

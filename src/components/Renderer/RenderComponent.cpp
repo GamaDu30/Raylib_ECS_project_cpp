@@ -4,9 +4,11 @@
 
 std::vector<RenderComponent *> RenderComponent::m_renderers = {};
 
-RenderComponent::RenderComponent(Anchor anchor = Anchor::Center)
+RenderComponent::RenderComponent(Anchor anchor = Anchor::Center, raylib::Vector2 offset = raylib::Vector2(), raylib::Color color = WHITE)
 {
     m_anchor = anchor;
+    m_offset = offset;
+    m_color = color;
     m_renderers.push_back(this);
 }
 
@@ -36,4 +38,9 @@ void RenderComponent::Render()
     }
 
     transform->PushMatrix();
+}
+
+void RenderComponent::SetColor(raylib::Color color)
+{
+    m_color = color;
 }

@@ -6,7 +6,7 @@ class SpriteRenderer : public RenderComponent
     raylib::Texture2D m_texture;
 
 public:
-    SpriteRenderer(std::string fileName, Anchor anchor = Anchor::Center);
+    SpriteRenderer(std::string fileName, Anchor anchor = Anchor::Center, raylib::Color color = WHITE, raylib::Vector2 offset = raylib::Vector2());
 
     virtual void Init(GameObject *owner);
     virtual void Update();
