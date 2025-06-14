@@ -62,3 +62,10 @@ void CameraComponent::PushMatrix()
     rlMultMatrixf(m_matrix.ToFloatV().v);
     ClearBackground(m_bgColor);
 }
+raylib::Vector2 CameraComponent::GetMousePos()
+{
+    raylib::Vector2 mousePos = GetMousePosition();
+    mousePos.x += m_owner->GetTransform()->GetPos().x - SCREEN_W * 0.5f;
+    mousePos.y += m_owner->GetTransform()->GetPos().y - SCREEN_H * 0.5f;
+    return mousePos;
+}

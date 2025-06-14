@@ -1,3 +1,5 @@
+#pragma once
+
 #include "components/Component.hpp"
 
 class CameraComponent : public Component
@@ -25,4 +27,6 @@ public:
     void SetPos(raylib::Vector2 pos);
 
     void PushMatrix();
+
+    raylib::Vector2 GetMousePos();
 };
