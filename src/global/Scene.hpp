@@ -12,7 +12,9 @@ class Scene
     std::string m_name;
 
     std::vector<GameObject *> m_gameObjects;
+
     CameraComponent *m_camComp;
+    bool m_searchForCam;
 
 public:
     Scene(std::string name = "");
@@ -26,4 +28,6 @@ public:
     void RemoveGameObject(GameObject *gameObject);
 
     void SetCam();
+
+    CameraComponent *GetMainCam();
 };

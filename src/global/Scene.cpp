@@ -18,6 +18,7 @@ Scene::Scene(std::string name)
     m_name = name;
     m_gameObjects = {};
     m_camComp = nullptr;
+    m_searchForCam = true;
 }
 
 Scene::~Scene()
@@ -34,15 +35,9 @@ void Scene::Update()
 
 void Scene::Render()
 {
-    if (m_camComp == nullptr)
+    if (m_camComp == nullptr && m_searchForCam)
     {
         SetCam();
-
-        if (m_camComp == nullptr)
-        {
-            TraceLog(LOG_ERROR, "There is no gameobject with a camera component present in the scene");
-            return;
-        }
     }
 
     std::sort(m_gameObjects.begin(), m_gameObjects.end(),
@@ -51,7 +46,10 @@ void Scene::Render()
                   return a->GetTransform()->GetPos().z < b->GetTransform()->GetPos().z;
               });
 
-    m_camComp->PushMatrix();
+    if (m_camComp != nullptr)
+    {
+        m_camComp->PushMatrix();
+    }
 
     for (GameObject *curGo : m_gameObjects)
     {
@@ -77,6 +75,8 @@ void Scene::AddGameObject(GameObject *newGameObject)
     }
 
     m_gameObjects.push_back(newGameObject);
+
+    m_searchForCam = true;
 }
 
 void Scene::RemoveGameObject(GameObject *gameObject)
@@ -86,6 +86,8 @@ void Scene::RemoveGameObject(GameObject *gameObject)
 
 void Scene::SetCam()
 {
+    m_searchForCam = false;
+
     for (GameObject *curGo : m_gameObjects)
     {
         CameraComponent *camComp = curGo->GetComponent<CameraComponent>();
@@ -98,4 +100,9 @@ void Scene::SetCam()
     }
 
     TraceLog(LOG_ERROR, "No Cam found for the scene");
+}
+
+CameraComponent *Scene::GetMainCam()
+{
+    return m_camComp;
 }
