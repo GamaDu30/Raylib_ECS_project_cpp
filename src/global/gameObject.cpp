@@ -92,4 +92,8 @@ void GameObject::Render()
             renderComponent->Render();
         }
     }
+
+    raylib::Vector2 startPos = raylib::Vector2(m_transformComp->GetPos().x, m_transformComp->GetPos().y);
+    DrawLineV(startPos, startPos + raylib::Vector2(0, -25), GREEN);
+    DrawLineV(startPos, startPos + raylib::Vector2(25, 0), RED);
 }

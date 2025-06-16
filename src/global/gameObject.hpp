@@ -63,11 +63,14 @@ void GameObject::AddComponent(Args &&...args)
         m_transformComp = newComponent;
     }
 
+    // TODO: See in the future if needed
     for (auto curComponent : m_components)
     {
         if (typeid(*curComponent) == typeid(*newComponent))
         {
             TraceLog(LOG_WARNING, "You tried adding a component already present on this gameobject");
+
+            delete newComponent;
             return;
         }
     }
