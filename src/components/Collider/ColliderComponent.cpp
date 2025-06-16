@@ -49,9 +49,10 @@ void ColliderComponent::CheckCollisions()
 
 raylib::Vector2 ColliderComponent::GetPos()
 {
+    // TODO: Do test to see if *2 works (ex: Anchors)
     return raylib::Vector2(
-        m_owner->GetTransform()->GetPos().x + m_offset.x,
-        m_owner->GetTransform()->GetPos().y + m_offset.y);
+        m_owner->GetTransform()->GetPos().x + m_offset.x * 2,
+        m_owner->GetTransform()->GetPos().y + m_offset.y * 2);
 }
 
 void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent *other)

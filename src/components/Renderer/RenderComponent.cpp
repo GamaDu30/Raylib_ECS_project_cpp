@@ -1,6 +1,7 @@
 #include "components/Renderer/RenderComponent.hpp"
 #include "components/TransformComponent.hpp"
 #include "global/gameObject.hpp"
+#include "algorithm"
 
 std::vector<RenderComponent *> RenderComponent::m_renderers = {};
 
@@ -10,6 +11,11 @@ RenderComponent::RenderComponent(Anchor anchor = Anchor::Center, raylib::Vector2
     m_offset = offset;
     m_color = color;
     m_renderers.push_back(this);
+}
+
+RenderComponent::~RenderComponent()
+{
+    m_renderers.erase(std::remove(m_renderers.begin(), m_renderers.end(), this), m_renderers.end());
 }
 
 void RenderComponent::Init(GameObject *owner)

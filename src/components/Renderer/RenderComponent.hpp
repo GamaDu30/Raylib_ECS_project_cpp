@@ -16,6 +16,7 @@ protected:
 
 public:
     RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
+    ~RenderComponent();
 
     virtual void Init(GameObject *owner);
     virtual void Update();
