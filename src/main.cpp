@@ -26,28 +26,17 @@ main()
 	cam->GetTransform()->GetPos() = raylib::Vector3(0, 0);
 	cam->AddComponent<CameraComponent>();
 
-	// GameObject *circle1 = scene->CreateGameObject("Circle 1");
-	// circle1->GetTransform()->GetPos().x = -150;
-	// circle1->AddComponent<CircleRenderer>(raylib::Vector2(), 100);
-	// circle1->AddComponent<CircleCollider>(raylib::Vector2(), 100);
-
-	// GameObject *circle2 = scene->CreateGameObject("Circle 2");
-	// circle2->GetTransform()->GetPos().x = 150;
-	// circle2->AddComponent<CircleRenderer>(raylib::Vector2(), 100);
-	// circle2->AddComponent<CircleCollider>(raylib::Vector2(), 100);
-
 	GameObject *rect1 = scene->CreateGameObject();
 	rect1->GetTransform()->GetPos().x = -150;
-	rect1->AddComponent<RectRenderer>(raylib::Vector2(150, 150));
-	rect1->AddComponent<RectCollider>(raylib::Vector2(150, 150));
+	rect1->AddComponent<RectRenderer>(raylib::Vector2(100, 100), raylib::Vector2(300, 0));
+	rect1->AddComponent<RectCollider>(raylib::Vector2(100, 100), raylib::Vector2(300, 0));
 
 	GameObject *rect2 = scene->CreateGameObject();
 	rect2->GetTransform()->GetPos().x = 150;
-	rect2->AddComponent<RectRenderer>(raylib::Vector2(150, 150));
-	rect2->AddComponent<RectCollider>(raylib::Vector2(150, 150));
+	rect2->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+	rect2->AddComponent<RectCollider>(raylib::Vector2(100, 100));
 
 	GameObject *center = scene->CreateGameObject();
-	center->AddComponent<CircleRenderer>(2);
 
 	// const char *cwd = GetWorkingDirectory();
 	// TraceLog(LOG_INFO, "Current working directory: %s", cwd);
@@ -80,5 +69,6 @@ main()
 }
 
 // TODO:
-// Make collision component
+// Make InputManager
+// Make more collision component
 // Opti collision by doing a AABB of each collider before doing a precise check
