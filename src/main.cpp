@@ -8,6 +8,26 @@
 #include "global/Scene.hpp"
 #include "components/Collider/CircleCollider.hpp"
 #include "components/Collider/RectCollider.hpp"
+#include "global/Inputs.hpp"
+#include <charconv>
+
+class Player : public GameObject
+{
+public:
+	Player(std::string name = "") {}
+	~Player() {}
+
+	float velocity = 0.f;
+
+	void Update() override
+	{
+		GameObject::Update();
+		GetTransform()->GetPos().y += velocity;
+		velocity += 0.5f * GetFrameTime();
+		TraceLog(LOG_DEBUG, "PLAYER UPDATE %f", GetTransform()->GetPos().y);
+	}
+	void OnJump() { velocity -= 1.f; }
+};
 
 main()
 {
@@ -26,17 +46,13 @@ main()
 	cam->GetTransform()->GetPos() = raylib::Vector3(0, 0);
 	cam->AddComponent<CameraComponent>();
 
-	GameObject *rect1 = scene->CreateGameObject();
-	rect1->GetTransform()->GetPos().x = -150;
-	rect1->AddComponent<RectRenderer>(raylib::Vector2(100, 100), raylib::Vector2(300, 0));
-	rect1->AddComponent<RectCollider>(raylib::Vector2(100, 100), raylib::Vector2(300, 0));
-
-	GameObject *rect2 = scene->CreateGameObject();
-	rect2->GetTransform()->GetPos().x = 150;
-	rect2->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
-	rect2->AddComponent<RectCollider>(raylib::Vector2(100, 100));
-
 	GameObject *center = scene->CreateGameObject();
+
+	Inputs::Init();
+
+	Player *player = scene->CreateGameObject<Player>();
+	player->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+	Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::DOWN, player, &Player::OnJump);
 
 	// const char *cwd = GetWorkingDirectory();
 	// TraceLog(LOG_INFO, "Current working directory: %s", cwd);
@@ -46,12 +62,7 @@ main()
 	{
 		// Update
 		ColliderComponent::CheckCollisions();
-
-		if (IsMouseButtonDown(0))
-		{
-			rect1->GetTransform()->GetPos().x = scene->GetMainCam()->GetMousePos().x;
-			rect1->GetTransform()->GetPos().y = scene->GetMainCam()->GetMousePos().y;
-		}
+		Inputs::Update();
 
 		// IMPORTANT: Keep at the end of the update
 		scene->Update();
@@ -69,6 +80,6 @@ main()
 }
 
 // TODO:
-// Make InputManager
 // Make more collision component
 // Opti collision by doing a AABB of each collider before doing a precise check
+// Fix update override not working on child of gameObject
