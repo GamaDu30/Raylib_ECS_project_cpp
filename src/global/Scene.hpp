@@ -23,7 +23,8 @@ public:
     void Update();
     void Render();
 
-    GameObject *CreateGameObject(std::string name = "");
+    template <typename T = GameObject>
+    T *CreateGameObject(std::string name = "");
     void AddGameObject(GameObject *newGameObject);
     void RemoveGameObject(GameObject *gameObject);
 
@@ -31,3 +32,13 @@ public:
 
     CameraComponent *GetMainCam();
 };
+
+template <typename T>
+T *Scene::CreateGameObject(std::string name)
+{
+    static_assert(std::is_base_of_v<GameObject, T>, "(Scene::CreateGameObject) T must inherit from GameObject");
+
+    T *newGo = new T(name);
+    AddGameObject(newGo);
+    return newGo;
+}

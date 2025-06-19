@@ -24,7 +24,7 @@ public:
     GameObject(std::string name = "");
     ~GameObject();
 
-    void Update();
+    virtual void Update();
     void Render();
 
     template <typename... Components>
@@ -50,6 +50,8 @@ inline void GameObject::AddComponents()
 template <typename T, typename... Args>
 void GameObject::AddComponent(Args &&...args)
 {
+    static_assert(std::is_base_of_v<Component, T>, "(GameObject::AddComponent) T must inherit from Component");
+
     T *newComponent = new T(std::forward<Args>(args)...);
 
     if constexpr (std::is_same_v<T, TransformComponent>)

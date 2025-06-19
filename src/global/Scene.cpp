@@ -59,13 +59,6 @@ void Scene::Render()
     rlPopMatrix();
 }
 
-GameObject *Scene::CreateGameObject(std::string name)
-{
-    GameObject *newGo = new GameObject(name);
-    AddGameObject(newGo);
-    return newGo;
-}
-
 void Scene::AddGameObject(GameObject *newGameObject)
 {
     if (std::find(m_gameObjects.begin(), m_gameObjects.end(), newGameObject) != m_gameObjects.end())
