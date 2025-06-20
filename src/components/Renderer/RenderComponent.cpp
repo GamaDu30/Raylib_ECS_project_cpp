@@ -35,15 +35,7 @@ void RenderComponent::Destroy()
 
 void RenderComponent::Render()
 {
-    TransformComponent *transform = m_owner->GetTransform();
-
-    if (transform == nullptr)
-    {
-        TraceLog(LOG_ERROR, "RenderComponent doesn't have access to the TransformComponent");
-        return;
-    }
-
-    transform->PushMatrix();
+    rlPushMatrix();
 }
 
 void RenderComponent::SetColor(raylib::Color color)

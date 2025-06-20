@@ -83,6 +83,8 @@ void GameObject::Update()
 
 void GameObject::Render()
 {
+    m_transformComp->PushMatrix();
+
     for (Component *curComponent : m_components)
     {
         RenderComponent *renderComponent = dynamic_cast<RenderComponent *>(curComponent);
@@ -93,7 +95,8 @@ void GameObject::Render()
         }
     }
 
-    raylib::Vector2 startPos = raylib::Vector2(m_transformComp->GetPos().x, m_transformComp->GetPos().y);
-    DrawLineV(startPos, startPos + raylib::Vector2(0, -25), GREEN);
-    DrawLineV(startPos, startPos + raylib::Vector2(25, 0), RED);
+    DrawLineV(raylib::Vector2(), raylib::Vector2(0, -25), GREEN);
+    DrawLineV(raylib::Vector2(), raylib::Vector2(25, 0), RED);
+
+    rlPopMatrix();
 }
