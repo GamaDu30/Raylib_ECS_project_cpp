@@ -23,8 +23,8 @@ public:
 	{
 		GameObject::Update();
 		GetTransform()->GetPos().y += velocity;
-		velocity += 0.5f * GetFrameTime();
-		TraceLog(LOG_DEBUG, "PLAYER UPDATE %f", GetTransform()->GetPos().y);
+		GetTransform()->GetRotation() += 0.5f * GetFrameTime();
+		velocity += 1.f * GetFrameTime();
 	}
 	void OnJump() { velocity -= 1.f; }
 };
@@ -51,7 +51,7 @@ main()
 	Inputs::Init();
 
 	Player *player = scene->CreateGameObject<Player>();
-	player->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+	player->AddComponent<RectRenderer>(raylib::Vector2(50, 50));
 	Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::DOWN, player, &Player::OnJump);
 
 	// const char *cwd = GetWorkingDirectory();
@@ -80,6 +80,5 @@ main()
 }
 
 // TODO:
-// Make more collision component
+// Make Collision work with rotation (from AABB to OBB)
 // Opti collision by doing a AABB of each collider before doing a precise check
-// Fix update override not working on child of gameObject

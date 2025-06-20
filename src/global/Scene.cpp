@@ -50,6 +50,11 @@ void Scene::Render()
     {
         m_camComp->PushMatrix();
     }
+    else
+    {
+        // TODO: Clean code when no camera is present in scene
+        rlPushMatrix();
+    }
 
     for (GameObject *curGo : m_gameObjects)
     {
