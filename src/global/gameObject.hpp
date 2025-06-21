@@ -24,6 +24,7 @@ public:
     GameObject(std::string name = "");
     ~GameObject();
 
+    virtual void Start();
     virtual void Update();
     void Render();
 

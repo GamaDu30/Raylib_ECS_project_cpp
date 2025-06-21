@@ -20,6 +20,7 @@ public:
     Scene(std::string name = "");
     ~Scene();
 
+    void Start();
     void Update();
     void Render();
 
@@ -40,5 +41,7 @@ T *Scene::CreateGameObject(std::string name)
 
     T *newGo = new T(name);
     AddGameObject(newGo);
+
+    newGo->Start();
     return newGo;
 }

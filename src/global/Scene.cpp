@@ -25,6 +25,14 @@ Scene::~Scene()
 {
 }
 
+void Scene::Start()
+{
+    for (GameObject *curGo : m_gameObjects)
+    {
+        curGo->Start();
+    }
+}
+
 void Scene::Update()
 {
     for (GameObject *curGo : m_gameObjects)

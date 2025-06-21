@@ -73,6 +73,10 @@ void GameObject::OnCollisionExit(ColliderComponent *collider)
     GetComponent<RectRenderer>()->SetColor(WHITE);
 }
 
+void GameObject::Start()
+{
+}
+
 void GameObject::Update()
 {
     for (Component *component : m_components)
