@@ -1,6 +1,6 @@
 #include "Inputs.hpp"
 
-std::unordered_map<KeyboardKey, std::vector<std::function<void()>>> Inputs::inputMap = {};
+std::unordered_map<KeyboardKey, std::array<std::vector<std::function<void()>>, 2>> Inputs::inputMap = {};
 
 KeyboardKey Inputs::inputKeys[349] = {
     KEY_NULL,
@@ -31,31 +31,42 @@ void Inputs::Init()
 {
     for (KeyboardKey curKey : inputKeys)
     {
-        std::vector<std::function<void()>> inputVector;
-        inputVector.push_back(nullptr);
-        inputVector.push_back(nullptr);
+        std::array<std::vector<std::function<void()>>, 2> inputVector;
+        inputVector[KeyState::PRESSED] = {};
+        inputVector[KeyState::RELEASED] = {};
 
         inputMap.insert({curKey, inputVector});
     }
 }
 
+void Inputs::RegisterInput(KeyboardKey key, KeyState keyState, std::function<void()> method)
+{
+    inputMap[key][keyState].push_back(method);
+}
+
 void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState)
 {
-    inputMap[key][keyState] = nullptr;
+    inputMap[key][keyState][0];
 }
 
 void Inputs::Update()
 {
     for (auto const &[key, val] : inputMap)
     {
-        if (IsKeyPressed(key) && val[KeyState::DOWN] != nullptr)
+        if (IsKeyPressed(key))
         {
-            val[KeyState::DOWN]();
+            for (auto curMethod : val[KeyState::PRESSED])
+            {
+                curMethod();
+            }
         }
 
-        if (IsKeyReleased(key) && val[KeyState::UP] != nullptr)
+        if (IsKeyReleased(key))
         {
-            val[KeyState::UP]();
+            for (auto curMethod : val[KeyState::RELEASED])
+            {
+                curMethod();
+            }
         }
     }
 }
