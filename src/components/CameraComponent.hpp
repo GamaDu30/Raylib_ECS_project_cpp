@@ -16,6 +16,9 @@ class CameraComponent : public Component
     void UpdateMatrix();
 
 public:
+    static CameraComponent *m_mainCam;
+    static CameraComponent *GetMainCam();
+
     raylib::Matrix m_matrix;
     CameraComponent(Color bgColor = BLACK);
     ~CameraComponent();

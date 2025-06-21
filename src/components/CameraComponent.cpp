@@ -2,12 +2,19 @@
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
 
+CameraComponent *CameraComponent::m_mainCam = nullptr;
+
 CameraComponent::CameraComponent(Color bgColor)
 {
     m_zoom = 1;
     m_rotation = 0.f;
 
     m_bgColor = bgColor;
+
+    if (m_mainCam == nullptr)
+    {
+        m_mainCam = this;
+    }
 }
 
 CameraComponent::~CameraComponent()
@@ -68,4 +75,9 @@ raylib::Vector2 CameraComponent::GetMousePos()
     mousePos.x += m_owner->GetTransform()->GetPos().x - SCREEN_W * 0.5f;
     mousePos.y += m_owner->GetTransform()->GetPos().y - SCREEN_H * 0.5f;
     return mousePos;
+}
+
+CameraComponent *CameraComponent::GetMainCam()
+{
+    return m_mainCam;
 }
