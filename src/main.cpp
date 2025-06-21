@@ -14,31 +14,53 @@
 class Player : public GameObject
 {
 public:
-	Player(std::string name = "") {}
+	Player(std::string name = "") : GameObject(name)
+	{
+	}
+
 	~Player() {}
 
-	float velocity = 0.f;
+	void Start() override
+	{
+		// Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::PRESSED, [this]
+		// 					  { OnJump(); });
+
+		this->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+		this->AddComponent<RectCollider>(raylib::Vector2(100, 100));
+	}
 
 	void Update() override
 	{
 		GameObject::Update();
-		GetTransform()->GetPos().y += velocity;
+
+		GetTransform()->GetPos().x = CameraComponent::GetMainCam()->GetMousePos().x;
+		GetTransform()->GetPos().y = CameraComponent::GetMainCam()->GetMousePos().y;
 		GetTransform()->GetRotation() += 0.5f * GetFrameTime();
-		velocity += 1.f * GetFrameTime();
+		// GetTransform()->GetScale().x = 2 + cos(GetTime());
+		// GetTransform()->GetScale().y = 2 + sin(GetTime() * 2);
 	}
-	void OnJump() { velocity -= 1.f; }
 };
 
-main()
+void Init()
 {
 	// Tell the window to use vsync and work on high DPI displays
 	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
 	SetTraceLogLevel(LOG_DEBUG);
 	// Create the window and OpenGL context
-	InitWindow(1280, 720, "Hello Raylib");
+	InitWindow(1280, 720, "ECS");
 
 	// Utility function from resource_dir.h to find the resources folder and set it as the current working directory so we can load from it
 	SearchAndSetResourceDir("resources");
+
+	// const char *cwd = GetWorkingDirectory();
+	// TraceLog(LOG_INFO, "Current working directory: %s", cwd);
+
+	Inputs::Init();
+}
+
+main()
+{
+	Init();
 
 	Scene *scene = new Scene("Game");
 
@@ -46,16 +68,12 @@ main()
 	cam->GetTransform()->GetPos() = raylib::Vector3(0, 0);
 	cam->AddComponent<CameraComponent>();
 
-	GameObject *center = scene->CreateGameObject();
-
-	Inputs::Init();
-
 	Player *player = scene->CreateGameObject<Player>();
-	player->AddComponent<RectRenderer>(raylib::Vector2(50, 50));
-	Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::DOWN, player, &Player::OnJump);
 
-	// const char *cwd = GetWorkingDirectory();
-	// TraceLog(LOG_INFO, "Current working directory: %s", cwd);
+	GameObject *square = scene->CreateGameObject();
+	square->AddComponent<RectCollider>(raylib::Vector2(100, 100));
+	square->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+	square->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
 
 	// game loop
 	while (!WindowShouldClose())
@@ -80,5 +98,4 @@ main()
 }
 
 // TODO:
-// Make Collision work with rotation (from AABB to OBB)
 // Opti collision by doing a AABB of each collider before doing a precise check

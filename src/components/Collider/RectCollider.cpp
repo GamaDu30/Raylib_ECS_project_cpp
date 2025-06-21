@@ -1,6 +1,8 @@
 #include "components/Collider/RectCollider.hpp"
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
+#include "RectCollider.hpp"
+#include "components/CameraComponent.hpp"
 
 RectCollider::RectCollider(raylib::Vector2 size, raylib::Vector2 offset)
 {
@@ -25,6 +27,28 @@ void RectCollider::Destroy()
 {
 }
 
+CollisionInfo *RectCollider::GetColInfo()
+{
+    std::vector<raylib::Vector2> localPoints = {
+        raylib::Vector2(),
+        raylib::Vector2(m_size.x, 0),
+        m_size,
+        raylib::Vector2(0, m_size.y)};
+
+    for (raylib::Vector2 &curPoint : localPoints)
+    {
+        curPoint -= m_size * 0.5f;
+        curPoint = Vector2Transform(curPoint, m_owner->GetTransform()->GetMatrix());
+
+        if (CameraComponent::GetMainCam() != nullptr)
+        {
+            curPoint = Vector2Transform(curPoint, CameraComponent::GetMainCam()->m_matrix);
+        }
+    }
+
+    return new PolyColInfo(localPoints);
+}
+
 void RectCollider::IsColliding(ColliderComponent *other)
 {
     other->IsColliding(this);
@@ -32,14 +56,7 @@ void RectCollider::IsColliding(ColliderComponent *other)
 
 void RectCollider::IsColliding(RectCollider *other)
 {
-    raylib::Vector2 selfPos = GetPos();
-    raylib::Vector2 otherPos = other->GetPos();
-    raylib::Vector2 otherSize = other->m_size;
-
-    bool isCol = !((otherPos.x + otherSize.x <= selfPos.x) ||
-                   (selfPos.x + m_size.x <= otherPos.x) ||
-                   (otherPos.y + otherSize.y <= selfPos.y) ||
-                   (selfPos.y + m_size.y <= otherPos.y));
+    bool isCol = ColPolyPoly(dynamic_cast<PolyColInfo *>(GetColInfo()), dynamic_cast<PolyColInfo *>(other->GetColInfo()));
 
     ColliderComponent::HandleCollisionState(isCol, other);
 }

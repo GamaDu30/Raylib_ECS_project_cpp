@@ -15,6 +15,7 @@ public:
     RectCollider(raylib::Vector2 size, raylib::Vector2 pos = raylib::Vector2());
     ~RectCollider();
 
+    virtual CollisionInfo *GetColInfo() override;
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();
