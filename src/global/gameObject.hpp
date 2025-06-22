@@ -38,8 +38,8 @@ public:
     std::string GetName();
     TransformComponent *GetTransform();
 
-    void OnCollisionEnter(ColliderComponent *collider);
-    void OnCollisionExit(ColliderComponent *collider);
+    virtual void OnCollisionEnter(ColliderComponent *collider);
+    virtual void OnCollisionExit(ColliderComponent *collider);
 };
 
 template <typename... Components>

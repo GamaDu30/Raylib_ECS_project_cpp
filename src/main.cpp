@@ -13,6 +13,8 @@
 
 class Player : public GameObject
 {
+	bool isColliding = false;
+
 public:
 	Player(std::string name = "") : GameObject(name)
 	{
@@ -25,8 +27,8 @@ public:
 		// Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::PRESSED, [this]
 		// 					  { OnJump(); });
 
-		this->AddComponent<RectRenderer>(raylib::Vector2(500, 500));
-		this->AddComponent<RectCollider>(raylib::Vector2(500, 500));
+		this->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
+		this->AddComponent<RectCollider>(raylib::Vector2(100, 100));
 	}
 
 	void Update() override
@@ -36,8 +38,22 @@ public:
 		GetTransform()->GetPos().x = CameraComponent::GetMainCam()->GetMousePos().x;
 		GetTransform()->GetPos().y = CameraComponent::GetMainCam()->GetMousePos().y;
 		GetTransform()->GetRotation() += 0.5f * GetFrameTime();
-		// GetTransform()->GetScale().x = 2 + cos(GetTime());
-		// GetTransform()->GetScale().y = 2 + sin(GetTime() * 2);
+
+		if (isColliding)
+		{
+			GetTransform()->GetScale().x = 2 + cos(GetTime());
+			GetTransform()->GetScale().y = 2 + sin(GetTime() * 2);
+		}
+	}
+
+	void OnCollisionEnter(ColliderComponent *collider) override
+	{
+		isColliding = true;
+	}
+
+	void OnCollisionExit(ColliderComponent *collider) override
+	{
+		isColliding = false;
 	}
 };
 
