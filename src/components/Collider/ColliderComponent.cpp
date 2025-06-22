@@ -76,3 +76,11 @@ void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent
         this->m_owner->OnCollisionExit(other);
     }
 }
+
+void ColliderComponent::DrawAllDebug()
+{
+    for (ColliderComponent *collider : m_colliders)
+    {
+        collider->DrawDebug();
+    }
+}

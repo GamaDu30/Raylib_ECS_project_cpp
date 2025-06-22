@@ -48,3 +48,8 @@ void CircleCollider::IsColliding(RectCollider *other)
     bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(other->GetColInfo()), dynamic_cast<CircleColInfo *>(this->GetColInfo()));
     ColliderComponent::HandleCollisionState(isCol, other);
 }
+
+void CircleCollider::DrawDebug()
+{
+    GetPos().DrawCircle(m_radius, raylib::Color(255, 0, 0, 95));
+}

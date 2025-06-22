@@ -19,4 +19,6 @@ public:
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();
+
+    virtual void DrawDebug() override;
 };

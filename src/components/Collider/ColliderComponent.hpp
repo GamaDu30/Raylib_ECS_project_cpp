@@ -32,6 +32,9 @@ public:
     raylib::Vector2 GetPos();
 
     void HandleCollisionState(bool curColState, ColliderComponent *other);
+
+    static void DrawAllDebug();
+    virtual void DrawDebug() = 0;
 };
 
 struct Collision

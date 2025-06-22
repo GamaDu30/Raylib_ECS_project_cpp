@@ -66,3 +66,13 @@ void RectCollider::IsColliding(CircleCollider *other)
     bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(this->GetColInfo()), dynamic_cast<CircleColInfo *>(other->GetColInfo()));
     ColliderComponent::HandleCollisionState(isCol, other);
 }
+
+void RectCollider::DrawDebug()
+{
+    PolyColInfo *colInfo = static_cast<PolyColInfo *>(GetColInfo());
+
+    for (int i = 0; i < colInfo->points.size(); i++)
+    {
+        colInfo->points[i].DrawLine(colInfo->points[(i + 1) % colInfo->points.size()], 10.f, raylib::Color(255, 0, 0, 95));
+    }
+}
