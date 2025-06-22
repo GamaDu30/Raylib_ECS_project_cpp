@@ -34,6 +34,8 @@ public:
 
     CameraComponent *GetMainCam();
     static Scene *GetScene();
+
+    GameObject *FindGameObject(std::string name);
 };
 
 template <typename T>

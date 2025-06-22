@@ -131,3 +131,16 @@ Scene *Scene::GetScene()
 {
     return m_curScene;
 }
+
+GameObject *Scene::FindGameObject(std::string name)
+{
+    for (GameObject *curGo : m_gameObjects)
+    {
+        if (curGo->GetName() == name)
+        {
+            return curGo;
+        }
+    }
+
+    return nullptr;
+}

@@ -5,21 +5,7 @@
 #include "components/Collider/ColliderComponent.hpp"
 #include "components/Renderer/RectRenderer.hpp"
 
-std::vector<GameObject *> GameObject::m_gameObjects = {};
 unsigned int GameObject::m_curUID = 0;
-
-GameObject *GameObject::Find(std::string name)
-{
-    for (GameObject *curGo : m_gameObjects)
-    {
-        if (curGo->GetName() == name)
-        {
-            return curGo;
-        }
-    }
-
-    return nullptr;
-}
 
 GameObject::GameObject(std::string name)
 {
@@ -31,8 +17,6 @@ GameObject::GameObject(std::string name)
     }
 
     m_curUID++;
-
-    m_gameObjects.push_back(this);
 
     AddComponent<TransformComponent>();
 
@@ -48,7 +32,6 @@ GameObject::~GameObject()
     }
 
     m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transformComp), m_components.end());
-    m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), this), m_gameObjects.end());
 }
 
 std::string GameObject::GetName()
