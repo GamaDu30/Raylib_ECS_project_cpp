@@ -2,6 +2,7 @@
 #include "algorithm"
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
+#include "components/CameraComponent.hpp"
 
 std::vector<ColliderComponent *> ColliderComponent::m_colliders = {};
 
@@ -50,9 +51,11 @@ void ColliderComponent::CheckCollisions()
 raylib::Vector2 ColliderComponent::GetPos()
 {
     // TODO: Do test to see if *2 works (ex: Anchors)
-    return raylib::Vector2(
+    raylib::Vector2 pos = raylib::Vector2(
         m_owner->GetTransform()->GetPos().x + m_offset.x * 2,
         m_owner->GetTransform()->GetPos().y + m_offset.y * 2);
+
+    return Vector2Transform(pos, CameraComponent::GetMainCam()->m_matrix);
 }
 
 void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent *other)

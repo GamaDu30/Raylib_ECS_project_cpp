@@ -29,7 +29,7 @@ void CircleCollider::Destroy()
 
 CollisionInfo *CircleCollider::GetColInfo()
 {
-    return new CircleColInfo(Vector2Transform(GetPos(), CameraComponent::GetMainCam()->m_matrix), m_radius);
+    return new CircleColInfo(GetPos(), m_radius);
 }
 
 void CircleCollider::IsColliding(ColliderComponent *other)
