@@ -6,9 +6,6 @@
 #define SCREEN_W 1280
 #define SCREEN_H 720
 
-class CircleCollider;
-class RectCollider;
-
 enum class Anchor
 {
     TopLeft,

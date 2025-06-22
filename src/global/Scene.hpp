@@ -8,6 +8,7 @@ class CameraComponent;
 class Scene
 {
     static unsigned int m_curUID;
+    static Scene *m_curScene;
 
     std::string m_name;
 
@@ -32,6 +33,7 @@ public:
     void SetCam();
 
     CameraComponent *GetMainCam();
+    static Scene *GetScene();
 };
 
 template <typename T>

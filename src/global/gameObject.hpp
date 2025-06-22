@@ -22,7 +22,7 @@ class GameObject
 protected:
 public:
     GameObject(std::string name = "");
-    ~GameObject();
+    virtual ~GameObject();
 
     virtual void Start();
     virtual void Update();
@@ -31,7 +31,7 @@ public:
     template <typename... Components>
     void AddComponents();
     template <typename T, typename... Args>
-    void AddComponent(Args &&...args);
+    T *AddComponent(Args &&...args);
     template <typename T>
     T *GetComponent();
 
@@ -49,7 +49,7 @@ inline void GameObject::AddComponents()
 }
 
 template <typename T, typename... Args>
-void GameObject::AddComponent(Args &&...args)
+T *GameObject::AddComponent(Args &&...args)
 {
     static_assert(std::is_base_of_v<Component, T>, "(GameObject::AddComponent) T must inherit from Component");
 
@@ -60,7 +60,7 @@ void GameObject::AddComponent(Args &&...args)
         if (m_isInit)
         {
             TraceLog(LOG_ERROR, "You can't add a TransformComponent to a GameObject");
-            return;
+            return nullptr;
         }
 
         m_transformComp = newComponent;
@@ -74,12 +74,14 @@ void GameObject::AddComponent(Args &&...args)
             TraceLog(LOG_WARNING, "You tried adding a component already present on this gameobject");
 
             delete newComponent;
-            return;
+            return nullptr;
         }
     }
 
     newComponent->Init(this);
     m_components.push_back(newComponent);
+
+    return newComponent;
 }
 
 template <typename T>

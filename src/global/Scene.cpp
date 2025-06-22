@@ -6,6 +6,7 @@
 #include "components/CameraComponent.hpp"
 
 unsigned int Scene::m_curUID = 0;
+Scene *Scene::m_curScene = nullptr;
 
 Scene::Scene(std::string name)
 {
@@ -19,10 +20,19 @@ Scene::Scene(std::string name)
     m_gameObjects = {};
     m_camComp = nullptr;
     m_searchForCam = true;
+
+    if (m_curScene == nullptr)
+    {
+        m_curScene = this;
+    }
 }
 
 Scene::~Scene()
 {
+    if (m_curScene == this)
+    {
+        m_curScene = nullptr;
+    }
 }
 
 void Scene::Start()
@@ -35,9 +45,9 @@ void Scene::Start()
 
 void Scene::Update()
 {
-    for (GameObject *curGo : m_gameObjects)
+    for (int i = m_gameObjects.size() - 1; i >= 0; i--)
     {
-        curGo->Update();
+        m_gameObjects[i]->Update();
     }
 }
 
@@ -80,9 +90,13 @@ void Scene::AddGameObject(GameObject *newGameObject)
         return;
     }
 
+    TraceLog(LOG_DEBUG, ("Created Gameobject: " + newGameObject->GetName()).c_str());
     m_gameObjects.push_back(newGameObject);
 
-    m_searchForCam = true;
+    if (m_camComp == nullptr)
+    {
+        m_searchForCam = true;
+    }
 }
 
 void Scene::RemoveGameObject(GameObject *gameObject)
@@ -111,4 +125,9 @@ void Scene::SetCam()
 CameraComponent *Scene::GetMainCam()
 {
     return m_camComp;
+}
+
+Scene *Scene::GetScene()
+{
+    return m_curScene;
 }
