@@ -16,16 +16,13 @@ class Player : public GameObject
 	bool isColliding = false;
 
 public:
-	Player(std::string name = "") : GameObject(name)
-	{
-	}
+	Player(std::string name = "") : GameObject(name) {}
 
 	~Player() {}
 
 	void Start() override
 	{
-		// Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::PRESSED, [this]
-		// 					  { OnJump(); });
+		GameObject::Start();
 
 		this->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
 		this->AddComponent<RectCollider>(raylib::Vector2(100, 100));
@@ -48,11 +45,15 @@ public:
 
 	void OnCollisionEnter(ColliderComponent *collider) override
 	{
+		GameObject::OnCollisionEnter(collider);
+
 		isColliding = true;
 	}
 
 	void OnCollisionExit(ColliderComponent *collider) override
 	{
+		GameObject::OnCollisionExit(collider);
+
 		isColliding = false;
 	}
 };
@@ -84,9 +85,9 @@ main()
 	cam->GetTransform()->GetPos() = raylib::Vector3(0, 0);
 	cam->AddComponent<CameraComponent>();
 
-	Player *player = scene->CreateGameObject<Player>();
+	Player *player = scene->CreateGameObject<Player>("Player");
 
-	GameObject *shape = scene->CreateGameObject();
+	GameObject *shape = scene->CreateGameObject("Shape");
 	shape->AddComponent<CircleCollider>(50.f);
 	shape->AddComponent<CircleRenderer>(50.f);
 	shape->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
