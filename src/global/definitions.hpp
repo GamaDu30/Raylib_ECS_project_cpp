@@ -44,4 +44,5 @@ raylib::Vector2 GetAnchorOffset(Anchor anchor);
 
 // Collisions Functions
 bool ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2);
-bool ColPolyPoly(PolyColInfo *c1, PolyColInfo *c2);
+bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2);
+bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c);

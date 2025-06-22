@@ -12,7 +12,7 @@ protected:
     virtual void IsColliding(CircleCollider *other);
 
 public:
-    RectCollider(raylib::Vector2 size, raylib::Vector2 pos = raylib::Vector2());
+    RectCollider(raylib::Vector2 size, raylib::Vector2 offset = raylib::Vector2());
     ~RectCollider();
 
     virtual CollisionInfo *GetColInfo() override;

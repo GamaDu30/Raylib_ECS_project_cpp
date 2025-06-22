@@ -64,13 +64,13 @@ TransformComponent *GameObject::GetTransform()
 void GameObject::OnCollisionEnter(ColliderComponent *collider)
 {
     TraceLog(LOG_DEBUG, (m_name + " COL ENTER").c_str());
-    GetComponent<RectRenderer>()->SetColor(RED);
+    GetComponent<RenderComponent>()->SetColor(RED);
 }
 
 void GameObject::OnCollisionExit(ColliderComponent *collider)
 {
     TraceLog(LOG_DEBUG, (m_name + " COL EXIT").c_str());
-    GetComponent<RectRenderer>()->SetColor(WHITE);
+    GetComponent<RenderComponent>()->SetColor(WHITE);
 }
 
 void GameObject::Start()

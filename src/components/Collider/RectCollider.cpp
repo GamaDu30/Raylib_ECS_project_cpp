@@ -3,6 +3,7 @@
 #include "components/TransformComponent.hpp"
 #include "RectCollider.hpp"
 #include "components/CameraComponent.hpp"
+#include "components/Collider/CircleCollider.hpp"
 
 RectCollider::RectCollider(raylib::Vector2 size, raylib::Vector2 offset)
 {
@@ -57,10 +58,11 @@ void RectCollider::IsColliding(ColliderComponent *other)
 void RectCollider::IsColliding(RectCollider *other)
 {
     bool isCol = ColPolyPoly(dynamic_cast<PolyColInfo *>(GetColInfo()), dynamic_cast<PolyColInfo *>(other->GetColInfo()));
-
     ColliderComponent::HandleCollisionState(isCol, other);
 }
 
 void RectCollider::IsColliding(CircleCollider *other)
 {
+    bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(this->GetColInfo()), dynamic_cast<CircleColInfo *>(other->GetColInfo()));
+    ColliderComponent::HandleCollisionState(isCol, other);
 }

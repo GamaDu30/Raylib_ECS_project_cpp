@@ -25,8 +25,8 @@ public:
 		// Inputs::RegisterInput(KeyboardKey::KEY_SPACE, KeyState::PRESSED, [this]
 		// 					  { OnJump(); });
 
-		this->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
-		this->AddComponent<RectCollider>(raylib::Vector2(100, 100));
+		this->AddComponent<RectRenderer>(raylib::Vector2(500, 500));
+		this->AddComponent<RectCollider>(raylib::Vector2(500, 500));
 	}
 
 	void Update() override
@@ -70,10 +70,10 @@ main()
 
 	Player *player = scene->CreateGameObject<Player>();
 
-	GameObject *square = scene->CreateGameObject();
-	square->AddComponent<RectCollider>(raylib::Vector2(100, 100));
-	square->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
-	square->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
+	GameObject *shape = scene->CreateGameObject();
+	shape->AddComponent<CircleCollider>(50.f);
+	shape->AddComponent<CircleRenderer>(50.f);
+	shape->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
 
 	// game loop
 	while (!WindowShouldClose())

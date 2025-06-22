@@ -1,8 +1,10 @@
 #include "components/Collider/CircleCollider.hpp"
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
+#include "components/Collider/RectCollider.hpp"
+#include "components/CameraComponent.hpp"
 
-CircleCollider::CircleCollider(raylib::Vector2 offset, float radius)
+CircleCollider::CircleCollider(float radius, raylib::Vector2 offset)
 {
     m_offset = offset;
     m_radius = radius;
@@ -25,6 +27,11 @@ void CircleCollider::Destroy()
 {
 }
 
+CollisionInfo *CircleCollider::GetColInfo()
+{
+    return new CircleColInfo(Vector2Transform(GetPos(), CameraComponent::GetMainCam()->m_matrix), m_radius);
+}
+
 void CircleCollider::IsColliding(ColliderComponent *other)
 {
     other->IsColliding(this);
@@ -38,4 +45,6 @@ void CircleCollider::IsColliding(CircleCollider *other)
 
 void CircleCollider::IsColliding(RectCollider *other)
 {
+    bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(other->GetColInfo()), dynamic_cast<CircleColInfo *>(this->GetColInfo()));
+    ColliderComponent::HandleCollisionState(isCol, other);
 }

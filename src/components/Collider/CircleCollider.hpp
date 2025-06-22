@@ -12,9 +12,10 @@ protected:
     virtual void IsColliding(RectCollider *other);
 
 public:
-    CircleCollider(raylib::Vector2 offset, float radius);
+    CircleCollider(float radius, raylib::Vector2 offset = raylib::Vector2());
     ~CircleCollider();
 
+    virtual CollisionInfo *GetColInfo() override;
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();
