@@ -37,3 +37,8 @@ void SpriteRenderer::Render()
 
     rlPopMatrix();
 }
+
+raylib::Texture2D *SpriteRenderer::GetTexture()
+{
+    return &m_texture;
+}

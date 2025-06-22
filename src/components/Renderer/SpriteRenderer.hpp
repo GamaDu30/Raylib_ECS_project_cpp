@@ -13,4 +13,6 @@ public:
     virtual void Destroy();
 
     virtual void Render();
+
+    raylib::Texture2D *GetTexture();
 };
