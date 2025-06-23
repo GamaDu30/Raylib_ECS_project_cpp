@@ -26,12 +26,14 @@ GameObject::GameObject(std::string name)
 
 GameObject::~GameObject()
 {
-    for (Component *component : m_components)
+    for (int i = m_components.size() - 1; i >= 0; i--)
     {
-        m_components.erase(std::remove(m_components.begin(), m_components.end(), component), m_components.end());
+        delete m_components[i];
+        m_components[i] = nullptr;
     }
 
-    m_components.erase(std::remove(m_components.begin(), m_components.end(), m_transformComp), m_components.end());
+    m_transformComp = nullptr;
+    m_components.clear();
 }
 
 std::string GameObject::GetName()

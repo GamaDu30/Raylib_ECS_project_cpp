@@ -13,6 +13,7 @@ RectCollider::RectCollider(raylib::Vector2 size, raylib::Vector2 offset)
 
 RectCollider::~RectCollider()
 {
+    ColliderComponent::~ColliderComponent();
 }
 
 void RectCollider::Init(GameObject *owner)

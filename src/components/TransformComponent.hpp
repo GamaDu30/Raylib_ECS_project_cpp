@@ -22,6 +22,7 @@ class TransformComponent : public Component
 
 public:
     TransformComponent();
+    ~TransformComponent();
 
     virtual void Init(GameObject *owner);
     virtual void Update();

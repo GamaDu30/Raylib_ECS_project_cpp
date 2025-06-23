@@ -12,7 +12,7 @@ protected:
 
 public:
     Component();
-    ~Component();
+    virtual ~Component();
 
     virtual void Init(GameObject *owner);
     virtual void Update();

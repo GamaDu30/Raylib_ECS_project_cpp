@@ -7,6 +7,10 @@ TransformComponent::TransformComponent()
 {
 }
 
+TransformComponent::~TransformComponent()
+{
+}
+
 void TransformComponent::Init(GameObject *owner)
 {
     Component::Init(owner);

@@ -12,6 +12,7 @@ CircleCollider::CircleCollider(float radius, raylib::Vector2 offset)
 
 CircleCollider::~CircleCollider()
 {
+    ColliderComponent::~ColliderComponent();
 }
 
 void CircleCollider::Init(GameObject *owner)

@@ -102,6 +102,7 @@ void Scene::AddGameObject(GameObject *newGameObject)
 void Scene::RemoveGameObject(GameObject *gameObject)
 {
     m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), gameObject), m_gameObjects.end());
+    delete gameObject;
 }
 
 void Scene::SetCam()
