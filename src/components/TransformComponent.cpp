@@ -66,6 +66,14 @@ float &TransformComponent::GetRotation()
     return m_rotation;
 }
 
+void TransformComponent::CheckForDirty()
+{
+    if (m_lastPos != m_pos || m_lastScale != m_scale || m_lastRotation != m_rotation)
+    {
+        UpdateLocalMatrix();
+    }
+}
+
 void TransformComponent::SetDirty()
 {
     m_isDirty = true;
@@ -149,6 +157,8 @@ void TransformComponent::SetParent(TransformComponent *newParent)
 
 raylib::Matrix TransformComponent::GetMatrix()
 {
+    CheckForDirty();
+
     if (m_parent == nullptr)
     {
         return m_matrix;

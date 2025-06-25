@@ -32,6 +32,7 @@ public:
     raylib::Vector2 &GetScale();
     float &GetRotation();
 
+    void CheckForDirty();
     void SetDirty();
 
     void AddChild(TransformComponent *newChild);
