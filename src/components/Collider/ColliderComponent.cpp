@@ -5,11 +5,13 @@
 #include "components/CameraComponent.hpp"
 
 std::vector<ColliderComponent *> ColliderComponent::m_colliders = {};
+unsigned int ColliderComponent::m_curUID = 0;
 
 ColliderComponent::ColliderComponent()
 {
     m_colliders.push_back(this);
-    m_isColliding = false;
+    m_UID = m_curUID++;
+    m_collidersCompId = std::vector<unsigned int>();
 }
 
 ColliderComponent::~ColliderComponent()
@@ -60,19 +62,17 @@ raylib::Vector2 ColliderComponent::GetPos()
 
 void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent *other)
 {
-    if (curColState)
-    {
-        if (m_isColliding)
-        {
-            return;
-        }
+    // Check if Collider UID is already in vector (this means they're already colliding)
+    bool isCurrentlyColliding = std::find(m_collidersCompId.begin(), m_collidersCompId.end(), other->m_UID) != m_collidersCompId.end();
 
-        m_isColliding = true;
+    if (!isCurrentlyColliding && curColState)
+    {
+        m_collidersCompId.push_back(other->m_UID);
         this->m_owner->OnCollisionEnter(other);
     }
-    else if (m_isColliding)
+    else if (isCurrentlyColliding && !curColState)
     {
-        m_isColliding = false;
+        m_collidersCompId.erase(std::remove(m_collidersCompId.begin(), m_collidersCompId.end(), other->m_UID), m_collidersCompId.end());
         this->m_owner->OnCollisionExit(other);
     }
 }

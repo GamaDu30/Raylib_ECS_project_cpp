@@ -8,10 +8,12 @@ class RectCollider;
 class ColliderComponent : public Component
 {
     static std::vector<ColliderComponent *> m_colliders;
+    static unsigned int m_curUID;
+    std::vector<unsigned int> m_collidersCompId;
 
 protected:
     raylib::Vector2 m_offset;
-    bool m_isColliding;
+    unsigned int m_UID;
 
 public:
     ColliderComponent();
@@ -35,9 +37,4 @@ public:
 
     static void DrawAllDebug();
     virtual void DrawDebug() = 0;
-};
-
-struct Collision
-{
-    ColliderComponent *collider;
 };
