@@ -3,7 +3,7 @@
 
 class SpriteRenderer : public RenderComponent
 {
-    raylib::Texture2D m_texture;
+    std::string m_textureName;
 
 public:
     SpriteRenderer(std::string fileName, Anchor anchor = Anchor::Center, raylib::Color color = WHITE, raylib::Vector2 offset = raylib::Vector2());

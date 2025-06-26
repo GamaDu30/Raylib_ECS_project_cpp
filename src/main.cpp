@@ -10,6 +10,7 @@
 #include "components/Collider/RectCollider.hpp"
 #include "global/Inputs.hpp"
 #include <charconv>
+#include "global/Sprites.hpp"
 
 class Player : public GameObject
 {
@@ -75,17 +76,39 @@ void Init()
 	Inputs::Init();
 }
 
+void Update()
+{
+	// Update
+	ColliderComponent::CheckCollisions();
+	Inputs::Update();
+
+	Scene::GetScene()->Update();
+	Sprites::Update();
+}
+
+void Render()
+{
+	// Draw
+	BeginDrawing();
+
+	Scene::GetScene()->Render();
+
+	if (DRAW_DEBUG)
+	{
+		ColliderComponent::DrawAllDebug();
+	}
+
+	EndDrawing();
+}
+
 main()
 {
 	Init();
 
 	Scene *scene = new Scene("Game");
 
-	GameObject *cam = scene->CreateGameObject();
-	cam->GetTransform()->GetPos() = raylib::Vector3(0, 0);
-	cam->AddComponent<CameraComponent>();
-
-	Player *player = scene->CreateGameObject<Player>("Player");
+	GameObject *cam = scene->CreateGameObject("Cam");
+	cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
 
 	GameObject *shape = scene->CreateGameObject("Shape");
 	shape->AddComponent<CircleCollider>(50.f);
@@ -95,19 +118,8 @@ main()
 	// game loop
 	while (!WindowShouldClose())
 	{
-		// Update
-		ColliderComponent::CheckCollisions();
-		Inputs::Update();
-
-		// IMPORTANT: Keep at the end of the update
-		scene->Update();
-
-		// Draw
-		BeginDrawing();
-
-		scene->Render();
-
-		EndDrawing();
+		Update();
+		Render();
 	}
 
 	CloseWindow();
@@ -116,3 +128,6 @@ main()
 
 // TODO:
 // Opti collision by doing a AABB of each collider before doing a precise check
+// Find a way to code a getter/setter for property of TransformComponent
+// Opti Sprites by checking for null RendererComp only when one is destroyed
+// Fix Sprites renderer not being nullptr when destroyed
