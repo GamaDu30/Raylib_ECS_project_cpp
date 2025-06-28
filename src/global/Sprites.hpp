@@ -4,6 +4,7 @@
 #include <unordered_map>
 
 class SpriteRenderer;
+class RenderComponent;
 
 struct Sprite
 {
@@ -23,5 +24,5 @@ public:
     static raylib::Texture2D *GetSprite(SpriteRenderer *instance, std::string name);
 
     static void LoadSprite(SpriteRenderer *instance, std::string name);
-    static void Update();
+    static void OnRendererDeleted(RenderComponent *renderer);
 };

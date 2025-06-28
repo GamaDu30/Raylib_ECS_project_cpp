@@ -90,7 +90,6 @@ void Scene::AddGameObject(GameObject *newGameObject)
         return;
     }
 
-    TraceLog(LOG_DEBUG, ("Created Gameobject: " + newGameObject->GetName()).c_str());
     m_gameObjects.push_back(newGameObject);
 
     if (m_camComp == nullptr)

@@ -21,7 +21,6 @@ GameObject::GameObject(std::string name)
     AddComponent<TransformComponent>();
 
     m_isInit = true;
-    TraceLog(LOG_DEBUG, ("New GameObject named " + m_name).c_str());
 }
 
 GameObject::~GameObject()
@@ -48,14 +47,10 @@ TransformComponent *GameObject::GetTransform()
 
 void GameObject::OnCollisionEnter(ColliderComponent *collider)
 {
-    TraceLog(LOG_DEBUG, (m_name + " COL ENTER").c_str());
-    GetComponent<RenderComponent>()->SetColor(RED);
 }
 
 void GameObject::OnCollisionExit(ColliderComponent *collider)
 {
-    TraceLog(LOG_DEBUG, (m_name + " COL EXIT").c_str());
-    GetComponent<RenderComponent>()->SetColor(WHITE);
 }
 
 void GameObject::Start()

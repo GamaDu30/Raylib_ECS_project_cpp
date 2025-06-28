@@ -116,7 +116,7 @@ main()
 	shape->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
 
 	// game loop
-	while (!WindowShouldClose())
+	while (!shouldExit)
 	{
 		Update();
 		Render();
@@ -129,5 +129,3 @@ main()
 // TODO:
 // Opti collision by doing a AABB of each collider before doing a precise check
 // Find a way to code a getter/setter for property of TransformComponent
-// Opti Sprites by checking for null RendererComp only when one is destroyed
-// Fix Sprites renderer not being nullptr when destroyed

@@ -7,6 +7,7 @@ class SpriteRenderer : public RenderComponent
 
 public:
     SpriteRenderer(std::string fileName, Anchor anchor = Anchor::Center, raylib::Color color = WHITE, raylib::Vector2 offset = raylib::Vector2());
+    ~SpriteRenderer();
 
     virtual void Init(GameObject *owner);
     virtual void Update();

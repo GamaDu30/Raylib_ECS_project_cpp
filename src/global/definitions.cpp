@@ -117,3 +117,5 @@ bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
 
     return true;
 }
+
+bool shouldExit = false;

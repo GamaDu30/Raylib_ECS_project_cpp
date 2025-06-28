@@ -44,3 +44,5 @@ raylib::Vector2 GetAnchorOffset(Anchor anchor);
 bool ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2);
 bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2);
 bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c);
+
+extern bool shouldExit;

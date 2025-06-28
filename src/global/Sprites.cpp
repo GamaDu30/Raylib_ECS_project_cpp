@@ -1,6 +1,7 @@
 #include "Sprites.hpp"
 #include "components/Renderer/SpriteRenderer.hpp"
 #include <algorithm>
+#include "components/Renderer/RenderComponent.hpp"
 
 std::unordered_map<std::string, Sprite *> Sprites::m_sprites = {};
 
@@ -20,17 +21,20 @@ raylib::Texture2D *Sprites::GetSprite(SpriteRenderer *instance, std::string name
     return &m_sprites[name]->texture;
 }
 
-void Sprites::Update()
+void Sprites::OnRendererDeleted(RenderComponent *renderer)
 {
     std::vector<std::string> spritesToDelete = {};
 
     for (auto &[spriteName, sprite] : m_sprites)
     {
+        bool foundRenderer = false;
         for (int i = sprite->renderers.size() - 1; i >= 0; i--)
         {
-            if (sprite->renderers[i] == nullptr)
+            if (sprite->renderers[i] == renderer)
             {
                 sprite->renderers.erase(std::remove(sprite->renderers.begin(), sprite->renderers.end(), sprite->renderers[i]), sprite->renderers.end());
+                foundRenderer = true;
+                break;
             }
         }
 
@@ -39,9 +43,9 @@ void Sprites::Update()
             spritesToDelete.push_back(spriteName);
         }
 
-        if (spriteName == "pipe.png")
+        if (foundRenderer)
         {
-            TraceLog(LOG_DEBUG, "PIPE_INSTANCE_COUNT %d", sprite->renderers.size());
+            break;
         }
     }
 

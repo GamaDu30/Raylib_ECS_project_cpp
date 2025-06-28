@@ -10,6 +10,11 @@ SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor, raylib::
     Sprites::GetSprite(this, m_textureName);
 }
 
+SpriteRenderer::~SpriteRenderer()
+{
+    Sprites::OnRendererDeleted(this);
+}
+
 void SpriteRenderer::Init(GameObject *owner)
 {
     RenderComponent::Init(owner);
