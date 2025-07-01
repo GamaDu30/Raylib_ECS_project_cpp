@@ -11,53 +11,10 @@
 #include "global/Inputs.hpp"
 #include <charconv>
 #include "global/Sprites.hpp"
+#include "components/Renderer/UI/CanvasComponent.hpp"
 
-class Player : public GameObject
-{
-	bool isColliding = false;
-
-public:
-	Player(std::string name = "") : GameObject(name) {}
-
-	~Player() {}
-
-	void Start() override
-	{
-		GameObject::Start();
-
-		this->AddComponent<RectRenderer>(raylib::Vector2(100, 100));
-		this->AddComponent<RectCollider>(raylib::Vector2(100, 100));
-	}
-
-	void Update() override
-	{
-		GameObject::Update();
-
-		GetTransform()->GetPos().x = CameraComponent::GetMainCam()->GetMousePos().x;
-		GetTransform()->GetPos().y = CameraComponent::GetMainCam()->GetMousePos().y;
-		GetTransform()->GetRotation() += 0.5f * GetFrameTime();
-
-		if (isColliding)
-		{
-			GetTransform()->GetScale().x = 2 + cos(GetTime());
-			GetTransform()->GetScale().y = 2 + sin(GetTime() * 2);
-		}
-	}
-
-	void OnCollisionEnter(ColliderComponent *collider) override
-	{
-		GameObject::OnCollisionEnter(collider);
-
-		isColliding = true;
-	}
-
-	void OnCollisionExit(ColliderComponent *collider) override
-	{
-		GameObject::OnCollisionExit(collider);
-
-		isColliding = false;
-	}
-};
+#include "gameSample/Bird.hpp"
+#include "gameSample/PipeManager.hpp"
 
 void Init()
 {
@@ -83,7 +40,6 @@ void Update()
 	Inputs::Update();
 
 	Scene::GetScene()->Update();
-	Sprites::Update();
 }
 
 void Render()
@@ -110,10 +66,9 @@ main()
 	GameObject *cam = scene->CreateGameObject("Cam");
 	cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
 
-	GameObject *shape = scene->CreateGameObject("Shape");
-	shape->AddComponent<CircleCollider>(50.f);
-	shape->AddComponent<CircleRenderer>(50.f);
-	shape->GetTransform()->GetPos().x = -SCREEN_W * 0.25f;
+	Bird *bird = scene->CreateGameObject<Bird>("Player");
+	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+
 
 	// game loop
 	while (!shouldExit)
@@ -127,5 +82,14 @@ main()
 }
 
 // TODO:
-// Opti collision by doing a AABB of each collider before doing a precise check
+// Modify rendering by looping over every renderComponent
+// Write Find function for gameObjects
+// Separate debug render into its own class
+
+// UI:
+// Make RectTransformComponent
+// Make CanvasComponent
+// Make UI Components
+
 // Find a way to code a getter/setter for property of TransformComponent
+// Opti collision by doing a AABB of each collider before doing a precise check
