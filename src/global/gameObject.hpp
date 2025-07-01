@@ -25,7 +25,6 @@ public:
 
     virtual void Start();
     virtual void Update();
-    void Render();
 
     template <typename... Components>
     void AddComponents();
@@ -77,8 +76,8 @@ T *GameObject::AddComponent(Args &&...args)
         }
     }
 
-    newComponent->Init(this);
     m_components.push_back(newComponent);
+    newComponent->Init(this);
 
     return newComponent;
 }

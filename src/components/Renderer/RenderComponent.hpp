@@ -18,6 +18,8 @@ public:
     RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
     ~RenderComponent();
 
+    static void RenderAll();
+
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();

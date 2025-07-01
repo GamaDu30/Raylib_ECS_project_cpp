@@ -4,6 +4,7 @@
 #include <algorithm>
 #include "components/TransformComponent.hpp"
 #include "components/CameraComponent.hpp"
+#include "components/Renderer/RenderComponent.hpp"
 
 unsigned int Scene::m_curUID = 0;
 Scene *Scene::m_curScene = nullptr;
@@ -58,12 +59,6 @@ void Scene::Render()
         SetCam();
     }
 
-    std::sort(m_gameObjects.begin(), m_gameObjects.end(),
-              [](GameObject *a, GameObject *b)
-              {
-                  return a->GetTransform()->GetPos().z < b->GetTransform()->GetPos().z;
-              });
-
     if (m_camComp != nullptr)
     {
         m_camComp->PushMatrix();
@@ -74,11 +69,7 @@ void Scene::Render()
         rlPushMatrix();
     }
 
-    for (GameObject *curGo : m_gameObjects)
-    {
-        curGo->Render();
-    }
-
+    RenderComponent::RenderAll();
     rlPopMatrix();
 }
 

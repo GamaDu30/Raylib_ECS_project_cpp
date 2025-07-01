@@ -64,23 +64,3 @@ void GameObject::Update()
         component->Update();
     }
 }
-
-void GameObject::Render()
-{
-    m_transformComp->PushMatrix();
-
-    for (Component *curComponent : m_components)
-    {
-        RenderComponent *renderComponent = dynamic_cast<RenderComponent *>(curComponent);
-
-        if (renderComponent != nullptr)
-        {
-            renderComponent->Render();
-        }
-    }
-
-    DrawLineV(raylib::Vector2(), raylib::Vector2(0, -25), GREEN);
-    DrawLineV(raylib::Vector2(), raylib::Vector2(25, 0), RED);
-
-    rlPopMatrix();
-}

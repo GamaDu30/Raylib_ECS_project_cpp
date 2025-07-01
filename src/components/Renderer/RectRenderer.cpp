@@ -27,9 +27,6 @@ void RectRenderer::Render()
 
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
 
-    // offset *= -2;
-    // offset += raylib::Vector2(1, 1);
-
     rlTranslatef(m_offset.x - m_rect.GetSize().x * offset.x, m_offset.y - m_rect.GetSize().y * offset.y, 0);
 
     if (m_filled)

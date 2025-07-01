@@ -18,6 +18,20 @@ RenderComponent::~RenderComponent()
     m_renderers.erase(std::remove(m_renderers.begin(), m_renderers.end(), this), m_renderers.end());
 }
 
+void RenderComponent::RenderAll()
+{
+    std::sort(m_renderers.begin(), m_renderers.end(),
+              [](RenderComponent *a, RenderComponent *b)
+              {
+                  return a->m_owner->GetTransform()->GetPos().z < b->m_owner->GetTransform()->GetPos().z;
+              });
+
+    for (RenderComponent *renderComp : m_renderers)
+    {
+        renderComp->Render();
+    }
+}
+
 void RenderComponent::Init(GameObject *owner)
 {
     Component::Init(owner);
@@ -35,7 +49,12 @@ void RenderComponent::Destroy()
 
 void RenderComponent::Render()
 {
-    rlPushMatrix();
+    TransformComponent *transform = m_owner->GetTransform();
+
+    if (transform != nullptr)
+    {
+        transform->PushMatrix();
+    }
 }
 
 void RenderComponent::SetColor(raylib::Color color)
