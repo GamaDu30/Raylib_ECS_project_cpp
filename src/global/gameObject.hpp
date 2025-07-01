@@ -32,6 +32,8 @@ public:
     T *AddComponent(Args &&...args);
     template <typename T>
     T *GetComponent();
+    template <typename T>
+    void RemoveComponent();
 
     std::string GetName();
     TransformComponent *GetTransform();
@@ -94,4 +96,16 @@ T *GameObject::GetComponent()
     }
 
     return nullptr;
+}
+
+template <typename T>
+inline void GameObject::RemoveComponent()
+{
+    Component *comp = GetComponent<T>();
+    if (comp != nullptr)
+    {
+        m_components.erase(std::remove(m_components.begin(), m_components.end(), comp), m_components.end());
+        delete comp;
+        comp = nullptr;
+    }
 }
