@@ -82,14 +82,11 @@ main()
 }
 
 // TODO:
-// Modify rendering by looping over every renderComponent
-// Write Find function for gameObjects
 // Separate debug render into its own class
+// Find a way to code a clean getter/setter for property of TransformComponent
+// Opti collision by doing a AABB of each collider before doing a precise check
 
 // UI:
 // Make RectTransformComponent
 // Make CanvasComponent
 // Make UI Components
-
-// Find a way to code a getter/setter for property of TransformComponent
-// Opti collision by doing a AABB of each collider before doing a precise check

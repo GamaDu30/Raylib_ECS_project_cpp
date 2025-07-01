@@ -9,7 +9,6 @@ class ColliderComponent;
 class GameObject
 {
     static unsigned int m_curUID;
-    static GameObject *Find(std::string name);
 
     std::string m_name;
     std::vector<Component *> m_components = {};
