@@ -22,7 +22,9 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn":["UpdateMake"]
+            "dependsOn": [
+                "UpdateMake"
+            ]
         },
         {
             "label": "build release",
@@ -48,7 +50,9 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn":["UpdateMake"]
+            "dependsOn": [
+                "UpdateMake"
+            ]
         },
         {
             "label": "Clean",
@@ -74,7 +78,9 @@
             "problemMatcher": [
                 "$gcc"
             ],
-            "dependsOn":["UpdateMake"]
+            "dependsOn": [
+                "UpdateMake"
+            ]
         },
         {
             "label": "UpdateMake",
@@ -96,6 +102,30 @@
                 "command": "premake5.osx"
             },
             "group": "build"
+        },
+        {
+            "label": "Generate Component",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/src/tools/generate_component.py",
+                "${input:className}",
+                "${relativeFileDirname}"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ],
+    "inputs": [
+        {
+            "id": "className",
+            "type": "promptString",
+            "description": "Nom de la classe à générer"
         }
     ]
 }
