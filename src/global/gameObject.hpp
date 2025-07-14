@@ -1,9 +1,10 @@
 #pragma once
 
 #include "global/definitions.hpp"
-#include "components/component.hpp"
+#include "components/Component.hpp"
+#include "components/TransformComponent.hpp"
 
-class TransformComponent;
+class RectTransformComponent;
 class ColliderComponent;
 
 class GameObject
@@ -88,9 +89,9 @@ T *GameObject::GetComponent()
 {
     for (Component *comp : m_components)
     {
-        if (T *casted = dynamic_cast<T *>(comp))
+        if (T *castedComp = dynamic_cast<T *>(comp))
         {
-            return casted;
+            return castedComp;
         }
     }
 
