@@ -73,6 +73,6 @@ void RectCollider::DrawDebug()
 
     for (int i = 0; i < colInfo->points.size(); i++)
     {
-        colInfo->points[i].DrawLine(colInfo->points[(i + 1) % colInfo->points.size()], 10.f, raylib::Color(255, 0, 0, 95));
+        colInfo->points[i].DrawLine(colInfo->points[(i + 1) % colInfo->points.size()], 5.f, raylib::Color(255, 0, 0, 95));
     }
 }

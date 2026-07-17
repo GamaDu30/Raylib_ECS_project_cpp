@@ -16,7 +16,7 @@ void Bird::Start()
 
     SpriteRenderer *sprite = AddComponent<SpriteRenderer>("bird.png");
     GetTransform()->GetScale() = raylib::Vector2(0.25f, 0.25f);
-    AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.5f * GetTransform()->GetScale().x);
+    AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.5f);
 
     Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, [this]
                           { m_velocity = -m_jumpForce; });

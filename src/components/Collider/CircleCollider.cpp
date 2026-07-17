@@ -29,7 +29,7 @@ void CircleCollider::Destroy()
 
 CollisionInfo *CircleCollider::GetColInfo()
 {
-    return new CircleColInfo(GetPos(), m_radius);
+    return new CircleColInfo(GetPos(), m_radius * m_owner->GetTransform()->GetScale().x);
 }
 
 void CircleCollider::IsColliding(ColliderComponent *other)
@@ -51,5 +51,6 @@ void CircleCollider::IsColliding(RectCollider *other)
 
 void CircleCollider::DrawDebug()
 {
-    GetPos().DrawCircle(m_radius, raylib::Color(255, 0, 0, 95));
+    CircleColInfo *colInfo = static_cast<CircleColInfo *>(GetColInfo());
+    colInfo->pos.DrawCircle(colInfo->radius, raylib::Color(255, 0, 0, 95));
 }

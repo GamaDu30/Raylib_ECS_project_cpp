@@ -82,7 +82,7 @@ main()
 }
 
 // TODO:
-// Separate debug render into its own class
+// Separate debug render into its own class (ex: GameObject gizmo / visible collider)
 // Find a way to code a clean getter/setter for property of TransformComponent
 // Opti collision by doing a AABB of each collider before doing a precise check
 
