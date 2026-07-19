@@ -13,11 +13,13 @@ raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
         return nullptr;
     }
 
-    if (m_sprites.count(name))
+    if (m_sprites.find(name) != m_sprites.end())
     {
-        if (std::find(m_sprites[name]->renderers.begin(), m_sprites[name]->renderers.end(), instance) == m_sprites[name]->renderers.end())
+        std::vector<Component *> &renderers = m_sprites[name]->renderers;
+
+        if (std::find(renderers.begin(), renderers.end(), instance) == renderers.end())
         {
-            m_sprites[name]->renderers.push_back(instance);
+            renderers.push_back(instance);
         }
 
         return &m_sprites[name]->texture;
@@ -36,35 +38,26 @@ void Sprites::OnRendererDeleted(Component *renderer)
     }
 
     std::vector<std::string> spritesToDelete = {};
+    std::vector<Component *> renderers;
 
-    for (auto &[spriteName, sprite] : m_sprites)
+    for (auto it = m_sprites.begin(); it != m_sprites.end(); it++)
     {
-        bool foundRenderer = false;
-        for (int i = sprite->renderers.size() - 1; i >= 0; i--)
+        auto &curRenderers = it->second->renderers;
+        auto oldSize = it->second->renderers.size();
+
+        curRenderers.erase(std::remove(curRenderers.begin(), curRenderers.end(), renderer), curRenderers.end());
+
+        if (curRenderers.size() != oldSize)
         {
-            if (sprite->renderers[i] == renderer)
+            if (curRenderers.empty())
             {
-                sprite->renderers.erase(std::remove(sprite->renderers.begin(), sprite->renderers.end(), sprite->renderers[i]), sprite->renderers.end());
-                foundRenderer = true;
-                break;
+                m_sprites[it->first]->texture.Unload();
+                delete m_sprites[it->first];
+                m_sprites.erase(it);
             }
-        }
 
-        if (sprite->renderers.size() == 0)
-        {
-            spritesToDelete.push_back(spriteName);
-        }
-
-        if (foundRenderer)
-        {
             break;
         }
-    }
-
-    for (std::string spriteName : spritesToDelete)
-    {
-        delete m_sprites[spriteName];
-        m_sprites.erase(spriteName);
     }
 }
 
