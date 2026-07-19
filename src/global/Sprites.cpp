@@ -1,12 +1,18 @@
 #include "Sprites.hpp"
-#include "components/Renderer/SpriteRenderer.hpp"
 #include <algorithm>
 #include "components/Renderer/RenderComponent.hpp"
+#include "components/Renderer/UI/UIRenderComponent.hpp"
 
 std::unordered_map<std::string, Sprite *> Sprites::m_sprites = {};
 
-raylib::Texture2D *Sprites::GetSprite(SpriteRenderer *instance, std::string name)
+raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
 {
+    if (!IsRenderer(instance))
+    {
+        TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
+        return nullptr;
+    }
+
     if (m_sprites.count(name))
     {
         if (std::find(m_sprites[name]->renderers.begin(), m_sprites[name]->renderers.end(), instance) == m_sprites[name]->renderers.end())
@@ -21,8 +27,14 @@ raylib::Texture2D *Sprites::GetSprite(SpriteRenderer *instance, std::string name
     return &m_sprites[name]->texture;
 }
 
-void Sprites::OnRendererDeleted(RenderComponent *renderer)
+void Sprites::OnRendererDeleted(Component *renderer)
 {
+    if (!IsRenderer(renderer))
+    {
+        TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
+        return;
+    }
+
     std::vector<std::string> spritesToDelete = {};
 
     for (auto &[spriteName, sprite] : m_sprites)
@@ -51,15 +63,32 @@ void Sprites::OnRendererDeleted(RenderComponent *renderer)
 
     for (std::string spriteName : spritesToDelete)
     {
+        delete m_sprites[spriteName];
         m_sprites.erase(spriteName);
     }
 }
 
-void Sprites::LoadSprite(SpriteRenderer *instance, std::string name)
+void Sprites::LoadSprite(Component *instance, std::string name)
 {
+    if (!IsRenderer(instance))
+    {
+        TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
+        return;
+    }
+
     Sprite *newSprite = new Sprite();
     newSprite->texture = LoadTexture(name.c_str());
     newSprite->renderers = {instance};
 
     m_sprites[name] = newSprite;
+}
+
+bool Sprites::IsRenderer(Component *instance)
+{
+    if (dynamic_cast<RenderComponent *>(instance) != nullptr || (dynamic_cast<UIRenderComponent *>(instance) != nullptr))
+    {
+        return true;
+    }
+
+    return false;
 }

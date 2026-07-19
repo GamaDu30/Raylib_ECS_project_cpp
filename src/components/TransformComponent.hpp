@@ -24,9 +24,9 @@ public:
     TransformComponent();
     ~TransformComponent();
 
-    virtual void Init(GameObject *owner);
-    virtual void Update();
-    virtual void Destroy();
+    virtual void Init(GameObject *owner) override;
+    virtual void Update() override;
+    virtual void Destroy() override;
 
     raylib::Vector3 &GetPos();
     raylib::Vector2 &GetScale();
@@ -43,7 +43,12 @@ public:
     TransformComponent *GetChild(int id);
 
     void SetParent(TransformComponent *newParent);
+    TransformComponent *GetParent();
 
-    raylib::Matrix GetMatrix();
+    const raylib::Matrix GetMatrix();
     void PushMatrix();
+
+    void CheckForCanvas();
+
+    void SetDataFromTransform(TransformComponent *other);
 };

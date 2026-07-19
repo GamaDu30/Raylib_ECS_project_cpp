@@ -3,8 +3,9 @@
 #include "global/definitions.hpp"
 #include "components/Component.hpp"
 #include "components/TransformComponent.hpp"
+#include "components/RectTransformComponent.hpp"
+#include "components/Renderer/UI/CanvasComponent.hpp"
 
-class RectTransformComponent;
 class ColliderComponent;
 
 class GameObject
@@ -14,11 +15,13 @@ class GameObject
     std::string m_name;
     std::vector<Component *> m_components = {};
 
-    TransformComponent *m_transformComp;
+    TransformComponent *m_transformComp = nullptr;
 
     bool m_isInit = false;
 
-protected:
+    template <typename T, typename... Args>
+    T *AddComponentInternal(Args &&...args);
+
 public:
     GameObject(std::string name = "");
     virtual ~GameObject();
@@ -40,6 +43,9 @@ public:
 
     virtual void OnCollisionEnter(ColliderComponent *collider);
     virtual void OnCollisionExit(ColliderComponent *collider);
+
+    friend class TransformComponent;
+    friend class CanvasComponent;
 };
 
 template <typename... Components>
@@ -52,17 +58,30 @@ template <typename T, typename... Args>
 T *GameObject::AddComponent(Args &&...args)
 {
     static_assert(std::is_base_of_v<Component, T>, "(GameObject::AddComponent) T must inherit from Component");
+    static_assert(!std::is_base_of_v<TransformComponent, T>, "(GameObject::AddComponent) You can't manually add a TransformComponent to a Gameobject.");
 
+    return AddComponentInternal<T>(std::forward<Args>(args)...);
+}
+
+template <typename T, typename... Args>
+T *GameObject::AddComponentInternal(Args &&...args)
+{
     T *newComponent = new T(std::forward<Args>(args)...);
 
-    if constexpr (std::is_same_v<T, TransformComponent>)
+    // TransformComponent and RectTransformComponent
+    if constexpr (std::is_same_v<RectTransformComponent, T>)
     {
-        if (m_isInit)
+        if (m_transformComp)
         {
-            TraceLog(LOG_ERROR, "You can't add a TransformComponent to a GameObject");
-            return nullptr;
+            TraceLog(LOG_INFO, "%s", typeid(*newComponent).name());
+            newComponent->SetDataFromTransform(m_transformComp);
+            RemoveComponent<TransformComponent>();
         }
 
+        m_transformComp = newComponent;
+    }
+    else if constexpr (std::is_same_v<T, TransformComponent>)
+    {
         m_transformComp = newComponent;
     }
 

@@ -2,6 +2,7 @@
 
 #include "raylib.h"
 #include "raylib-cpp.hpp"
+#include "algorithm"
 
 #define SCREEN_W 1280
 #define SCREEN_H 720
@@ -18,6 +19,12 @@ enum class Anchor
     BottomLeft,
     BottomCenter,
     BottomRight
+};
+
+enum class ViewMode
+{
+    ScreenSpace,
+    WorldSpace
 };
 
 struct CollisionInfo

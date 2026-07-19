@@ -21,7 +21,7 @@ void TransformComponent::Update()
 {
     Component::Update();
 
-    // TODO: Change with getter/setter
+    // TODO: If there are performance issues -> change with getter/setter
     if (m_lastPos != m_pos || m_lastScale != m_scale || m_lastRotation != m_rotation)
     {
         m_lastPos = m_pos;
@@ -49,6 +49,41 @@ void TransformComponent::UpdateLocalMatrix()
     m_matrix = MatrixMultiply(MatrixMultiply(
                                   MatrixScale(m_scale.x, m_scale.y, 1), MatrixRotateZ(m_rotation)),
                               MatrixTranslate(m_pos.x, m_pos.y, 0));
+}
+
+void TransformComponent::CheckForCanvas()
+{
+    TransformComponent *curParent = this;
+
+    while (curParent)
+    {
+        if (curParent->m_owner->GetComponent<CanvasComponent>() || curParent->m_owner->GetComponent<RectTransformComponent>())
+        {
+            m_owner->AddComponentInternal<RectTransformComponent>();
+            return;
+        }
+
+        curParent = this->m_parent;
+    }
+}
+
+void TransformComponent::SetDataFromTransform(TransformComponent *other)
+{
+    // Childrens
+    m_children = other->m_children;
+
+    for (TransformComponent *child : m_children)
+    {
+        child->SetParent(this);
+    }
+
+    // Parent
+    if (other->m_parent)
+    {
+        m_parent = other->m_parent;
+        m_parent->RemoveChild(other);
+        m_parent->AddChild(this);
+    }
 }
 
 raylib::Vector3 &TransformComponent::GetPos()
@@ -153,9 +188,15 @@ void TransformComponent::SetParent(TransformComponent *newParent)
     }
 
     m_parent = newParent;
+    CheckForCanvas();
 }
 
-raylib::Matrix TransformComponent::GetMatrix()
+TransformComponent *TransformComponent::GetParent()
+{
+    return m_parent;
+}
+
+const raylib::Matrix TransformComponent::GetMatrix()
 {
     CheckForDirty();
 

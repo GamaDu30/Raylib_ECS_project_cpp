@@ -5,6 +5,7 @@
 #include "components/TransformComponent.hpp"
 #include "components/CameraComponent.hpp"
 #include "components/Renderer/RenderComponent.hpp"
+#include "components/Renderer/UI/CanvasComponent.hpp"
 
 unsigned int Scene::m_curUID = 0;
 Scene *Scene::m_curScene = nullptr;
@@ -71,6 +72,17 @@ void Scene::Render()
 
     RenderComponent::RenderAll();
     rlPopMatrix();
+
+    // UI
+    for (GameObject *go : m_gameObjects)
+    {
+        CanvasComponent *canvas = go->GetComponent<CanvasComponent>();
+
+        if (canvas)
+        {
+            canvas->Render();
+        }
+    }
 }
 
 void Scene::AddGameObject(GameObject *newGameObject)
@@ -110,7 +122,7 @@ void Scene::SetCam()
         }
     }
 
-    TraceLog(LOG_ERROR, "No Cam found for the scene");
+    TraceLog(LOG_WARNING, "No Cam found for the scene");
 }
 
 CameraComponent *Scene::GetMainCam()

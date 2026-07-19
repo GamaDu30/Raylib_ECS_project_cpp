@@ -18,7 +18,7 @@ GameObject::GameObject(std::string name)
 
     m_curUID++;
 
-    AddComponent<TransformComponent>();
+    AddComponentInternal<TransformComponent>();
 
     m_isInit = true;
 }

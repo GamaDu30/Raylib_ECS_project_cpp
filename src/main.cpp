@@ -52,23 +52,36 @@ void Render()
 	if (DRAW_DEBUG)
 	{
 		ColliderComponent::DrawAllDebug();
+
+		Scene::GetScene()->FindGameObject("UI")->GetComponent<RectTransformComponent>()->DebugRender();
 	}
 
 	EndDrawing();
 }
 
-main()
+int main()
 {
 	Init();
 
 	Scene *scene = new Scene("Game");
 
-	GameObject *cam = scene->CreateGameObject("Cam");
-	cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
+	// GameObject *cam = scene->CreateGameObject("Cam");
+	// cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
 
-	Bird *bird = scene->CreateGameObject<Bird>("Player");
-	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+	// Bird *bird = scene->CreateGameObject<Bird>("Player");
+	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
+	GameObject *ui = scene->CreateGameObject("UI");
+	ui->AddComponent<CanvasComponent>();
+
+	GameObject *rect = scene->CreateGameObject("Rect");
+	rect->GetTransform()->SetParent(ui->GetTransform());
+	rect->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.75f, 0.25f);
+	rect->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.25f, 0.75f);
+
+	// Trace to check if the rect is a child of the canvas
+	TraceLog(LOG_INFO, "Rect parent: %s", typeid(dynamic_cast<RectTransformComponent *>(rect->GetTransform())).name());
+	// TraceLog(LOG_INFO, "Rect parent: %s", rect->GetTransform()->GetParent()->GetOwner()->GetName().c_str());
 
 	// game loop
 	while (!shouldExit)
@@ -83,7 +96,6 @@ main()
 
 // TODO:
 // Separate debug render into its own class (ex: GameObject gizmo / visible collider)
-// Find a way to code a clean getter/setter for property of TransformComponent
 // Opti collision by doing a AABB of each collider before doing a precise check
 
 // UI:
