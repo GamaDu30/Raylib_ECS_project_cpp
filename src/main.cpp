@@ -12,6 +12,7 @@
 #include <charconv>
 #include "global/Sprites.hpp"
 #include "components/Renderer/UI/CanvasComponent.hpp"
+#include "components/Renderer/UI/ImageRenderer.hpp"
 
 #include "gameSample/Bird.hpp"
 #include "gameSample/PipeManager.hpp"
@@ -19,7 +20,7 @@
 void Init()
 {
 	// Tell the window to use vsync and work on high DPI displays
-	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI);
+	SetConfigFlags(FLAG_VSYNC_HINT | FLAG_WINDOW_HIGHDPI | FLAG_WINDOW_RESIZABLE);
 	SetTraceLogLevel(LOG_DEBUG);
 	// Create the window and OpenGL context
 	InitWindow(1280, 720, "ECS");
@@ -65,8 +66,8 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	// GameObject *cam = scene->CreateGameObject("Cam");
-	// cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
+	//  GameObject *cam = scene->CreateGameObject("Cam");
+	//  cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
 
 	// Bird *bird = scene->CreateGameObject<Bird>("Player");
 	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
@@ -74,20 +75,26 @@ int main()
 	GameObject *ui = scene->CreateGameObject("UI");
 	ui->AddComponent<CanvasComponent>();
 
-	GameObject *rect = scene->CreateGameObject("Rect");
-	rect->GetTransform()->SetParent(ui->GetTransform());
-	rect->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.75f, 0.25f);
-	rect->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.25f, 0.75f);
+	GameObject *rect1 = scene->CreateGameObject("Rect");
+	rect1->GetTransform()->SetParent(ui->GetTransform());
+	rect1->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.f, 0.f);
+	rect1->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.f, 0.5f);
+	rect1->GetComponent<RectTransformComponent>()->SetFixed(true, false, raylib::Vector2(200, 100), raylib::Vector2(0.5f, 0.25f));
+	rect1->AddComponent<ImageRenderer>("bird.png");
 
-	// Trace to check if the rect is a child of the canvas
-	TraceLog(LOG_INFO, "Rect parent: %s", typeid(dynamic_cast<RectTransformComponent *>(rect->GetTransform())).name());
-	// TraceLog(LOG_INFO, "Rect parent: %s", rect->GetTransform()->GetParent()->GetOwner()->GetName().c_str());
+	GameObject *rect2 = scene->CreateGameObject("Rect");
+	rect2->GetTransform()->SetParent(ui->GetTransform());
+	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.5f);
+	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(1.0f, 1.0f);
+	rect2->AddComponent<ImageRenderer>("bird.png");
 
 	// game loop
 	while (!shouldExit)
 	{
 		Update();
 		Render();
+
+		SetWindowSize(SCREEN_W * (sinf(GetTime()) * 0.25f + 1.f), SCREEN_H * (sinf(GetTime() * 0.75f) * 0.25f + 1.f));
 	}
 
 	CloseWindow();

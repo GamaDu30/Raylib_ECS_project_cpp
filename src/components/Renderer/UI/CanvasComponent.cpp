@@ -41,18 +41,13 @@ void CanvasComponent::Render()
             gameObjectsToRender.push_back(child->GetOwner());
         }
 
-        if (m_owner->GetComponent<CanvasComponent>())
+        if (curGameobject->GetComponent<CanvasComponent>())
         {
             gameObjectsToRender.erase(std::remove(gameObjectsToRender.begin(), gameObjectsToRender.end(), curGameobject), gameObjectsToRender.end());
             continue;
         }
 
-        // Render curGameobject
-        // curGameobject->GetComponent<UIRenderComponent>()->Render(this);
-
-        // DEBUG
-        RectTransformComponent *parentTransform = dynamic_cast<RectTransformComponent *>(curGameobject->GetTransform()->GetParent());
-        curGameobject->GetComponent<RectTransformComponent>()->DebugRender();
+        curGameobject->GetComponent<UIRenderComponent>()->Render();
 
         // Remove curGameobject from gameObjectsToRender
         gameObjectsToRender.erase(std::remove(gameObjectsToRender.begin(), gameObjectsToRender.end(), curGameobject), gameObjectsToRender.end());
@@ -66,7 +61,7 @@ ViewMode CanvasComponent::GetViewMode()
 
 raylib::Rectangle CanvasComponent::GetBorder()
 {
-    raylib::Rectangle border = raylib::Rectangle(0, 0, SCREEN_W, SCREEN_H);
+    raylib::Rectangle border = raylib::Rectangle(0, 0, GetScreenWidth(), GetScreenHeight());
 
     if (m_viewMode == ViewMode::WorldSpace)
     {

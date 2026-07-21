@@ -2,6 +2,7 @@
 #include "components/Component.hpp"
 #include "components/Renderer/UI/CanvasComponent.hpp"
 #include "global/gameObject.hpp"
+#include "RectTransformComponent.hpp"
 
 RectTransformComponent::RectTransformComponent()
 {
@@ -50,6 +51,14 @@ raylib::Vector2 &RectTransformComponent::GetAnchorMax()
     return m_anchorMax;
 }
 
+void RectTransformComponent::SetFixed(bool isFixedX, bool isFixedY, raylib::Vector2 sizePixels, raylib::Vector2 anchorPoint)
+{
+    m_isFixedX = isFixedX;
+    m_isFixedY = isFixedY;
+    m_size = sizePixels;
+    m_anchorPoint = anchorPoint;
+}
+
 raylib::Rectangle RectTransformComponent::GetWorldRectangle()
 {
     raylib::Rectangle border;
@@ -64,15 +73,32 @@ raylib::Rectangle RectTransformComponent::GetWorldRectangle()
         border = dynamic_cast<RectTransformComponent *>(GetParent())->GetWorldRectangle();
     }
 
-    raylib::Vector2 posMin;
-    posMin.x = border.GetX() + border.GetWidth() * m_anchorMin.x;
-    posMin.y = border.GetY() + border.GetHeight() * m_anchorMin.y;
+    raylib::Rectangle finalRect = raylib::Rectangle();
 
-    raylib::Vector2 posMax;
-    posMax.x = border.GetX() + border.GetWidth() * m_anchorMax.x;
-    posMax.y = border.GetY() + border.GetHeight() * m_anchorMax.y;
+    if (m_isFixedX)
+    {
+        finalRect.SetX(border.GetX() + border.GetWidth() * m_anchorPoint.x - m_size.x * 0.5f);
+        finalRect.SetWidth(m_size.x);
+    }
+    else
+    {
+        finalRect.SetX(border.GetX() + border.GetWidth() * m_anchorMin.x);
+        finalRect.SetWidth(border.GetWidth() * (m_anchorMax.x - m_anchorMin.x));
+    }
 
-    return raylib::Rectangle(posMin, raylib::Vector2(posMax.x - posMin.x, posMax.y - posMin.y));
+    // Y axis
+    if (m_isFixedY)
+    {
+        finalRect.SetY(border.GetY() + border.GetHeight() * m_anchorPoint.y - m_size.y * 0.5f);
+        finalRect.SetHeight(m_size.y);
+    }
+    else
+    {
+        finalRect.SetY(border.GetY() + border.GetHeight() * m_anchorMin.y);
+        finalRect.SetHeight(border.GetHeight() * (m_anchorMax.y - m_anchorMin.y));
+    }
+
+    return finalRect;
 }
 
 void RectTransformComponent::DebugRender()
