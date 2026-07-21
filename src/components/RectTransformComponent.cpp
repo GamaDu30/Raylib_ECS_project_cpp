@@ -51,12 +51,14 @@ raylib::Vector2 &RectTransformComponent::GetAnchorMax()
     return m_anchorMax;
 }
 
-void RectTransformComponent::SetFixed(bool isFixedX, bool isFixedY, raylib::Vector2 sizePixels, raylib::Vector2 anchorPoint)
+void RectTransformComponent::SetSize(raylib::Vector2 size)
 {
-    m_isFixedX = isFixedX;
-    m_isFixedY = isFixedY;
-    m_size = sizePixels;
-    m_anchorPoint = anchorPoint;
+    m_size = size;
+}
+
+void RectTransformComponent::SetPivot(raylib::Vector2 pivot)
+{
+    m_pivot = pivot;
 }
 
 raylib::Rectangle RectTransformComponent::GetWorldRectangle()
@@ -75,9 +77,9 @@ raylib::Rectangle RectTransformComponent::GetWorldRectangle()
 
     raylib::Rectangle finalRect = raylib::Rectangle();
 
-    if (m_isFixedX)
+    if (m_anchorMin.GetX() == m_anchorMax.GetX())
     {
-        finalRect.SetX(border.GetX() + border.GetWidth() * m_anchorPoint.x - m_size.x * 0.5f);
+        finalRect.SetX(border.GetX() + border.GetWidth() * m_anchorMin.x - m_size.x * 0.5f);
         finalRect.SetWidth(m_size.x);
     }
     else
@@ -86,10 +88,10 @@ raylib::Rectangle RectTransformComponent::GetWorldRectangle()
         finalRect.SetWidth(border.GetWidth() * (m_anchorMax.x - m_anchorMin.x));
     }
 
-    // Y axis
-    if (m_isFixedY)
+    // Same for Y axis
+    if (m_anchorMin.GetY() == m_anchorMax.GetY())
     {
-        finalRect.SetY(border.GetY() + border.GetHeight() * m_anchorPoint.y - m_size.y * 0.5f);
+        finalRect.SetY(border.GetY() + border.GetHeight() * m_anchorMin.y - m_size.y * 0.5f);
         finalRect.SetHeight(m_size.y);
     }
     else

@@ -77,9 +77,9 @@ int main()
 
 	GameObject *rect1 = scene->CreateGameObject("Rect");
 	rect1->GetTransform()->SetParent(ui->GetTransform());
-	rect1->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.f, 0.f);
-	rect1->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.f, 0.5f);
-	rect1->GetComponent<RectTransformComponent>()->SetFixed(true, false, raylib::Vector2(200, 100), raylib::Vector2(0.5f, 0.25f));
+	rect1->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.f);
+	rect1->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.5f, 0.5f);
+	rect1->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(100, 100));
 	rect1->AddComponent<ImageRenderer>("bird.png");
 
 	GameObject *rect2 = scene->CreateGameObject("Rect");
@@ -87,6 +87,13 @@ int main()
 	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.5f);
 	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(1.0f, 1.0f);
 	rect2->AddComponent<ImageRenderer>("bird.png");
+
+	GameObject *rect3 = scene->CreateGameObject("Rect");
+	rect3->GetTransform()->SetParent(rect1->GetTransform());
+	rect3->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.5f);
+	rect3->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.5f);
+	rect3->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(100, 100));
+	rect3->AddComponent<ImageRenderer>("bird.png");
 
 	// game loop
 	while (!shouldExit)
