@@ -47,6 +47,7 @@ void Render()
 {
 	// Draw
 	BeginDrawing();
+	ClearBackground(BLACK);
 
 	Scene::GetScene()->Render();
 
@@ -87,6 +88,10 @@ int main()
 	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.5f);
 	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(1.0f, 1.0f);
 	rect2->AddComponent<ImageRenderer>("bird.png");
+	rect2->GetComponent<ImageRenderer>()->SetImageType(ImageType::Filled);
+	rect2->GetComponent<ImageRenderer>()->SetFillMethod(FillMethod::Vertical);
+	rect2->GetComponent<ImageRenderer>()->SetFillAmount(0.25f);
+	rect2->GetComponent<ImageRenderer>()->SetColor(raylib::Color(127, 255, 255, 255));
 
 	GameObject *rect3 = scene->CreateGameObject("Rect");
 	rect3->GetTransform()->SetParent(rect1->GetTransform());
@@ -98,10 +103,11 @@ int main()
 	// game loop
 	while (!shouldExit)
 	{
+		rect2->GetComponent<ImageRenderer>()->SetFillAmount(sinf(GetTime() * 0.75f) * 0.25f + 0.5f);
 		Update();
 		Render();
 
-		SetWindowSize(SCREEN_W * (sinf(GetTime()) * 0.25f + 1.f), SCREEN_H * (sinf(GetTime() * 0.75f) * 0.25f + 1.f));
+		SetWindowSize(SCREEN_W * (sinf(GetTime()) * 0.2f + 1.f), SCREEN_H * (sinf(GetTime() * 0.5f) * 0.25f + 1.f));
 	}
 
 	CloseWindow();

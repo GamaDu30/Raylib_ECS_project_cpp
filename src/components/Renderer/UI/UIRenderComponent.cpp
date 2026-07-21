@@ -1,6 +1,7 @@
 #include "components/Renderer/UI/UIRenderComponent.hpp"
 #include "components/RectTransformComponent.hpp"
 #include "global/gameObject.hpp"
+#include "UIRenderComponent.hpp"
 
 UIRenderComponent::UIRenderComponent()
 {
@@ -27,4 +28,9 @@ void UIRenderComponent::Destroy()
 
 void UIRenderComponent::Render()
 {
+}
+
+void UIRenderComponent::SetColor(raylib::Color color)
+{
+    m_color = color;
 }

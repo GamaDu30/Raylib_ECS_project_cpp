@@ -10,6 +10,8 @@ class UIRenderComponent : public Component
 protected:
     RectTransformComponent *m_rectTransformComp = nullptr;
 
+    raylib::Color m_color = raylib::Color(255, 255, 255, 255);
+
 public:
     UIRenderComponent();
     ~UIRenderComponent();
@@ -19,4 +21,6 @@ public:
     virtual void Destroy();
 
     virtual void Render();
+
+    virtual void SetColor(raylib::Color color);
 };
