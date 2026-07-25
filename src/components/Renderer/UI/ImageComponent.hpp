@@ -1,6 +1,7 @@
 #pragma once
 
 #include "components/Renderer/UI/UIRenderComponent.hpp"
+#include <optional>
 
 enum class ImageType
 {
@@ -15,19 +16,28 @@ enum class FillMethod
     Radial360
 };
 
+struct ImageFillData
+{
+    std::optional<FillMethod> method;
+    std::optional<float> fillAmount;
+    std::optional<bool> inverseFillDirection;
+};
+
 class GameObject;
 
-class ImageRenderer : public UIRenderComponent
+class ImageComponent : public UIRenderComponent
 {
     std::string m_textureName;
 
     ImageType m_imageType = ImageType::Simple;
     FillMethod m_fillMethod = FillMethod::Horizontal;
     float m_fillAmount = 1.0f;
+    bool m_inverseFillDirection = false;
+    raylib::Vector2 m_size = raylib::Vector2(100, 100);
 
 public:
-    ImageRenderer(std::string textureName = "");
-    ~ImageRenderer();
+    ImageComponent(std::string textureName = "");
+    ~ImageComponent();
 
     virtual void Init(GameObject *owner);
     virtual void Update();
@@ -36,6 +46,9 @@ public:
     void SetImageType(ImageType type);
     void SetFillMethod(FillMethod method);
     void SetFillAmount(float amount);
+    void SetInverseFillDirection(bool inverse);
+
+    void SetImageFillData(const ImageFillData &data);
 
     void Render() override;
 };

@@ -12,7 +12,7 @@
 #include <charconv>
 #include "global/Sprites.hpp"
 #include "components/Renderer/UI/CanvasComponent.hpp"
-#include "components/Renderer/UI/ImageRenderer.hpp"
+#include "components/Renderer/UI/ImageComponent.hpp"
 
 #include "gameSample/Bird.hpp"
 #include "gameSample/PipeManager.hpp"
@@ -55,6 +55,7 @@ void Render()
 	{
 		ColliderComponent::DrawAllDebug();
 
+		// TODO: Change method to get the CanvasComp
 		Scene::GetScene()->FindGameObject("UI")->GetComponent<RectTransformComponent>()->DebugRender();
 	}
 
@@ -67,43 +68,26 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	//  GameObject *cam = scene->CreateGameObject("Cam");
-	//  cam->AddComponent<CameraComponent>(raylib::Color(0, 93, 191, 255));
-
 	// Bird *bird = scene->CreateGameObject<Bird>("Player");
 	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
 	GameObject *ui = scene->CreateGameObject("UI");
 	ui->AddComponent<CanvasComponent>();
 
-	GameObject *rect1 = scene->CreateGameObject("Rect");
-	rect1->GetTransform()->SetParent(ui->GetTransform());
-	rect1->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.f);
-	rect1->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.5f, 0.5f);
-	rect1->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(100, 100));
-	rect1->AddComponent<ImageRenderer>("bird.png");
-
 	GameObject *rect2 = scene->CreateGameObject("Rect");
 	rect2->GetTransform()->SetParent(ui->GetTransform());
-	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.5f, 0.5f);
-	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(1.0f, 1.0f);
-	rect2->AddComponent<ImageRenderer>("bird.png");
-	rect2->GetComponent<ImageRenderer>()->SetImageType(ImageType::Filled);
-	rect2->GetComponent<ImageRenderer>()->SetFillMethod(FillMethod::Vertical);
-	rect2->GetComponent<ImageRenderer>()->SetFillAmount(0.25f);
-	rect2->GetComponent<ImageRenderer>()->SetColor(raylib::Color(127, 255, 255, 255));
-
-	GameObject *rect3 = scene->CreateGameObject("Rect");
-	rect3->GetTransform()->SetParent(rect1->GetTransform());
-	rect3->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.5f);
-	rect3->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.5f);
-	rect3->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(100, 100));
-	rect3->AddComponent<ImageRenderer>("bird.png");
+	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.5f);
+	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.5f);
+	rect2->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(1000.f, 200.f));
+	ImageComponent *imgRenderer = rect2->AddComponent<ImageComponent>("testSprite.png");
+	imgRenderer->SetImageType(ImageType::Filled);
+	imgRenderer->SetImageFillData({.method = FillMethod::Horizontal, .inverseFillDirection = true});
+	imgRenderer->SetColor(raylib::Color(127, 255, 255, 255));
 
 	// game loop
 	while (!shouldExit)
 	{
-		rect2->GetComponent<ImageRenderer>()->SetFillAmount(sinf(GetTime() * 0.75f) * 0.25f + 0.5f);
+		rect2->GetComponent<ImageComponent>()->SetFillAmount(sinf(GetTime() * 0.75f) * 0.5f + 0.5f);
 		Update();
 		Render();
 
@@ -117,8 +101,3 @@ int main()
 // TODO:
 // Separate debug render into its own class (ex: GameObject gizmo / visible collider)
 // Opti collision by doing a AABB of each collider before doing a precise check
-
-// UI:
-// Make RectTransformComponent
-// Make CanvasComponent
-// Make UI Components

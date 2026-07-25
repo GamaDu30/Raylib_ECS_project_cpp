@@ -7,7 +7,7 @@ std::unordered_map<std::string, Sprite *> Sprites::m_sprites = {};
 
 raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
 {
-    if (!IsRenderer(instance))
+    if (!IsRenderer(instance) && !DEBUG_ACCESS)
     {
         TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
         return nullptr;
@@ -31,7 +31,7 @@ raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
 
 void Sprites::OnRendererDeleted(Component *renderer)
 {
-    if (!IsRenderer(renderer))
+    if (!IsRenderer(renderer) && !DEBUG_ACCESS)
     {
         TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
         return;
@@ -63,7 +63,7 @@ void Sprites::OnRendererDeleted(Component *renderer)
 
 void Sprites::LoadSprite(Component *instance, std::string name)
 {
-    if (!IsRenderer(instance))
+    if (!IsRenderer(instance) && !DEBUG_ACCESS)
     {
         TraceLog(LOG_WARNING, "Sprites: The component is not a renderer");
         return;

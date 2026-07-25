@@ -31,6 +31,13 @@ Scene::Scene(std::string name)
 
 Scene::~Scene()
 {
+    for (GameObject *curGo : m_gameObjects)
+    {
+        delete curGo;
+    }
+
+    m_gameObjects.clear();
+
     if (m_curScene == this)
     {
         m_curScene = nullptr;
