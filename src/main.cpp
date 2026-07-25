@@ -56,7 +56,7 @@ void Render()
 		ColliderComponent::DrawAllDebug();
 
 		// TODO: Change method to get the CanvasComp
-		Scene::GetScene()->FindGameObject("UI")->GetComponent<RectTransformComponent>()->DebugRender();
+		// Scene::GetScene()->FindGameObject("UI")->GetComponent<RectTransformComponent>()->DebugRender();
 	}
 
 	EndDrawing();
@@ -68,30 +68,28 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	// Bird *bird = scene->CreateGameObject<Bird>("Player");
-	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+	Bird *bird = scene->CreateGameObject<Bird>("Player");
+	bird->AddComponent<CameraComponent>();
+	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
-	GameObject *ui = scene->CreateGameObject("UI");
-	ui->AddComponent<CanvasComponent>();
+	// GameObject *ui = scene->CreateGameObject("UI");
+	// ui->AddComponent<CanvasComponent>();
 
-	GameObject *rect2 = scene->CreateGameObject("Rect");
-	rect2->GetTransform()->SetParent(ui->GetTransform());
-	rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.5f);
-	rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.5f);
-	rect2->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(1000.f, 200.f));
-	ImageComponent *imgRenderer = rect2->AddComponent<ImageComponent>("testSprite.png");
-	imgRenderer->SetImageType(ImageType::Filled);
-	imgRenderer->SetImageFillData({.method = FillMethod::Horizontal, .inverseFillDirection = true});
-	imgRenderer->SetColor(raylib::Color(127, 255, 255, 255));
+	// GameObject *rect2 = scene->CreateGameObject("Rect");
+	// rect2->GetTransform()->SetParent(ui->GetTransform());
+	// rect2->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.5f);
+	// rect2->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.5f);
+	// rect2->GetComponent<RectTransformComponent>()->SetSize(raylib::Vector2(1000.f, 200.f));
+	// ImageComponent *imgRenderer = rect2->AddComponent<ImageComponent>("testSprite.png");
+	// imgRenderer->SetImageType(ImageType::Filled);
+	// imgRenderer->SetImageFillData({.method = FillMethod::Horizontal, .inverseFillDirection = true});
+	// imgRenderer->SetColor(raylib::Color(127, 255, 255, 255));
 
 	// game loop
 	while (!shouldExit)
 	{
-		rect2->GetComponent<ImageComponent>()->SetFillAmount(sinf(GetTime() * 0.75f) * 0.5f + 0.5f);
 		Update();
 		Render();
-
-		SetWindowSize(SCREEN_W * (sinf(GetTime()) * 0.2f + 1.f), SCREEN_H * (sinf(GetTime() * 0.5f) * 0.25f + 1.f));
 	}
 
 	CloseWindow();

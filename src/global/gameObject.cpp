@@ -31,9 +31,6 @@ GameObject::~GameObject()
     }
 
     m_components.clear();
-
-    delete m_transformComp;
-    m_transformComp = nullptr;
 }
 
 std::string GameObject::GetName()

@@ -4,6 +4,15 @@
 #include "global/Inputs.hpp"
 #include "components/Collider/CircleCollider.hpp"
 
+Bird::~Bird()
+{
+    if (m_jumpInputId != 0)
+    {
+        Inputs::UnregisterInput(KEY_SPACE, KeyState::PRESSED, m_jumpInputId);
+        m_jumpInputId = 0;
+    }
+}
+
 void Bird::Start()
 {
     GameObject::Start();
@@ -18,8 +27,8 @@ void Bird::Start()
     GetTransform()->GetScale() = raylib::Vector2(0.25f, 0.25f);
     AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.5f);
 
-    Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, [this]
-                          { m_velocity = -m_jumpForce; });
+    m_jumpInputId = Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, [this]
+                                          { m_velocity = -m_jumpForce; });
 }
 
 void Bird::Update()

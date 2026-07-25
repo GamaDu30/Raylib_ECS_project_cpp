@@ -1,6 +1,7 @@
 #include "Inputs.hpp"
 
-std::unordered_map<KeyboardKey, std::array<std::vector<std::function<void()>>, 2>> Inputs::inputMap = {};
+std::unordered_map<KeyboardKey, std::array<std::vector<Inputs::InputCallback>, 2>> Inputs::inputMap = {};
+std::uint64_t Inputs::nextCallbackId = 1;
 
 KeyboardKey Inputs::inputKeys[349] = {
     KEY_NULL,
@@ -31,7 +32,7 @@ void Inputs::Init()
 {
     for (KeyboardKey curKey : inputKeys)
     {
-        std::array<std::vector<std::function<void()>>, 2> inputVector;
+        std::array<std::vector<InputCallback>, 2> inputVector;
         inputVector[KeyState::PRESSED] = {};
         inputVector[KeyState::RELEASED] = {};
 
@@ -39,14 +40,26 @@ void Inputs::Init()
     }
 }
 
-void Inputs::RegisterInput(KeyboardKey key, KeyState keyState, std::function<void()> method)
+std::uint64_t Inputs::RegisterInput(KeyboardKey key, KeyState keyState, std::function<void()> method)
 {
-    inputMap[key][keyState].push_back(method);
+    std::uint64_t callbackId = nextCallbackId++;
+    inputMap[key][keyState].push_back({callbackId, std::move(method)});
+
+    return callbackId;
 }
 
 void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState)
 {
-    inputMap[key][keyState][0];
+    inputMap[key][keyState].clear();
+}
+
+void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState, std::uint64_t callbackId)
+{
+    auto &callbacks = inputMap[key][keyState];
+    callbacks.erase(
+        std::remove_if(callbacks.begin(), callbacks.end(), [callbackId](const InputCallback &callback)
+                       { return callback.id == callbackId; }),
+        callbacks.end());
 }
 
 void Inputs::Update()
@@ -57,7 +70,7 @@ void Inputs::Update()
         {
             for (auto curMethod : val[KeyState::PRESSED])
             {
-                curMethod();
+                curMethod.method();
             }
         }
 
@@ -65,7 +78,7 @@ void Inputs::Update()
         {
             for (auto curMethod : val[KeyState::RELEASED])
             {
-                curMethod();
+                curMethod.method();
             }
         }
     }

@@ -142,6 +142,7 @@ Scene *Scene::GetScene()
     return m_curScene;
 }
 
+// TODO: Manage when gameobject is not found
 GameObject *Scene::FindGameObject(std::string name)
 {
     for (GameObject *curGo : m_gameObjects)

@@ -123,6 +123,11 @@ inline void GameObject::RemoveComponent()
     Component *comp = GetComponent<T>();
     if (comp != nullptr)
     {
+        if (comp == m_transformComp)
+        {
+            m_transformComp = nullptr;
+        }
+
         m_components.erase(std::remove(m_components.begin(), m_components.end(), comp), m_components.end());
         delete comp;
         comp = nullptr;
