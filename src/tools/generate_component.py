@@ -19,7 +19,7 @@ def generate_component_class(name, subpath):
 
 #include "components/Component.hpp"
 
-class {name} : public Component
+class {name}  public ComponentBase
 {{
 public:
     {name}();

@@ -1,7 +1,6 @@
 #include "components/Renderer/UI/UIRenderComponent.hpp"
 #include "components/RectTransformComponent.hpp"
 #include "global/gameObject.hpp"
-#include "UIRenderComponent.hpp"
 
 UIRenderComponent::UIRenderComponent()
 {

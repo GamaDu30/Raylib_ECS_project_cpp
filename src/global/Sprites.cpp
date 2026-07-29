@@ -5,7 +5,7 @@
 
 std::unordered_map<std::string, Sprite *> Sprites::m_sprites = {};
 
-raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
+raylib::Texture2D *Sprites::GetSprite(ComponentBase *instance, std::string name)
 {
     if (!IsRenderer(instance) && !DEBUG_ACCESS)
     {
@@ -15,7 +15,7 @@ raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
 
     if (m_sprites.find(name) != m_sprites.end())
     {
-        std::vector<Component *> &renderers = m_sprites[name]->renderers;
+        std::vector<ComponentBase *> &renderers = m_sprites[name]->renderers;
 
         if (std::find(renderers.begin(), renderers.end(), instance) == renderers.end())
         {
@@ -29,7 +29,7 @@ raylib::Texture2D *Sprites::GetSprite(Component *instance, std::string name)
     return &m_sprites[name]->texture;
 }
 
-void Sprites::OnRendererDeleted(Component *renderer)
+void Sprites::OnRendererDeleted(ComponentBase *renderer)
 {
     if (!IsRenderer(renderer) && !DEBUG_ACCESS)
     {
@@ -38,7 +38,7 @@ void Sprites::OnRendererDeleted(Component *renderer)
     }
 
     std::vector<std::string> spritesToDelete = {};
-    std::vector<Component *> renderers;
+    std::vector<ComponentBase *> renderers;
 
     for (auto it = m_sprites.begin(); it != m_sprites.end(); it++)
     {
@@ -61,7 +61,7 @@ void Sprites::OnRendererDeleted(Component *renderer)
     }
 }
 
-void Sprites::LoadSprite(Component *instance, std::string name)
+void Sprites::LoadSprite(ComponentBase *instance, std::string name)
 {
     if (!IsRenderer(instance) && !DEBUG_ACCESS)
     {
@@ -76,7 +76,7 @@ void Sprites::LoadSprite(Component *instance, std::string name)
     m_sprites[name] = newSprite;
 }
 
-bool Sprites::IsRenderer(Component *instance)
+bool Sprites::IsRenderer(ComponentBase *instance)
 {
     if (dynamic_cast<RenderComponent *>(instance) != nullptr || (dynamic_cast<UIRenderComponent *>(instance) != nullptr))
     {

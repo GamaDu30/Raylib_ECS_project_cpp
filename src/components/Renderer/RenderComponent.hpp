@@ -5,7 +5,7 @@
 
 class GameObject;
 
-class RenderComponent : public Component
+class RenderComponent : public Component<RenderComponent>
 {
     static std::vector<RenderComponent *> m_renderers;
 

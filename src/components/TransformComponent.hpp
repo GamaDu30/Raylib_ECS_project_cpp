@@ -3,7 +3,7 @@
 #include "global/definitions.hpp"
 #include "components/Component.hpp"
 
-class TransformComponent : public Component
+class TransformComponent : public Component<TransformComponent>
 {
     raylib::Vector3 m_pos = raylib::Vector3();
     float m_rotation = 0.f;

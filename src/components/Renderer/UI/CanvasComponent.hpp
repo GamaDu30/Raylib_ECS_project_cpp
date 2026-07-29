@@ -3,9 +3,8 @@
 #include "components/Component.hpp"
 
 class GameObject;
-class RectTransformComponent;
 
-class CanvasComponent : public Component
+class CanvasComponent : public Component<CanvasComponent>
 {
     ViewMode m_viewMode = ViewMode::ScreenSpace;
 

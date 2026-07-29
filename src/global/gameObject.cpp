@@ -1,5 +1,6 @@
 #include "global/gameObject.hpp"
 #include "algorithm"
+#include "components/ComponentBase.hpp"
 #include "components/TransformComponent.hpp"
 #include "components/Renderer/RenderComponent.hpp"
 #include "components/Collider/ColliderComponent.hpp"
@@ -57,7 +58,7 @@ void GameObject::Start()
 
 void GameObject::Update()
 {
-    for (Component *component : m_components)
+    for (ComponentBase *component : m_components)
     {
         component->Update();
     }

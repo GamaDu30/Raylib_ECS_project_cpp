@@ -2,7 +2,7 @@
 
 #include "components/Component.hpp"
 
-class CameraComponent : public Component
+class CameraComponent : public Component<CameraComponent>
 {
     float m_zoom;
     float m_rotation;

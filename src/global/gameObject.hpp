@@ -13,7 +13,7 @@ class GameObject
     static unsigned int m_curUID;
 
     std::string m_name;
-    std::vector<Component *> m_components = {};
+    std::vector<ComponentBase *> m_components = {};
 
     TransformComponent *m_transformComp = nullptr;
 
@@ -57,7 +57,7 @@ inline void GameObject::AddComponents()
 template <typename T, typename... Args>
 T *GameObject::AddComponent(Args &&...args)
 {
-    static_assert(std::is_base_of_v<Component, T>, "(GameObject::AddComponent) T must inherit from Component");
+    static_assert(std::is_base_of_v<ComponentBase, T>, "(GameObject::AddComponent) T must inherit from Component");
     static_assert(!std::is_base_of_v<TransformComponent, T>, "(GameObject::AddComponent) You can't manually add a TransformComponent to a Gameobject.");
 
     return AddComponentInternal<T>(std::forward<Args>(args)...);
@@ -86,7 +86,7 @@ T *GameObject::AddComponentInternal(Args &&...args)
     }
 
     // TODO: See in the future if needed
-    for (auto curComponent : m_components)
+    for (ComponentBase *curComponent : m_components)
     {
         if (typeid(*curComponent) == typeid(*newComponent))
         {
@@ -106,7 +106,7 @@ T *GameObject::AddComponentInternal(Args &&...args)
 template <typename T>
 T *GameObject::GetComponent()
 {
-    for (Component *comp : m_components)
+    for (ComponentBase *comp : m_components)
     {
         if (T *castedComp = dynamic_cast<T *>(comp))
         {
@@ -120,7 +120,7 @@ T *GameObject::GetComponent()
 template <typename T>
 inline void GameObject::RemoveComponent()
 {
-    Component *comp = GetComponent<T>();
+    ComponentBase *comp = GetComponent<T>();
     if (comp != nullptr)
     {
         if (comp == m_transformComp)

@@ -5,7 +5,7 @@
 class RectTransformComponent;
 class CanvasComponent;
 
-class UIRenderComponent : public Component
+class UIRenderComponent : public Component<UIRenderComponent>
 {
 protected:
     RectTransformComponent *m_rectTransformComp = nullptr;
