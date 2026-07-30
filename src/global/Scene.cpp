@@ -6,6 +6,8 @@
 #include "components/CameraComponent.hpp"
 #include "components/Renderer/RenderComponent.hpp"
 #include "components/Renderer/UI/CanvasComponent.hpp"
+#include "components/Collider/ColliderComponent.hpp"
+#include "global/Inputs.hpp"
 
 unsigned int Scene::m_curUID = 0;
 Scene *Scene::m_curScene = nullptr;
@@ -54,6 +56,9 @@ void Scene::Start()
 
 void Scene::Update()
 {
+    ColliderComponent::CheckCollisions();
+    Inputs::Update();
+
     for (int i = m_gameObjects.size() - 1; i >= 0; i--)
     {
         m_gameObjects[i]->Update();
@@ -62,6 +67,9 @@ void Scene::Update()
 
 void Scene::Render()
 {
+    BeginDrawing();
+    ClearBackground(BLACK);
+
     if (m_camComp == nullptr && m_searchForCam)
     {
         SetCam();
@@ -81,15 +89,20 @@ void Scene::Render()
     rlPopMatrix();
 
     // UI
-    for (GameObject *go : m_gameObjects)
+    for (CanvasComponent *canvasComp : Component<CanvasComponent>::GetInstances())
     {
-        CanvasComponent *canvas = go->GetComponent<CanvasComponent>();
+        canvasComp->Render();
+    }
 
-        if (canvas)
+    if (DRAW_DEBUG)
+    {
+        for (ColliderComponent *colComp : Component<ColliderComponent>::GetInstances())
         {
-            canvas->Render();
+            colComp->DrawDebug();
         }
     }
+
+    EndDrawing();
 }
 
 void Scene::AddGameObject(GameObject *newGameObject)

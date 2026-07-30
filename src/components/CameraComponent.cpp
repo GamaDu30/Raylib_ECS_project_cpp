@@ -11,6 +11,8 @@ CameraComponent::CameraComponent(Color bgColor)
 
     m_bgColor = bgColor;
 
+    m_matrix = MatrixIdentity();
+
     if (m_mainCam == nullptr)
     {
         m_mainCam = this;
@@ -79,5 +81,10 @@ raylib::Vector2 CameraComponent::GetMousePos()
 
 CameraComponent *CameraComponent::GetMainCam()
 {
+    if (m_mainCam == nullptr)
+    {
+        m_mainCam = new CameraComponent();
+    }
+
     return m_mainCam;
 }

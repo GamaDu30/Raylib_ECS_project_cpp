@@ -9,11 +9,12 @@ class ColliderComponent : public Component<ColliderComponent>
 {
     static std::vector<ColliderComponent *> m_colliders;
     static unsigned int m_curUID;
-    std::vector<unsigned int> m_collidersCompId;
 
 protected:
     raylib::Vector2 m_offset;
     unsigned int m_UID;
+    std::vector<unsigned int> m_collidersCompId;
+    raylib::Color m_debugColor;
 
 public:
     ColliderComponent();
@@ -35,7 +36,6 @@ public:
 
     void HandleCollisionState(bool curColState, ColliderComponent *other);
 
-    static void DrawAllDebug();
     virtual void DrawDebug() = 0;
 };
 

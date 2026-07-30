@@ -12,6 +12,7 @@ ColliderComponent::ColliderComponent()
     m_colliders.push_back(this);
     m_UID = m_curUID++;
     m_collidersCompId = std::vector<unsigned int>();
+    m_debugColor = raylib::Color(255, 0, 0, 95);
 }
 
 ColliderComponent::~ColliderComponent()
@@ -69,18 +70,12 @@ void ColliderComponent::HandleCollisionState(bool curColState, ColliderComponent
     {
         m_collidersCompId.push_back(other->m_UID);
         this->m_owner->OnCollisionEnter(other);
+        m_debugColor = raylib::Color(0, 255, 0, 95);
     }
     else if (isCurrentlyColliding && !curColState)
     {
         m_collidersCompId.erase(std::remove(m_collidersCompId.begin(), m_collidersCompId.end(), other->m_UID), m_collidersCompId.end());
         this->m_owner->OnCollisionExit(other);
-    }
-}
-
-void ColliderComponent::DrawAllDebug()
-{
-    for (ColliderComponent *collider : m_colliders)
-    {
-        collider->DrawDebug();
+        m_debugColor = raylib::Color(255, 0, 0, 95);
     }
 }

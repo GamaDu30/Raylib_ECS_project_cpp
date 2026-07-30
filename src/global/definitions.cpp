@@ -80,42 +80,29 @@ bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2)
 
 bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
 {
-    raylib::Vector2 rangeP, rangeC;
-
-    if (IsKeyDown(KEY_SPACE))
-    {
-        int a = 0;
-    }
+    bool isInside = true;
 
     for (int i = 0; i < p->points.size(); i++)
     {
-        rangeP = raylib::Vector2(__FLT_MAX__, -__FLT_MAX__);
-        rangeC = rangeP;
+        raylib::Vector2 curVec = (p->points[(i + 1) % p->points.size()] - p->points[i]);
+        raylib::Vector2 curVecToPoint = c->pos - p->points[i];
 
-        raylib::Vector2 curVec = (p->points[(i + 1) % p->points.size()] - p->points[i]).Normalize();
-        raylib::Vector2 curNormal = raylib::Vector2(-curVec.y, curVec.x);
+        float t = std::clamp(curVecToPoint.DotProduct(curVec) / curVec.DotProduct(curVec), 0.0f, 1.0f);
+        Vector2 projection = p->points[i] + curVec * t;
 
-        for (raylib::Vector2 point : p->points)
+        if (c->pos.DistanceSqr(projection) < c->radius * c->radius || c->pos.DistanceSqr(p->points[i]) < c->radius * c->radius)
         {
-            float dot = curNormal.DotProduct(point);
-
-            rangeP.x = std::min(rangeP.x, dot);
-            rangeP.y = std::max(rangeP.y, dot);
+            return true;
         }
 
-        float dot = curNormal.DotProduct(c->pos);
-
-        rangeC.x = dot - c->radius;
-        rangeC.y = dot + c->radius;
-
-        if (rangeP.y < rangeC.x || rangeC.y < rangeP.x)
+        // check with cross product if the point is on the right side of the edge
+        if (curVec.x * curVecToPoint.y - curVec.y * curVecToPoint.x < 0)
         {
-            // Axis without overlapping so no collision
-            return false;
+            isInside = false;
         }
     }
 
-    return true;
+    return isInside;
 }
 
 bool shouldExit = false;

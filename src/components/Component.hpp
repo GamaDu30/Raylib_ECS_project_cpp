@@ -18,6 +18,8 @@ public:
     virtual void Init(GameObject *owner);
     virtual void Update();
     virtual void Destroy();
+
+    static std::list<T *> &GetInstances() { return m_compInstances; }
 };
 
 template <typename T>

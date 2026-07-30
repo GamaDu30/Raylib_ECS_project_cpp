@@ -52,5 +52,5 @@ void CircleCollider::IsColliding(RectCollider *other)
 void CircleCollider::DrawDebug()
 {
     CircleColInfo *colInfo = static_cast<CircleColInfo *>(GetColInfo());
-    colInfo->pos.DrawCircle(colInfo->radius, raylib::Color(255, 0, 0, 95));
+    colInfo->pos.DrawCircle(colInfo->radius, m_debugColor);
 }
