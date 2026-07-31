@@ -1,5 +1,6 @@
 #include "global/definitions.hpp"
 #include "resource_dir.h" // utility header for SearchAndSetResourceDir
+#include "components/Renderer/UI/CanvasComponent.hpp"
 #include "global/gameObject.hpp"
 #include "global/Scene.hpp"
 #include "global/Inputs.hpp"
@@ -10,6 +11,7 @@
 #include "gameSample/PipeManager.hpp"
 #include "components/Collider/CircleCollider.hpp"
 #include "components/Collider/RectCollider.hpp"
+#include "components/Renderer/UI/ButtonComponent.hpp"
 
 void Init()
 {
@@ -34,9 +36,24 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	Bird *bird = scene->CreateGameObject<Bird>("Player");
-	bird->AddComponent<CameraComponent>();
-	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+	// Bird *bird = scene->CreateGameObject<Bird>("Player");
+	// bird->AddComponent<CameraComponent>();
+	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+
+	GameObject *canvas = scene->CreateGameObject("Canvas");
+	canvas->AddComponent<CanvasComponent>();
+
+	GameObject *button = scene->CreateGameObject("Button");
+	button->GetTransform()->SetParent(canvas->GetTransform());
+	button->GetTransform()->GetPos() = raylib::Vector3(100, 100, 0);
+	button->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.25f);
+	button->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.75f);
+
+	ButtonComponent *buttonComp = button->AddComponent<ButtonComponent>();
+	buttonComp->SetOnClickCallback([]()
+								   { TraceLog(LOG_INFO, "Button clicked!"); });
+	buttonComp->SetOnReleaseCallback([]()
+									 { TraceLog(LOG_INFO, "Button released!"); });
 
 	// game loop
 	while (!shouldExit)
@@ -50,5 +67,4 @@ int main()
 }
 
 // TODO:
-// Separate debug render into its own class (ex: GameObject gizmo / visible collider)
 // Opti collision by doing a AABB of each collider before doing a precise check

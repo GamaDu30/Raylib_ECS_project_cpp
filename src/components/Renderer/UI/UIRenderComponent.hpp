@@ -23,4 +23,6 @@ public:
     virtual void Render();
 
     virtual void SetColor(raylib::Color color);
+
+    raylib::Rectangle GetCollision();
 };

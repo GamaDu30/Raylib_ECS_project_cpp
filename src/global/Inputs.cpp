@@ -1,4 +1,5 @@
 #include "Inputs.hpp"
+#include "components/Renderer/UI/ButtonComponent.hpp"
 
 std::unordered_map<KeyboardKey, std::array<std::vector<Inputs::InputCallback>, 2>> Inputs::inputMap = {};
 std::uint64_t Inputs::nextCallbackId = 1;
@@ -64,6 +65,7 @@ void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState, std::uint64_t c
 
 void Inputs::Update()
 {
+    // Input bindings
     for (auto const &[key, val] : inputMap)
     {
         if (IsKeyPressed(key))
@@ -80,6 +82,45 @@ void Inputs::Update()
             {
                 curMethod.method();
             }
+        }
+    }
+
+    // UI Inputs
+    // TODO: l'ajout d'un composant dans la liste statique ne marche que si le composant hérite directement de Component<T>
+    auto uiRendererComponents = Component<UIRenderComponent>::GetInstances();
+    std::vector<ButtonComponent *> buttonComponents = {};
+
+    for (UIRenderComponent *curUIRendererComp : uiRendererComponents)
+    {
+        ButtonComponent *buttonComp = dynamic_cast<ButtonComponent *>(curUIRendererComp);
+        if (buttonComp != nullptr)
+        {
+            buttonComponents.push_back(buttonComp);
+        }
+    }
+
+    for (ButtonComponent *curButton : buttonComponents)
+    {
+        raylib::Rectangle collision = curButton->GetCollision();
+
+        if (collision.CheckCollision(GetMousePosition()))
+        {
+            if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+            {
+                curButton->ApplyClickCallback();
+            }
+            else if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+            {
+                curButton->ApplyReleaseCallback();
+            }
+            else if (curButton->GetState() != ButtonState::PRESSED)
+            {
+                curButton->SetState(ButtonState::HOVERED);
+            }
+        }
+        else
+        {
+            curButton->SetState(ButtonState::NORMAL);
         }
     }
 }
