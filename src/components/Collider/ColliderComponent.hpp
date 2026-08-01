@@ -38,5 +38,3 @@ public:
 
     virtual void DrawDebug() = 0;
 };
-
-// TODO: See imprecision in collision detection (ex: Flappy bird)

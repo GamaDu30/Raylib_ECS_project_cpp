@@ -85,7 +85,6 @@ T *GameObject::AddComponentInternal(Args &&...args)
         m_transformComp = newComponent;
     }
 
-    // TODO: See in the future if needed
     for (ComponentBase *curComponent : m_components)
     {
         if (typeid(*curComponent) == typeid(*newComponent))

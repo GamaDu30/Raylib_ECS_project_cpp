@@ -1,9 +1,16 @@
 #include "components/Renderer/UI/ButtonComponent.hpp"
-#include "ButtonComponent.hpp"
 
-ButtonComponent::ButtonComponent()
+#include "global/gameObject.hpp"
+#include "global/Scene.hpp"
+#include "components/Renderer/UI/ImageComponent.hpp"
+#include "components/TransformComponent.hpp"
+
+ButtonComponent::ButtonComponent(std::string sprite, std::string text)
 {
     m_state = ButtonState::NORMAL;
+
+    m_sprite = sprite;
+    m_text = text;
 }
 
 ButtonComponent::~ButtonComponent()
@@ -13,6 +20,10 @@ ButtonComponent::~ButtonComponent()
 void ButtonComponent::Init(GameObject *owner)
 {
     UIRenderComponent::Init(owner);
+
+    GameObject *spriteGO = Scene::GetScene()->CreateGameObject("ButtonSprite");
+    spriteGO->GetTransform()->SetParent(GetOwner()->GetTransform());
+    m_imageComp = spriteGO->AddComponent<ImageComponent>(m_sprite);
 }
 
 void ButtonComponent::Update()
@@ -27,8 +38,6 @@ void ButtonComponent::Destroy()
 
 void ButtonComponent::Render()
 {
-    raylib::Rectangle collision = GetCollision();
-    collision.Draw(m_colors[static_cast<int>(m_state)]);
 }
 
 void ButtonComponent::SetOnClickCallback(std::function<void()> callback)
@@ -64,4 +73,9 @@ void ButtonComponent::ApplyReleaseCallback()
 void ButtonComponent::SetState(ButtonState state)
 {
     m_state = state;
+
+    if (m_imageComp)
+    {
+        m_imageComp->SetColor(m_colors[static_cast<int>(m_state)]);
+    }
 }

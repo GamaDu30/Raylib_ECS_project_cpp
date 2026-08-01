@@ -53,7 +53,6 @@ void ColliderComponent::CheckCollisions()
 
 raylib::Vector2 ColliderComponent::GetPos()
 {
-    // TODO: Do test to see if *2 works (ex: Anchors)
     raylib::Vector2 pos = raylib::Vector2(
         m_owner->GetTransform()->GetPos().x + m_offset.x * 2,
         m_owner->GetTransform()->GetPos().y + m_offset.y * 2);

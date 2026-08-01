@@ -65,7 +65,6 @@ raylib::Rectangle CanvasComponent::GetBorder()
 
     if (m_viewMode == ViewMode::WorldSpace)
     {
-        // TODO: replace with RectTransformComponent.offset
         raylib::Vector3 transformPos = m_owner->GetComponent<RectTransformComponent>()->GetPos();
         border.SetPosition(border.GetPosition() + raylib::Vector2(transformPos.x, transformPos.y));
     }

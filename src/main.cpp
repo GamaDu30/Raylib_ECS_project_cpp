@@ -49,7 +49,7 @@ int main()
 	button->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.25f);
 	button->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.75f);
 
-	ButtonComponent *buttonComp = button->AddComponent<ButtonComponent>();
+	ButtonComponent *buttonComp = button->AddComponent<ButtonComponent>("bird.png");
 	buttonComp->SetOnClickCallback([]()
 								   { TraceLog(LOG_INFO, "Button clicked!"); });
 	buttonComp->SetOnReleaseCallback([]()
