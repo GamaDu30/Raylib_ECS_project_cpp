@@ -18,25 +18,33 @@ enum class FillMethod
 
 struct ImageFillData
 {
-    std::optional<FillMethod> method;
-    std::optional<float> fillAmount;
-    std::optional<bool> inverseFillDirection;
+    FillMethod method = FillMethod::Horizontal;
+    bool inverseFillDirection = false;
+};
+
+struct ImageData
+{
+    std::string textureName = "";
+    ImageType imageType = ImageType::Simple;
+    ImageFillData fillData = {.method = FillMethod::Horizontal, .inverseFillDirection = false};
+    raylib::Vector2 size = raylib::Vector2(100, 100);
 };
 
 class GameObject;
 
 class ImageComponent : public UIRenderComponent
 {
-    std::string m_textureName;
+    ImageData m_imageData;
+    // std::string m_textureName;
 
-    ImageType m_imageType = ImageType::Simple;
-    FillMethod m_fillMethod = FillMethod::Horizontal;
+    // ImageType m_imageType = ImageType::Simple;
+    // FillMethod m_fillMethod = FillMethod::Horizontal;
     float m_fillAmount = 1.0f;
-    bool m_inverseFillDirection = false;
-    raylib::Vector2 m_size = raylib::Vector2(100, 100);
+    // bool m_inverseFillDirection = false;
+    // raylib::Vector2 m_size = raylib::Vector2(100, 100);
 
 public:
-    ImageComponent(std::string textureName = "");
+    ImageComponent(ImageData data);
     ~ImageComponent();
 
     virtual void Init(GameObject *owner);
@@ -44,11 +52,9 @@ public:
     virtual void Destroy();
 
     void SetImageType(ImageType type);
-    void SetFillMethod(FillMethod method);
     void SetFillAmount(float amount);
-    void SetInverseFillDirection(bool inverse);
 
-    void SetImageFillData(const ImageFillData &data);
+    void SetImageFillData(const ImageFillData data);
 
     void Render() override;
 };

@@ -1,9 +1,12 @@
 #pragma once
 
 #include "components/Renderer/UI/UIRenderComponent.hpp"
+#include "components/Renderer/UI/TextComponent.hpp"
+#include "components/Renderer/UI/ImageComponent.hpp"
 #include <functional>
 
 class ImageComponent;
+class TextComponent;
 
 enum class ButtonState
 {
@@ -18,10 +21,11 @@ class ButtonComponent : public UIRenderComponent
 {
     ButtonState m_state = ButtonState::NORMAL;
 
-    std::string m_sprite = "";
-    std::string m_text = "";
+    ImageData m_imageData;
+    TextData m_textData;
 
     ImageComponent *m_imageComp = nullptr;
+    TextComponent *m_textComp = nullptr;
 
     // TEMP
     raylib::Color m_colors[static_cast<int>(ButtonState::TOTAL)] = {
@@ -35,7 +39,7 @@ class ButtonComponent : public UIRenderComponent
     std::function<void()> m_onReleaseCallback;
 
 public:
-    ButtonComponent(std::string sprite = "", std::string text = "");
+    ButtonComponent(ImageData imageData = ImageData(), TextData textData = TextData());
     ~ButtonComponent();
 
     virtual void Init(GameObject *owner);

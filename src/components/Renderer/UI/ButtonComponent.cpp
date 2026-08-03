@@ -2,15 +2,14 @@
 
 #include "global/gameObject.hpp"
 #include "global/Scene.hpp"
-#include "components/Renderer/UI/ImageComponent.hpp"
 #include "components/TransformComponent.hpp"
 
-ButtonComponent::ButtonComponent(std::string sprite, std::string text)
+ButtonComponent::ButtonComponent(ImageData imageData, TextData textData)
 {
     m_state = ButtonState::NORMAL;
 
-    m_sprite = sprite;
-    m_text = text;
+    m_imageData = imageData;
+    m_textData = textData;
 }
 
 ButtonComponent::~ButtonComponent()
@@ -23,7 +22,15 @@ void ButtonComponent::Init(GameObject *owner)
 
     GameObject *spriteGO = Scene::GetScene()->CreateGameObject("ButtonSprite");
     spriteGO->GetTransform()->SetParent(GetOwner()->GetTransform());
-    m_imageComp = spriteGO->AddComponent<ImageComponent>(m_sprite);
+
+    if (m_imageData.textureName != "")
+    {
+        m_imageComp = spriteGO->AddComponent<ImageComponent>(m_imageData);
+    }
+    if (m_textData.text != "")
+    {
+        m_textComp = spriteGO->AddComponent<TextComponent>(m_textData);
+    }
 }
 
 void ButtonComponent::Update()

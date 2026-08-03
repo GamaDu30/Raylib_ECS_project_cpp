@@ -47,7 +47,14 @@ void CanvasComponent::Render()
             continue;
         }
 
-        curGameobject->GetComponent<UIRenderComponent>()->Render();
+        std::vector<UIRenderComponent *> uiRenderComps = curGameobject->GetComponents<UIRenderComponent>();
+        for (UIRenderComponent *uiRenderComp : uiRenderComps)
+        {
+            if (uiRenderComp)
+            {
+                uiRenderComp->Render();
+            }
+        }
 
         // Remove curGameobject from gameObjectsToRender
         gameObjectsToRender.erase(std::remove(gameObjectsToRender.begin(), gameObjectsToRender.end(), curGameobject), gameObjectsToRender.end());

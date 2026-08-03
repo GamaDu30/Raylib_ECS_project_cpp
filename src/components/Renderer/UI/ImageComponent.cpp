@@ -4,12 +4,12 @@
 #include "global/gameObject.hpp"
 #include "ImageComponent.hpp"
 
-ImageComponent::ImageComponent(std::string textureName)
+ImageComponent::ImageComponent(ImageData data)
 {
-    if (textureName != "")
+    m_imageData = data;
+    if (m_imageData.textureName != "")
     {
-        m_textureName = textureName;
-        Sprites::GetSprite(this, m_textureName);
+        Sprites::GetSprite(this, m_imageData.textureName);
     }
 }
 
@@ -34,12 +34,7 @@ void ImageComponent::Destroy()
 
 void ImageComponent::SetImageType(ImageType type)
 {
-    m_imageType = type;
-}
-
-void ImageComponent::SetFillMethod(FillMethod method)
-{
-    m_fillMethod = method;
+    m_imageData.imageType = type;
 }
 
 void ImageComponent::SetFillAmount(float amount)
@@ -47,43 +42,27 @@ void ImageComponent::SetFillAmount(float amount)
     m_fillAmount = std::clamp(amount, 0.0f, 1.0f);
 }
 
-void ImageComponent::SetInverseFillDirection(bool inverse)
+void ImageComponent::SetImageFillData(const ImageFillData data)
 {
-    m_inverseFillDirection = inverse;
-}
-
-void ImageComponent::SetImageFillData(const ImageFillData &data)
-{
-    if (data.method)
-    {
-        m_fillMethod = data.method.value();
-    }
-    if (data.fillAmount)
-    {
-        m_fillAmount = std::clamp(data.fillAmount.value(), 0.0f, 1.0f);
-    }
-    if (data.inverseFillDirection)
-    {
-        m_inverseFillDirection = data.inverseFillDirection.value();
-    }
+    m_imageData.fillData = data;
 }
 
 void ImageComponent::Render()
 {
-    raylib::Texture2D *texture = Sprites::GetSprite(this, m_textureName);
+    raylib::Texture2D *texture = Sprites::GetSprite(this, m_imageData.textureName);
     raylib::Rectangle source = raylib::Rectangle(0, 0, texture->GetWidth(), texture->GetHeight());
     raylib::Rectangle worldRect = m_rectTransformComp->GetWorldRectangle();
     raylib::Rectangle dest = worldRect;
 
-    if (m_imageType == ImageType::Filled)
+    if (m_imageData.imageType == ImageType::Filled)
     {
-        switch (m_fillMethod)
+        switch (m_imageData.fillData.method)
         {
         case FillMethod::Horizontal:
             source.width *= m_fillAmount;
             dest.width *= m_fillAmount;
 
-            if (m_inverseFillDirection)
+            if (m_imageData.fillData.inverseFillDirection)
             {
                 dest.x += worldRect.width * (1 - m_fillAmount);
                 dest.width = worldRect.width * m_fillAmount;
@@ -95,7 +74,7 @@ void ImageComponent::Render()
             source.height *= m_fillAmount;
             dest.height *= m_fillAmount;
 
-            if (m_inverseFillDirection)
+            if (m_imageData.fillData.inverseFillDirection)
             {
                 dest.y += worldRect.height * (1 - m_fillAmount);
                 dest.height = worldRect.height * m_fillAmount;

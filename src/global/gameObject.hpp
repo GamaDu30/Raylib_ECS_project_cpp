@@ -36,6 +36,8 @@ public:
     template <typename T>
     T *GetComponent();
     template <typename T>
+    std::vector<T *> GetComponents();
+    template <typename T>
     void RemoveComponent();
 
     std::string GetName();
@@ -114,6 +116,22 @@ T *GameObject::GetComponent()
     }
 
     return nullptr;
+}
+
+template <typename T>
+std::vector<T *> GameObject::GetComponents()
+{
+    std::vector<T *> comps;
+
+    for (ComponentBase *comp : m_components)
+    {
+        if (T *castedComp = dynamic_cast<T *>(comp))
+        {
+            comps.push_back(castedComp);
+        }
+    }
+
+    return comps;
 }
 
 template <typename T>
