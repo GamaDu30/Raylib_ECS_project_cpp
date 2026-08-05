@@ -10,6 +10,9 @@ class ColliderComponent;
 
 class GameObject
 {
+    friend class TransformComponent;
+    friend class CanvasComponent;
+
     static unsigned int m_curUID;
 
     std::string m_name;
@@ -18,6 +21,7 @@ class GameObject
     TransformComponent *m_transformComp = nullptr;
 
     bool m_isInit = false;
+    bool m_isActive = true;
 
     template <typename T, typename... Args>
     T *AddComponentInternal(Args &&...args);
@@ -46,8 +50,7 @@ public:
     virtual void OnCollisionEnter(ColliderComponent *collider);
     virtual void OnCollisionExit(ColliderComponent *collider);
 
-    friend class TransformComponent;
-    friend class CanvasComponent;
+    void SetActive(bool active);
 };
 
 template <typename... Components>
@@ -75,7 +78,6 @@ T *GameObject::AddComponentInternal(Args &&...args)
     {
         if (m_transformComp)
         {
-            TraceLog(LOG_INFO, "%s", typeid(*newComponent).name());
             newComponent->SetDataFromTransform(m_transformComp);
             RemoveComponent<TransformComponent>();
         }

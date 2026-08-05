@@ -22,9 +22,9 @@ void ImageComponent::Init(GameObject *owner)
     UIRenderComponent::Init(owner);
 }
 
-void ImageComponent::Update()
+void ImageComponent::OnUpdate()
 {
-    UIRenderComponent::Update();
+    UIRenderComponent::OnUpdate();
 }
 
 void ImageComponent::Destroy()

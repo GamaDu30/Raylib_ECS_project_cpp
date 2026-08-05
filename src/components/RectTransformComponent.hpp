@@ -19,7 +19,7 @@ public:
     ~RectTransformComponent();
 
     virtual void Init(GameObject *owner) override;
-    virtual void Update() override;
+    virtual void OnUpdate() override;
     virtual void Destroy() override;
 
     raylib::Vector2 &GetAnchorMin();

@@ -11,9 +11,9 @@ void RectRenderer::Init(GameObject *owner)
     RenderComponent::Init(owner);
 }
 
-void RectRenderer::Update()
+void RectRenderer::OnUpdate()
 {
-    RenderComponent::Update();
+    RenderComponent::OnUpdate();
 }
 
 void RectRenderer::Destroy()
@@ -21,10 +21,8 @@ void RectRenderer::Destroy()
     RenderComponent::Destroy();
 }
 
-void RectRenderer::Render()
+void RectRenderer::OnRender()
 {
-    RenderComponent::Render();
-
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
 
     rlTranslatef(m_offset.x - m_rect.GetSize().x * offset.x, m_offset.y - m_rect.GetSize().y * offset.y, 0);

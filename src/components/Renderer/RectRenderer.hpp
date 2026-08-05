@@ -10,8 +10,8 @@ public:
     RectRenderer(raylib::Vector2 size, raylib::Vector2 offset = raylib::Vector2(), Anchor anchor = Anchor::Center, Color color = WHITE, bool filled = true);
 
     virtual void Init(GameObject *owner);
-    virtual void Update();
+    virtual void OnUpdate();
     virtual void Destroy();
 
-    virtual void Render();
+    virtual void OnRender();
 };

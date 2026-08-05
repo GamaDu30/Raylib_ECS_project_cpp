@@ -20,7 +20,7 @@ void UIRenderComponent::Init(GameObject *owner)
     m_rectTransformComp = m_owner->GetComponent<RectTransformComponent>();
 }
 
-void UIRenderComponent::Update()
+void UIRenderComponent::OnUpdate()
 {
 }
 

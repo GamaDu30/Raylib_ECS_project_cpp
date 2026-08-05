@@ -36,27 +36,9 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	// Bird *bird = scene->CreateGameObject<Bird>("Player");
-	// bird->AddComponent<CameraComponent>();
-	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
-
-	GameObject *canvas = scene->CreateGameObject("Canvas");
-	canvas->AddComponent<CanvasComponent>();
-
-	GameObject *button = scene->CreateGameObject("Button");
-	button->GetTransform()->SetParent(canvas->GetTransform());
-	button->GetTransform()->GetPos() = raylib::Vector3(100, 100, 0);
-	button->GetComponent<RectTransformComponent>()->GetAnchorMin() = raylib::Vector2(0.25f, 0.25f);
-	button->GetComponent<RectTransformComponent>()->GetAnchorMax() = raylib::Vector2(0.75f, 0.75f);
-
-	ButtonComponent *buttonComp = button->AddComponent<ButtonComponent>(
-		ImageData{"testSprite.png", ImageType::Simple, {}},
-		TextData{"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla vestibulum faucibus mattis. Fusce porta velit leo, in pretium erat suscipit eu. Aenean sapien lorem, egestas non neque suscipit, efficitur iaculis quam. Aliquam dignissim magna erat, non aliquet lacus mattis ut. Ut et justo suscipit, efficitur est a, pellentesque quam. Nulla euismod massa eu aliquam pretium. Morbi luctus luctus diam sit amet cursus. Ut ac dui urna. Pellentesque tincidunt fermentum neque, eget tristique tellus tempor in. ", 25, TextAlignmentH::LEFT, TextAlignmentV::BOTTOM});
-
-	buttonComp->SetOnClickCallback([]()
-								   { TraceLog(LOG_INFO, "Button clicked!"); });
-	buttonComp->SetOnReleaseCallback([]()
-									 { TraceLog(LOG_INFO, "Button released!"); });
+	Bird *bird = scene->CreateGameObject<Bird>("Player");
+	bird->AddComponent<CameraComponent>();
+	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
 	// game loop
 	while (!shouldExit)

@@ -17,9 +17,9 @@ void RectTransformComponent::Init(GameObject *owner)
     TransformComponent::Init(owner);
 }
 
-void RectTransformComponent::Update()
+void RectTransformComponent::OnUpdate()
 {
-    TransformComponent::Update();
+    TransformComponent::OnUpdate();
 
     if (m_anchorMin.GetX() > m_anchorMax.GetX())
     {

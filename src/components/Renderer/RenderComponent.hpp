@@ -14,6 +14,8 @@ protected:
     raylib::Vector2 m_offset;
     raylib::Color m_color;
 
+    virtual void OnRender() = 0;
+
 public:
     RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
     ~RenderComponent();
@@ -21,10 +23,10 @@ public:
     static void RenderAll();
 
     virtual void Init(GameObject *owner);
-    virtual void Update();
+    virtual void OnUpdate();
     virtual void Destroy();
 
-    virtual void Render();
+    void Render();
 
     void SetColor(raylib::Color color);
 };

@@ -19,7 +19,7 @@ void CircleCollider::Init(GameObject *owner)
     ColliderComponent::Init(owner);
 }
 
-void CircleCollider::Update()
+void CircleCollider::OnUpdate()
 {
 }
 

@@ -20,20 +20,18 @@ void SpriteRenderer::Init(GameObject *owner)
     RenderComponent::Init(owner);
 }
 
-void SpriteRenderer::Update()
+void SpriteRenderer::OnUpdate()
 {
-    RenderComponent::Update();
+    RenderComponent::OnUpdate();
 }
 
 void SpriteRenderer::Destroy()
 {
-    RenderComponent::Update();
+    RenderComponent::Destroy();
 }
 
-void SpriteRenderer::Render()
+void SpriteRenderer::OnRender()
 {
-    RenderComponent::Render();
-
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
     raylib::Texture2D *texture = Sprites::GetSprite(this, m_textureName);
 
@@ -42,7 +40,7 @@ void SpriteRenderer::Render()
         -texture->height * offset.y,
         0);
 
-    texture->Draw();
+    texture->Draw(raylib::Vector2(0, 0), m_color);
 
     rlPopMatrix();
 }

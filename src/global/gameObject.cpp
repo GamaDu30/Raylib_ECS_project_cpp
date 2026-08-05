@@ -5,6 +5,7 @@
 #include "components/Renderer/RenderComponent.hpp"
 #include "components/Collider/ColliderComponent.hpp"
 #include "components/Renderer/RectRenderer.hpp"
+#include "gameObject.hpp"
 
 unsigned int GameObject::m_curUID = 0;
 
@@ -52,12 +53,27 @@ void GameObject::OnCollisionExit(ColliderComponent *collider)
 {
 }
 
+void GameObject::SetActive(bool active)
+{
+    m_isActive = active;
+
+    for (ComponentBase *component : m_components)
+    {
+        component->SetActive(active);
+    }
+}
+
 void GameObject::Start()
 {
 }
 
 void GameObject::Update()
 {
+    if (!m_isActive)
+    {
+        return;
+    }
+
     for (ComponentBase *component : m_components)
     {
         component->Update();

@@ -33,9 +33,9 @@ void ButtonComponent::Init(GameObject *owner)
     }
 }
 
-void ButtonComponent::Update()
+void ButtonComponent::OnUpdate()
 {
-    UIRenderComponent::Update();
+    UIRenderComponent::OnUpdate();
 }
 
 void ButtonComponent::Destroy()

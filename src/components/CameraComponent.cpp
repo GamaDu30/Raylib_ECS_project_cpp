@@ -37,10 +37,8 @@ void CameraComponent::Init(GameObject *owner)
     UpdateMatrix();
 }
 
-void CameraComponent::Update()
+void CameraComponent::OnUpdate()
 {
-    Component::Update();
-
     raylib::Vector3 ownerPos = m_owner->GetTransform()->GetPos();
 
     if (m_lastPos != ownerPos || m_lastZoom != m_zoom || m_lastRotation != m_rotation)

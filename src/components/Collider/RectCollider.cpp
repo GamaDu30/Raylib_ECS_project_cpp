@@ -20,12 +20,14 @@ void RectCollider::Init(GameObject *owner)
     ColliderComponent::Init(owner);
 }
 
-void RectCollider::Update()
+void RectCollider::OnUpdate()
 {
+    ColliderComponent::OnUpdate();
 }
 
 void RectCollider::Destroy()
 {
+    ColliderComponent::Destroy();
 }
 
 CollisionInfo *RectCollider::GetColInfo()

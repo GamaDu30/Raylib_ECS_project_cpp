@@ -17,9 +17,8 @@ void TransformComponent::Init(GameObject *owner)
     UpdateLocalMatrix();
 }
 
-void TransformComponent::Update()
+void TransformComponent::OnUpdate()
 {
-    Component::Update();
 
     // TODO: If there are performance issues -> change with getter/setter
     if (m_lastPos != m_pos || m_lastScale != m_scale || m_lastRotation != m_rotation)

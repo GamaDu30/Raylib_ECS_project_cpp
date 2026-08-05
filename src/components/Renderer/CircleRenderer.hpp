@@ -13,10 +13,10 @@ public:
         : RenderComponent(anchor, offset, color), m_radius(radius), m_isFilled(isFilled) {}
 
     virtual void Init(GameObject *owner);
-    virtual void Update();
+    virtual void OnUpdate();
     virtual void Destroy();
 
-    virtual void Render();
+    virtual void OnRender();
 
     raylib::Vector2 &GetPos();
 };

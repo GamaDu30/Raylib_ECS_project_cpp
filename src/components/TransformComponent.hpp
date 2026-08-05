@@ -25,7 +25,7 @@ public:
     ~TransformComponent();
 
     virtual void Init(GameObject *owner) override;
-    virtual void Update() override;
+    virtual void OnUpdate() override;
     virtual void Destroy() override;
 
     raylib::Vector3 &GetPos();

@@ -18,7 +18,7 @@ void CanvasComponent::Init(GameObject *owner)
     m_owner->AddComponentInternal<RectTransformComponent>();
 }
 
-void CanvasComponent::Update()
+void CanvasComponent::OnUpdate()
 {
 }
 

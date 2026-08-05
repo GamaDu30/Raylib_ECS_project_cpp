@@ -20,9 +20,9 @@ void TextComponent::Init(GameObject *owner)
     Format();
 }
 
-void TextComponent::Update()
+void TextComponent::OnUpdate()
 {
-    UIRenderComponent::Update();
+    UIRenderComponent::OnUpdate();
 }
 
 void TextComponent::Destroy()

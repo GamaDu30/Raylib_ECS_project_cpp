@@ -16,7 +16,6 @@ public:
     virtual ~Component() { m_compInstances.remove(static_cast<T *>(this)); }
 
     virtual void Init(GameObject *owner);
-    virtual void Update();
     virtual void Destroy();
 
     static std::list<T *> &GetInstances() { return m_compInstances; }
@@ -29,12 +28,6 @@ template <typename T>
 void Component<T>::Init(GameObject *owner)
 {
     ComponentBase::Init(owner);
-}
-
-template <typename T>
-void Component<T>::Update()
-{
-    ComponentBase::Update();
 }
 
 template <typename T>

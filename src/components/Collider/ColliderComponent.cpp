@@ -25,9 +25,8 @@ void ColliderComponent::Init(GameObject *owner)
     Component::Init(owner);
 }
 
-void ColliderComponent::Update()
+void ColliderComponent::OnUpdate()
 {
-    Component::Update();
 }
 
 void ColliderComponent::Destroy()

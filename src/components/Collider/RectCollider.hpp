@@ -17,7 +17,7 @@ public:
 
     virtual CollisionInfo *GetColInfo() override;
     virtual void Init(GameObject *owner);
-    virtual void Update();
+    virtual void OnUpdate();
     virtual void Destroy();
 
     virtual void DrawDebug() override;

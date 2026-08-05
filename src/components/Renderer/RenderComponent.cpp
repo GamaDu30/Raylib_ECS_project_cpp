@@ -37,9 +37,8 @@ void RenderComponent::Init(GameObject *owner)
     Component::Init(owner);
 }
 
-void RenderComponent::Update()
+void RenderComponent::OnUpdate()
 {
-    Component::Update();
 }
 
 void RenderComponent::Destroy()
@@ -49,12 +48,19 @@ void RenderComponent::Destroy()
 
 void RenderComponent::Render()
 {
+    if (!m_isActive)
+    {
+        return;
+    }
+
     TransformComponent *transform = m_owner->GetTransform();
 
     if (transform != nullptr)
     {
         transform->PushMatrix();
     }
+
+    OnRender();
 }
 
 void RenderComponent::SetColor(raylib::Color color)

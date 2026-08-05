@@ -34,7 +34,7 @@ public:
     ~TextComponent();
 
     virtual void Init(GameObject *owner);
-    virtual void Update();
+    virtual void OnUpdate();
     virtual void Destroy();
     virtual void Render();
 

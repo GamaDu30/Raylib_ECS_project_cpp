@@ -5,20 +5,18 @@ void CircleRenderer::Init(GameObject *owner)
     RenderComponent::Init(owner);
 }
 
-void CircleRenderer::Update()
+void CircleRenderer::OnUpdate()
 {
-    RenderComponent::Update();
+    RenderComponent::OnUpdate();
 }
 
 void CircleRenderer::Destroy()
 {
-    RenderComponent::Update();
+    RenderComponent::Destroy();
 }
 
-void CircleRenderer::Render()
+void CircleRenderer::OnRender()
 {
-    RenderComponent::Render();
-
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
 
     offset *= -2;
