@@ -61,6 +61,11 @@ void GameObject::SetActive(bool active)
     {
         component->SetActive(active);
     }
+
+    for (TransformComponent *child : GetTransform()->GetChildren())
+    {
+        child->GetOwner()->SetActive(active);
+    }
 }
 
 void GameObject::Start()

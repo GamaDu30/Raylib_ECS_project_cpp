@@ -1,6 +1,7 @@
 #pragma once
 #include "global/definitions.hpp"
 #include "global/gameObject.hpp"
+#include "gameSample/GameManager.hpp"
 
 class PipeManager : public GameObject
 {
@@ -20,4 +21,6 @@ public:
 
     void Start() override;
     void Update() override;
+
+    void OnGameStateChange(GameState oldState, GameState newState);
 };

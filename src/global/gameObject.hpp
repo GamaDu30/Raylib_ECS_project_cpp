@@ -51,6 +51,7 @@ public:
     virtual void OnCollisionExit(ColliderComponent *collider);
 
     void SetActive(bool active);
+    bool GetActive() const { return m_isActive; }
 };
 
 template <typename... Components>

@@ -35,6 +35,12 @@ void CanvasComponent::Render()
     {
         curGameobject = gameObjectsToRender[0];
 
+        if (!curGameobject->GetActive())
+        {
+            gameObjectsToRender.erase(std::remove(gameObjectsToRender.begin(), gameObjectsToRender.end(), curGameobject), gameObjectsToRender.end());
+            continue;
+        }
+
         // Get all children of curGameobject
         for (TransformComponent *child : curGameobject->GetTransform()->GetChildren())
         {

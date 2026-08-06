@@ -6,12 +6,10 @@
 #include "global/Inputs.hpp"
 
 #include "components/CameraComponent.hpp"
-
 #include "gameSample/Bird.hpp"
 #include "gameSample/PipeManager.hpp"
-#include "components/Collider/CircleCollider.hpp"
-#include "components/Collider/RectCollider.hpp"
-#include "components/Renderer/UI/ButtonComponent.hpp"
+#include "gameSample/UI.hpp"
+#include "gameSample/GameManager.hpp"
 
 void Init()
 {
@@ -39,6 +37,8 @@ int main()
 	Bird *bird = scene->CreateGameObject<Bird>("Player");
 	bird->AddComponent<CameraComponent>();
 	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+
+	UI *ui = scene->CreateGameObject<UI>("UI");
 
 	// game loop
 	while (!shouldExit)

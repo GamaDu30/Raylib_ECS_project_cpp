@@ -1,8 +1,8 @@
 #include "Inputs.hpp"
 #include "components/Renderer/UI/ButtonComponent.hpp"
+#include "global/gameObject.hpp"
 
 std::unordered_map<KeyboardKey, std::array<std::vector<Inputs::InputCallback>, 2>> Inputs::inputMap = {};
-std::uint64_t Inputs::nextCallbackId = 1;
 
 KeyboardKey Inputs::inputKeys[349] = {
     KEY_NULL,
@@ -41,12 +41,9 @@ void Inputs::Init()
     }
 }
 
-std::uint64_t Inputs::RegisterInput(KeyboardKey key, KeyState keyState, std::function<void()> method)
+void Inputs::RegisterInput(KeyboardKey key, KeyState keyState, void *owner, std::function<void()> method)
 {
-    std::uint64_t callbackId = nextCallbackId++;
-    inputMap[key][keyState].push_back({callbackId, std::move(method)});
-
-    return callbackId;
+    inputMap[key][keyState].push_back({owner, std::move(method)});
 }
 
 void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState)
@@ -54,12 +51,12 @@ void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState)
     inputMap[key][keyState].clear();
 }
 
-void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState, std::uint64_t callbackId)
+void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState, void *owner)
 {
     auto &callbacks = inputMap[key][keyState];
     callbacks.erase(
-        std::remove_if(callbacks.begin(), callbacks.end(), [callbackId](const InputCallback &callback)
-                       { return callback.id == callbackId; }),
+        std::remove_if(callbacks.begin(), callbacks.end(), [owner](const InputCallback &callback)
+                       { return callback.owner == owner; }),
         callbacks.end());
 }
 
@@ -101,6 +98,11 @@ void Inputs::Update()
 
     for (ButtonComponent *curButton : buttonComponents)
     {
+        if (!curButton->GetOwner()->GetActive())
+        {
+            continue;
+        }
+
         raylib::Rectangle collision = curButton->GetCollision();
 
         if (collision.CheckCollision(GetMousePosition()))

@@ -4,36 +4,52 @@
 #include "global/Inputs.hpp"
 #include "components/Collider/CircleCollider.hpp"
 
+Bird::Bird(std::string name) : GameObject(name)
+{
+}
+
 Bird::~Bird()
 {
-    if (m_jumpInputId != 0)
-    {
-        Inputs::UnregisterInput(KEY_SPACE, KeyState::PRESSED, m_jumpInputId);
-        m_jumpInputId = 0;
-    }
+    Inputs::UnregisterInput(KEY_SPACE, KeyState::PRESSED, this);
+}
+
+void Bird::Reset()
+{
+    m_velocityMax = 3.f;
+    m_velocity = -m_velocityMax;
+    m_gravity = 4.f;
+    m_jumpForce = 2.5f;
+    targetRotation = 0.f;
+
+    GetTransform()->GetRotation() = 0.f;
+    GetTransform()->GetPos() = raylib::Vector3(0.f, 0.f, 0.f);
 }
 
 void Bird::Start()
 {
     GameObject::Start();
 
-    m_velocityMax = 3.f;
-    m_velocity = -m_velocityMax;
-    m_gravity = 4.f;
-    m_jumpForce = 2.f;
-    targetRotation = 0.f;
+    Reset();
 
     SpriteRenderer *sprite = AddComponent<SpriteRenderer>("bird.png");
     GetTransform()->GetScale() = raylib::Vector2(0.25f, 0.25f);
-    AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.5f);
+    AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.4f);
 
-    m_jumpInputId = Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, [this]
-                                          { m_velocity = -m_jumpForce; });
+    Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, this, [this]
+                          { m_velocity = -m_jumpForce; });
+
+    GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
+                                                    { OnGameStateChange(oldState, newState); });
 }
 
 void Bird::Update()
 {
     GameObject::Update();
+
+    if (GameManager::GetInstance()->GetState() != GameState::GAME)
+    {
+        return;
+    }
 
     m_velocity += m_gravity * GetFrameTime();
     m_velocity = std::min(m_velocity, m_velocityMax);
@@ -51,6 +67,13 @@ void Bird::OnCollisionEnter(ColliderComponent *collider)
 
     if (collider->GetOwner()->GetName() == "Pipe")
     {
-        shouldExit = true;
+        GameManager::GetInstance()->SetState(GameState::GAMEOVER);
+    }
+}
+void Bird::OnGameStateChange(GameState oldState, GameState newState)
+{
+    if (newState == GameState::MENU || newState == GameState::GAME)
+    {
+        Reset();
     }
 }

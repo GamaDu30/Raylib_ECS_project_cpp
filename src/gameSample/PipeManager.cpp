@@ -4,6 +4,8 @@
 #include "components/TransformComponent.hpp"
 #include "algorithm"
 #include "components/Collider/RectCollider.hpp"
+#include "gameSample/GameManager.hpp"
+#include "PipeManager.hpp"
 
 void PipeManager::Start()
 {
@@ -14,11 +16,19 @@ void PipeManager::Start()
 
     m_pipeSpeed = 200.f;
     m_limit = -SCREEN_W * 0.6f;
+
+    GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
+                                                    { OnGameStateChange(oldState, newState); });
 }
 
 void PipeManager::Update()
 {
     GameObject::Update();
+
+    if (GameManager::GetInstance()->GetState() != GameState::GAME)
+    {
+        return;
+    }
 
     for (int i = m_pipes.size() - 1; i >= 0; i--)
     {
@@ -57,4 +67,16 @@ void PipeManager::Update()
     newPipe->GetTransform()->GetPos().y = offset - 300;
     newPipe->GetTransform()->GetRotation() = 3.141;
     m_pipes.push_back(newPipe);
+}
+
+void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
+{
+    if (newState == GameState::MENU || newState == GameState::GAME)
+    {
+        for (auto pipe : m_pipes)
+        {
+            Scene::GetScene()->RemoveGameObject(pipe);
+        }
+        m_pipes.clear();
+    }
 }
