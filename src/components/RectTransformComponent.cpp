@@ -51,6 +51,14 @@ raylib::Vector2 &RectTransformComponent::GetAnchorMax()
     return m_anchorMax;
 }
 
+void RectTransformComponent::SetAnchors(float anchorMinX, float anchorMinY, float anchorMaxX, float anchorMaxY)
+{
+    m_anchorMin.SetX(anchorMinX);
+    m_anchorMin.SetY(anchorMinY);
+    m_anchorMax.SetX(anchorMaxX);
+    m_anchorMax.SetY(anchorMaxY);
+}
+
 void RectTransformComponent::SetSize(raylib::Vector2 size)
 {
     m_size = size;

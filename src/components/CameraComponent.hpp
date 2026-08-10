@@ -28,6 +28,7 @@ public:
     virtual void Destroy();
 
     void SetPos(raylib::Vector2 pos);
+    void SetBgColor(raylib::Color color) { m_bgColor = color; }
 
     void PushMatrix();
 

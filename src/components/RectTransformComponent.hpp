@@ -25,6 +25,8 @@ public:
     raylib::Vector2 &GetAnchorMin();
     raylib::Vector2 &GetAnchorMax();
 
+    void SetAnchors(float anchorMinX, float anchorMinY, float anchorMaxX, float anchorMaxY);
+
     void SetSize(raylib::Vector2 size = raylib::Vector2(100, 100));
     void SetPivot(raylib::Vector2 pivot = raylib::Vector2(0.5f, 0.5f));
 

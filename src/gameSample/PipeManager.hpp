@@ -3,9 +3,15 @@
 #include "global/gameObject.hpp"
 #include "gameSample/GameManager.hpp"
 
+struct PipeInstance
+{
+    GameObject *pipeGo;
+    float lastX;
+};
+
 class PipeManager : public GameObject
 {
-    std::vector<GameObject *> m_pipes = std::vector<GameObject *>();
+    std::vector<PipeInstance *> m_pipes = std::vector<PipeInstance *>();
 
     float m_timer;
     float m_cooldown;

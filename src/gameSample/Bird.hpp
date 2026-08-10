@@ -4,14 +4,23 @@
 #include "gameSample/GameManager.hpp"
 
 class ColliderComponent;
+class CameraComponent;
+
+enum BirdState
+{
+    ALIVE,
+    DEAD
+};
 
 class Bird : public GameObject
 {
-    float m_velocity;
+    raylib::Vector2 m_velocity;
     float m_velocityMax;
     float m_gravity;
     float m_jumpForce;
     float targetRotation;
+
+    BirdState m_state = BirdState::ALIVE;
 
 public:
     Bird(std::string name = "");
@@ -24,4 +33,6 @@ public:
     void OnCollisionEnter(ColliderComponent *collider) override;
 
     void OnGameStateChange(GameState oldState, GameState newState);
+
+    void Jump();
 };

@@ -5,7 +5,6 @@
 #include "algorithm"
 #include "components/Collider/RectCollider.hpp"
 #include "gameSample/GameManager.hpp"
-#include "PipeManager.hpp"
 
 void PipeManager::Start()
 {
@@ -32,12 +31,17 @@ void PipeManager::Update()
 
     for (int i = m_pipes.size() - 1; i >= 0; i--)
     {
-        m_pipes[i]->GetTransform()->GetPos().x -= m_pipeSpeed * GetFrameTime();
-
-        if (m_pipes[i]->GetTransform()->GetPos().x < m_limit)
+        m_pipes[i]->lastX = m_pipes[i]->pipeGo->GetTransform()->GetPos().x;
+        m_pipes[i]->pipeGo->GetTransform()->GetPos().x -= m_pipeSpeed * GetFrameTime();
+        if (m_pipes[i]->pipeGo->GetTransform()->GetPos().x < m_limit)
         {
-            Scene::GetScene()->RemoveGameObject(m_pipes[i]);
+            Scene::GetScene()->RemoveGameObject(m_pipes[i]->pipeGo);
             m_pipes.erase(std::remove(m_pipes.begin(), m_pipes.end(), m_pipes[i]), m_pipes.end());
+        }
+
+        if (i % 2 == 0 && m_pipes[i]->lastX >= 0.f && m_pipes[i]->pipeGo->GetTransform()->GetPos().x < 0.f)
+        {
+            GameManager::GetInstance()->IncrementScore(1);
         }
     }
 
@@ -53,20 +57,18 @@ void PipeManager::Update()
 
     GameObject *newPipe = Scene::GetScene()->CreateGameObject("Pipe");
     raylib::Texture2D *text = newPipe->AddComponent<SpriteRenderer>("pipe.png")->GetTexture();
-    newPipe->GetTransform()->GetScale() *= 4.f;
     newPipe->AddComponent<RectCollider>(text->GetSize());
-    newPipe->GetTransform()->GetPos().x = SCREEN_W * 0.6f;
-    newPipe->GetTransform()->GetPos().y = offset + 300;
-    m_pipes.push_back(newPipe);
+    newPipe->GetTransform()->GetScale() *= 4.f;
+    newPipe->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.6f, offset + 300, 0.f);
+    m_pipes.push_back(new PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
 
     newPipe = Scene::GetScene()->CreateGameObject("Pipe");
     newPipe->AddComponent<SpriteRenderer>("pipe.png");
     newPipe->GetTransform()->GetScale() *= 4.f;
     newPipe->AddComponent<RectCollider>(text->GetSize());
-    newPipe->GetTransform()->GetPos().x = SCREEN_W * 0.6f;
-    newPipe->GetTransform()->GetPos().y = offset - 300;
-    newPipe->GetTransform()->GetRotation() = 3.141;
-    m_pipes.push_back(newPipe);
+    newPipe->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.6f, offset - 300, 0.f);
+    newPipe->GetTransform()->GetRotation() = PI;
+    m_pipes.push_back(new PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
 }
 
 void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
@@ -75,7 +77,7 @@ void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
     {
         for (auto pipe : m_pipes)
         {
-            Scene::GetScene()->RemoveGameObject(pipe);
+            Scene::GetScene()->RemoveGameObject(pipe->pipeGo);
         }
         m_pipes.clear();
     }

@@ -3,6 +3,8 @@
 #include "global/gameObject.hpp"
 #include <functional>
 
+class UI;
+
 enum GameState
 {
     MENU,
@@ -24,6 +26,8 @@ class GameManager : public GameObject
     int m_score = 0;
     std::vector<GameStateCallback> m_stateChangeCallbacks = {};
 
+    UI *m_ui = nullptr;
+
 public:
     GameManager(std::string name = "");
     ~GameManager();
@@ -36,11 +40,13 @@ public:
     void SetState(GameState state);
     GameState GetState() const { return m_state; }
 
-    void IncrementScore(int score) { m_score += score; }
+    void IncrementScore(int score);
     int GetScore() const { return m_score; }
+
+    void Reset();
 
     void RegisterStateChange(void *owner, std::function<void(GameState, GameState)> method);
     void UnregisterStateChange(void *owner);
-};
 
-// TODO: Implement event for state change
+    void SetUiReference(UI *ui) { m_ui = ui; }
+};

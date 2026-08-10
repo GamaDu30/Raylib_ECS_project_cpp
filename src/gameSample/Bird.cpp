@@ -15,11 +15,12 @@ Bird::~Bird()
 
 void Bird::Reset()
 {
-    m_velocityMax = 3.f;
-    m_velocity = -m_velocityMax;
-    m_gravity = 4.f;
-    m_jumpForce = 2.5f;
+    m_velocityMax = 500.f;
+    m_velocity = raylib::Vector2(0.f, -m_velocityMax);
+    m_gravity = 600.f;
+    m_jumpForce = 390.f;
     targetRotation = 0.f;
+    m_state = BirdState::ALIVE;
 
     GetTransform()->GetRotation() = 0.f;
     GetTransform()->GetPos() = raylib::Vector3(0.f, 0.f, 0.f);
@@ -36,7 +37,7 @@ void Bird::Start()
     AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.4f);
 
     Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, this, [this]
-                          { m_velocity = -m_jumpForce; });
+                          { Jump(); });
 
     GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
                                                     { OnGameStateChange(oldState, newState); });
@@ -46,28 +47,50 @@ void Bird::Update()
 {
     GameObject::Update();
 
-    if (GameManager::GetInstance()->GetState() != GameState::GAME)
+    if (GameManager::GetInstance()->GetState() == GameState::MENU)
     {
         return;
     }
 
-    m_velocity += m_gravity * GetFrameTime();
-    m_velocity = std::min(m_velocity, m_velocityMax);
-    GetTransform()->GetPos().y += m_velocity;
+    m_velocity.y += m_gravity * GetFrameTime();
+    m_velocity.y = std::min(m_velocity.y, m_velocityMax);
+    GetTransform()->GetPos() += raylib::Vector3(m_velocity.x, m_velocity.y, 0) * GetFrameTime();
 
-    float velocityPercentage = (m_velocity + m_jumpForce) / (m_velocityMax + m_jumpForce);
-    targetRotation = Lerp(-1.f, 1.f, velocityPercentage);
+    switch (m_state)
+    {
+    case BirdState::ALIVE:
+    {
+        float velocityPercentage = (m_velocity.y + m_jumpForce) / (m_velocityMax + m_jumpForce);
+        targetRotation = Lerp(-1.f, 1.f, velocityPercentage);
 
-    GetTransform()->GetRotation() = Lerp(GetTransform()->GetRotation(), targetRotation, GetFrameTime() * 10.f);
+        GetTransform()->GetRotation() = Lerp(GetTransform()->GetRotation(), targetRotation, GetFrameTime() * 10.f);
+        break;
+    }
+    case BirdState::DEAD:
+    {
+        GetTransform()->GetRotation() += GetFrameTime() * 5.f;
+    }
+        return;
+    default:
+        break;
+    }
 }
 
 void Bird::OnCollisionEnter(ColliderComponent *collider)
 {
     GameObject::OnCollisionEnter(collider);
 
+    if (m_state == BirdState::DEAD)
+    {
+        return;
+    }
+
     if (collider->GetOwner()->GetName() == "Pipe")
     {
         GameManager::GetInstance()->SetState(GameState::GAMEOVER);
+
+        m_state = BirdState::DEAD;
+        m_velocity = raylib::Vector2(0.f, -300.f).Rotate(-PI * 0.5f + (PI * (GetRandomValue(0, INT_MAX) / static_cast<float>(INT_MAX))));
     }
 }
 void Bird::OnGameStateChange(GameState oldState, GameState newState)
@@ -76,4 +99,14 @@ void Bird::OnGameStateChange(GameState oldState, GameState newState)
     {
         Reset();
     }
+}
+
+void Bird::Jump()
+{
+    if (m_state == BirdState::DEAD)
+    {
+        return;
+    }
+
+    m_velocity.y = -m_jumpForce;
 }

@@ -34,9 +34,13 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
+	GameObject *camera = scene->CreateGameObject<GameObject>("Camera");
+	camera->AddComponent<CameraComponent>()->SetBgColor(raylib::Color(135, 206, 235));
+
 	Bird *bird = scene->CreateGameObject<Bird>("Player");
-	bird->AddComponent<CameraComponent>();
 	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+
+	camera->GetComponent<CameraComponent>()->SetTarget(bird->GetTransform());
 
 	UI *ui = scene->CreateGameObject<UI>("UI");
 

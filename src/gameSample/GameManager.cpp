@@ -1,5 +1,5 @@
 #include "gameSample/GameManager.hpp"
-#include "GameManager.hpp"
+#include "gameSample/UI.hpp"
 
 GameManager *GameManager::s_instance = new GameManager("GameManager");
 
@@ -31,15 +31,34 @@ void GameManager::Update()
 
 void GameManager::SetState(GameState state)
 {
-    if (m_state != state)
+    if (m_state == state)
     {
-        for (auto &callback : m_stateChangeCallbacks)
-        {
-            callback.method(m_state, state);
-        }
-
-        m_state = state;
+        return;
     }
+
+    for (auto &callback : m_stateChangeCallbacks)
+    {
+        callback.method(m_state, state);
+    }
+
+    m_state = state;
+}
+
+void GameManager::IncrementScore(int score)
+{
+    m_score += score;
+
+    if (m_ui)
+    {
+        m_ui->OnScoreChange(m_score);
+    }
+}
+
+void GameManager::Reset()
+{
+    m_score = 0;
+    m_ui->OnScoreChange(m_score);
+    SetState(GameState::MENU);
 }
 
 void GameManager::RegisterStateChange(void *owner, std::function<void(GameState, GameState)> method)
