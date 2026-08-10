@@ -9,20 +9,13 @@ class GameObject;
 template <typename T>
 class Component : public ComponentBase
 {
-    static std::list<T *> m_compInstances;
-
 public:
-    Component() { m_compInstances.push_back(static_cast<T *>(this)); }
-    virtual ~Component() { m_compInstances.remove(static_cast<T *>(this)); }
+    Component() {}
+    virtual ~Component() {}
 
     virtual void Init(GameObject *owner);
     virtual void Destroy();
-
-    static std::list<T *> &GetInstances() { return m_compInstances; }
 };
-
-template <typename T>
-std::list<T *> Component<T>::m_compInstances = {};
 
 template <typename T>
 void Component<T>::Init(GameObject *owner)

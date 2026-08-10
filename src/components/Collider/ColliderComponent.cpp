@@ -4,12 +4,10 @@
 #include "components/TransformComponent.hpp"
 #include "components/CameraComponent.hpp"
 
-std::vector<ColliderComponent *> ColliderComponent::m_colliders = {};
 unsigned int ColliderComponent::m_curUID = 0;
 
 ColliderComponent::ColliderComponent()
 {
-    m_colliders.push_back(this);
     m_UID = m_curUID++;
     m_collidersCompId = std::vector<unsigned int>();
     m_debugColor = raylib::Color(255, 0, 0, 95);
@@ -17,7 +15,6 @@ ColliderComponent::ColliderComponent()
 
 ColliderComponent::~ColliderComponent()
 {
-    m_colliders.erase(std::remove(m_colliders.begin(), m_colliders.end(), this), m_colliders.end());
 }
 
 void ColliderComponent::Init(GameObject *owner)
@@ -36,6 +33,8 @@ void ColliderComponent::Destroy()
 
 void ColliderComponent::CheckCollisions()
 {
+    auto m_colliders = ComponentBase::GetInstancesAssignable<ColliderComponent>();
+
     for (ColliderComponent *col1 : m_colliders)
     {
         for (ColliderComponent *col2 : m_colliders)

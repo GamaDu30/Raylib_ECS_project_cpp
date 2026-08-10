@@ -83,18 +83,7 @@ void Inputs::Update()
     }
 
     // UI Inputs
-    // TODO: l'ajout d'un composant dans la liste statique ne marche que si le composant hérite directement de Component<T>
-    auto uiRendererComponents = Component<UIRenderComponent>::GetInstances();
-    std::vector<ButtonComponent *> buttonComponents = {};
-
-    for (UIRenderComponent *curUIRendererComp : uiRendererComponents)
-    {
-        ButtonComponent *buttonComp = dynamic_cast<ButtonComponent *>(curUIRendererComp);
-        if (buttonComp != nullptr)
-        {
-            buttonComponents.push_back(buttonComp);
-        }
-    }
+    std::vector<ButtonComponent *> buttonComponents = ComponentBase::GetInstancesAssignable<ButtonComponent>();
 
     for (ButtonComponent *curButton : buttonComponents)
     {

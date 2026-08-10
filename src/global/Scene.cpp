@@ -89,14 +89,14 @@ void Scene::Render()
     rlPopMatrix();
 
     // UI
-    for (CanvasComponent *canvasComp : Component<CanvasComponent>::GetInstances())
+    for (CanvasComponent *canvasComp : ComponentBase::GetInstancesOfType<CanvasComponent>())
     {
         canvasComp->Render();
     }
 
     if (DRAW_DEBUG)
     {
-        for (ColliderComponent *colComp : Component<ColliderComponent>::GetInstances())
+        for (ColliderComponent *colComp : ComponentBase::GetInstancesOfType<ColliderComponent>())
         {
             colComp->DrawDebug();
         }

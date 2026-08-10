@@ -7,7 +7,6 @@ class RectCollider;
 
 class ColliderComponent : public Component<ColliderComponent>
 {
-    static std::vector<ColliderComponent *> m_colliders;
     static unsigned int m_curUID;
 
 protected:
