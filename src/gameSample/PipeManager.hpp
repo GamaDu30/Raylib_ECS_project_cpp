@@ -11,7 +11,7 @@ struct PipeInstance
 
 class PipeManager : public GameObject
 {
-    std::vector<PipeInstance *> m_pipes = std::vector<PipeInstance *>();
+    std::vector<PipeInstance> m_pipes = std::vector<PipeInstance>();
 
     float m_timer;
     float m_cooldown;

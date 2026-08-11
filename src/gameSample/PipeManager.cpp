@@ -31,15 +31,16 @@ void PipeManager::Update()
 
     for (int i = m_pipes.size() - 1; i >= 0; i--)
     {
-        m_pipes[i]->lastX = m_pipes[i]->pipeGo->GetTransform()->GetPos().x;
-        m_pipes[i]->pipeGo->GetTransform()->GetPos().x -= m_pipeSpeed * GetFrameTime();
-        if (m_pipes[i]->pipeGo->GetTransform()->GetPos().x < m_limit)
+        m_pipes[i].lastX = m_pipes[i].pipeGo->GetTransform()->GetPos().x;
+        m_pipes[i].pipeGo->GetTransform()->GetPos().x -= m_pipeSpeed * GetFrameTime();
+        if (m_pipes[i].pipeGo->GetTransform()->GetPos().x < m_limit)
         {
-            Scene::GetScene()->RemoveGameObject(m_pipes[i]->pipeGo);
-            m_pipes.erase(std::remove(m_pipes.begin(), m_pipes.end(), m_pipes[i]), m_pipes.end());
+            Scene::GetScene()->RemoveGameObject(m_pipes[i].pipeGo);
+            m_pipes.erase(m_pipes.begin() + i);
+            continue;
         }
 
-        if (i % 2 == 0 && m_pipes[i]->lastX >= 0.f && m_pipes[i]->pipeGo->GetTransform()->GetPos().x < 0.f)
+        if (i % 2 == 0 && m_pipes[i].lastX >= 0.f && m_pipes[i].pipeGo->GetTransform()->GetPos().x < 0.f)
         {
             GameManager::GetInstance()->IncrementScore(1);
         }
@@ -60,7 +61,7 @@ void PipeManager::Update()
     newPipe->AddComponent<RectCollider>(text->GetSize());
     newPipe->GetTransform()->GetScale() *= 4.f;
     newPipe->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.6f, offset + 300, 0.f);
-    m_pipes.push_back(new PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
+    m_pipes.push_back(PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
 
     newPipe = Scene::GetScene()->CreateGameObject("Pipe");
     newPipe->AddComponent<SpriteRenderer>("pipe.png");
@@ -68,7 +69,7 @@ void PipeManager::Update()
     newPipe->AddComponent<RectCollider>(text->GetSize());
     newPipe->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.6f, offset - 300, 0.f);
     newPipe->GetTransform()->GetRotation() = PI;
-    m_pipes.push_back(new PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
+    m_pipes.push_back(PipeInstance{newPipe, newPipe->GetTransform()->GetPos().x});
 }
 
 void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
@@ -77,7 +78,7 @@ void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
     {
         for (auto pipe : m_pipes)
         {
-            Scene::GetScene()->RemoveGameObject(pipe->pipeGo);
+            Scene::GetScene()->RemoveGameObject(pipe.pipeGo);
         }
         m_pipes.clear();
     }
