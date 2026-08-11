@@ -46,6 +46,5 @@ T *Scene::CreateGameObject(std::string name)
     T *newGo = new T(name);
     AddGameObject(newGo);
 
-    newGo->Start();
     return newGo;
 }

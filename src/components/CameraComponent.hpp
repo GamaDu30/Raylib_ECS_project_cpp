@@ -2,6 +2,8 @@
 
 #include "components/Component.hpp"
 
+class TransformComponent;
+
 class CameraComponent : public Component<CameraComponent>
 {
     float m_zoom;
@@ -13,11 +15,14 @@ class CameraComponent : public Component<CameraComponent>
 
     raylib::Color m_bgColor;
 
+    TransformComponent *m_target = nullptr;
+
     void UpdateMatrix();
 
 public:
     static CameraComponent *m_mainCam;
     static CameraComponent *GetMainCam();
+    static void PushMatrix();
 
     raylib::Matrix m_matrix;
     CameraComponent(Color bgColor = BLACK);
@@ -29,8 +34,7 @@ public:
 
     void SetPos(raylib::Vector2 pos);
     void SetBgColor(raylib::Color color) { m_bgColor = color; }
-
-    void PushMatrix();
+    void SetTarget(TransformComponent *target) { m_target = target; }
 
     raylib::Vector2 GetMousePos();
 };

@@ -45,6 +45,8 @@ int main()
 	UI *ui = scene->CreateGameObject<UI>("UI");
 
 	// game loop
+	Scene::GetScene()->Start();
+
 	while (!shouldExit)
 	{
 		Scene::GetScene()->Update();

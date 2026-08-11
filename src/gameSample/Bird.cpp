@@ -23,7 +23,7 @@ void Bird::Reset()
     m_state = BirdState::ALIVE;
 
     GetTransform()->GetRotation() = 0.f;
-    GetTransform()->GetPos() = raylib::Vector3(0.f, 0.f, 0.f);
+    GetTransform()->GetPos() = raylib::Vector3(0.f, 0.f, 1.f);
 }
 
 void Bird::Start()
@@ -90,7 +90,7 @@ void Bird::OnCollisionEnter(ColliderComponent *collider)
         GameManager::GetInstance()->SetState(GameState::GAMEOVER);
 
         m_state = BirdState::DEAD;
-        m_velocity = raylib::Vector2(0.f, -300.f).Rotate(-PI * 0.5f + (PI * (GetRandomValue(0, INT_MAX) / static_cast<float>(INT_MAX))));
+        m_velocity = raylib::Vector2(0.f, -300.f).Rotate(-PI * 0.25f + (PI * 0.5f * (GetRandomValue(0, INT_MAX) / static_cast<float>(INT_MAX))));
     }
 }
 void Bird::OnGameStateChange(GameState oldState, GameState newState)

@@ -75,15 +75,7 @@ void Scene::Render()
         SetCam();
     }
 
-    if (m_camComp != nullptr)
-    {
-        m_camComp->PushMatrix();
-    }
-    else
-    {
-        // TODO: Clean code when no camera is present in scene
-        rlPushMatrix();
-    }
+    CameraComponent::PushMatrix();
 
     RenderComponent::RenderAll();
     rlPopMatrix();
@@ -131,18 +123,13 @@ void Scene::SetCam()
 {
     m_searchForCam = false;
 
-    for (GameObject *curGo : m_gameObjects)
+    std::vector<CameraComponent *> camComp = ComponentBase::GetInstancesOfType<CameraComponent>();
+    m_camComp = camComp.empty() ? nullptr : camComp[0];
+
+    if (m_camComp == nullptr)
     {
-        CameraComponent *camComp = curGo->GetComponent<CameraComponent>();
-
-        if (camComp != nullptr)
-        {
-            m_camComp = camComp;
-            return;
-        }
+        TraceLog(LOG_WARNING, "No Cam found for the scene");
     }
-
-    TraceLog(LOG_WARNING, "No Cam found for the scene");
 }
 
 CameraComponent *Scene::GetMainCam()
