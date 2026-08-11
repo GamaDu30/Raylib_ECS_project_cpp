@@ -20,7 +20,7 @@ struct GameStateCallback
 
 class GameManager : public GameObject
 {
-    static GameManager *s_instance;
+    static GameManager *m_instance;
 
     GameState m_state = GameState::MENU;
     int m_score = 0;
@@ -32,7 +32,7 @@ public:
     GameManager(std::string name = "");
     ~GameManager();
 
-    static GameManager *GetInstance() { return s_instance; }
+    static GameManager *GetInstance();
 
     void Start() override;
     void Update() override;

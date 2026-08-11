@@ -4,6 +4,7 @@
 #include "RectCollider.hpp"
 #include "components/CameraComponent.hpp"
 #include "components/Collider/CircleCollider.hpp"
+#include <memory>
 
 RectCollider::RectCollider(raylib::Vector2 size, raylib::Vector2 offset)
 {
@@ -59,19 +60,32 @@ void RectCollider::IsColliding(ColliderComponent *other)
 
 void RectCollider::IsColliding(RectCollider *other)
 {
-    bool isCol = ColPolyPoly(dynamic_cast<PolyColInfo *>(GetColInfo()), dynamic_cast<PolyColInfo *>(other->GetColInfo()));
+    std::unique_ptr<CollisionInfo> thisInfo(GetColInfo());
+    std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
+
+    bool isCol = ColPolyPoly(
+        dynamic_cast<PolyColInfo *>(thisInfo.get()),
+        dynamic_cast<PolyColInfo *>(otherInfo.get()));
+
     ColliderComponent::HandleCollisionState(isCol, other);
 }
 
 void RectCollider::IsColliding(CircleCollider *other)
 {
-    bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(this->GetColInfo()), dynamic_cast<CircleColInfo *>(other->GetColInfo()));
+    std::unique_ptr<CollisionInfo> thisInfo(this->GetColInfo());
+    std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
+
+    bool isCol = ColPolyCircle(
+        dynamic_cast<PolyColInfo *>(thisInfo.get()),
+        dynamic_cast<CircleColInfo *>(otherInfo.get()));
+
     ColliderComponent::HandleCollisionState(isCol, other);
 }
 
 void RectCollider::DrawDebug()
 {
-    PolyColInfo *colInfo = static_cast<PolyColInfo *>(GetColInfo());
+    std::unique_ptr<CollisionInfo> colInfoPtr(GetColInfo());
+    PolyColInfo *colInfo = static_cast<PolyColInfo *>(colInfoPtr.get());
 
     for (int i = 0; i < colInfo->points.size(); i++)
     {

@@ -3,6 +3,7 @@
 #include "components/TransformComponent.hpp"
 #include "components/Collider/RectCollider.hpp"
 #include "components/CameraComponent.hpp"
+#include <memory>
 
 CircleCollider::CircleCollider(float radius, raylib::Vector2 offset)
 {
@@ -25,6 +26,7 @@ void CircleCollider::OnUpdate()
 
 void CircleCollider::Destroy()
 {
+    ColliderComponent::Destroy();
 }
 
 CollisionInfo *CircleCollider::GetColInfo()
@@ -45,12 +47,19 @@ void CircleCollider::IsColliding(CircleCollider *other)
 
 void CircleCollider::IsColliding(RectCollider *other)
 {
-    bool isCol = ColPolyCircle(dynamic_cast<PolyColInfo *>(other->GetColInfo()), dynamic_cast<CircleColInfo *>(this->GetColInfo()));
+    std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
+    std::unique_ptr<CollisionInfo> thisInfo(this->GetColInfo());
+
+    bool isCol = ColPolyCircle(
+        dynamic_cast<PolyColInfo *>(otherInfo.get()),
+        dynamic_cast<CircleColInfo *>(thisInfo.get()));
+
     ColliderComponent::HandleCollisionState(isCol, other);
 }
 
 void CircleCollider::DrawDebug()
 {
-    CircleColInfo *colInfo = static_cast<CircleColInfo *>(GetColInfo());
+    std::unique_ptr<CollisionInfo> colInfoPtr(GetColInfo());
+    CircleColInfo *colInfo = static_cast<CircleColInfo *>(colInfoPtr.get());
     colInfo->pos.DrawCircle(colInfo->radius, m_debugColor);
 }

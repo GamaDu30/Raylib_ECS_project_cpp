@@ -1,22 +1,33 @@
 #include "gameSample/GameManager.hpp"
 #include "gameSample/UI.hpp"
+#include "GameManager.hpp"
 
-GameManager *GameManager::s_instance = new GameManager("GameManager");
+GameManager *GameManager::m_instance = nullptr;
 
 GameManager::GameManager(std::string name) : GameObject(name)
 {
-    if (s_instance == nullptr)
+    if (m_instance == nullptr)
     {
-        s_instance = this;
+        m_instance = this;
     }
 }
 
 GameManager::~GameManager()
 {
-    if (s_instance == this)
+    if (m_instance == this)
     {
-        s_instance = nullptr;
+        m_instance = nullptr;
     }
+}
+
+GameManager *GameManager::GetInstance()
+{
+    if (m_instance == nullptr)
+    {
+        m_instance = new GameManager("GameManager");
+    }
+
+    return m_instance;
 }
 
 void GameManager::Start()

@@ -1,5 +1,6 @@
 #include "components/Collider/ColliderComponent.hpp"
 #include "algorithm"
+#include <chrono>
 #include "global/gameObject.hpp"
 #include "components/TransformComponent.hpp"
 #include "components/CameraComponent.hpp"
@@ -33,18 +34,13 @@ void ColliderComponent::Destroy()
 
 void ColliderComponent::CheckCollisions()
 {
-    auto m_colliders = ComponentBase::GetInstancesAssignable<ColliderComponent>();
+    auto colliders = ComponentBase::GetInstancesAssignable<ColliderComponent>();
 
-    for (ColliderComponent *col1 : m_colliders)
+    for (size_t i = 0; i < colliders.size(); i++)
     {
-        for (ColliderComponent *col2 : m_colliders)
+        for (size_t j = i + 1; j < colliders.size(); j++)
         {
-            if (col1 == col2)
-            {
-                continue;
-            }
-
-            col1->IsColliding(col2);
+            colliders[i]->IsColliding(colliders[j]);
         }
     }
 }
