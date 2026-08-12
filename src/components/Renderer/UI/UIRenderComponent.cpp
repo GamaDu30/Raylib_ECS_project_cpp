@@ -9,8 +9,6 @@ UIRenderComponent::UIRenderComponent()
 
 UIRenderComponent::~UIRenderComponent()
 {
-    delete m_rectTransformComp;
-    m_rectTransformComp = nullptr;
 }
 
 void UIRenderComponent::Init(GameObject *owner)

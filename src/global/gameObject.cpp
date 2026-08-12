@@ -55,6 +55,12 @@ void GameObject::OnCollisionExit(ColliderComponent *collider)
 
 void GameObject::SetActive(bool active)
 {
+    if (m_isDestroyed && active)
+    {
+        TraceLog(LOG_WARNING, "You tried to set a destroyed gameobject to active");
+        return;
+    }
+
     m_isActive = active;
 
     for (ComponentBase *component : m_components)
@@ -66,6 +72,12 @@ void GameObject::SetActive(bool active)
     {
         child->GetOwner()->SetActive(active);
     }
+}
+
+void GameObject::Destroy()
+{
+    m_isDestroyed = true;
+    SetActive(false);
 }
 
 void GameObject::Start()
@@ -82,5 +94,13 @@ void GameObject::Update()
     for (ComponentBase *component : m_components)
     {
         component->Update();
+    }
+}
+
+void GameObject::LateUpdate()
+{
+    if (!m_isActive)
+    {
+        return;
     }
 }

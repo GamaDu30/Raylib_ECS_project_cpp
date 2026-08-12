@@ -58,4 +58,18 @@ int main()
 }
 
 // TODO:
-// Opti collision by doing a AABB of each collider before doing a precise check
+// GameObject: LateUpdate()
+// GameObject: code system to destroy at the end of a frame
+
+// CameraComponent: Finish target system
+// GameObject: refacto Update like Component to block update when not active (OnUpdate)
+//  Make Event system with lifetime linked to entity
+//  Make generalized asset manager like in Sprite for every type of asset (texture, audio, font, etc...)
+//  ColliderComponent: Optimize collision by doing a AABB of each collider before doing a precise check
+//  GameObject: FixedUpdate() for physics
+//  Scene: Load / Unload and persistent GameObjects between scenes
+//  TextComponent: Manage text overflow with height
+//  TransformComponent pos/scale/rotation: if there are performance issues -> change with getter/setter
+
+// Prefab System
+// Make visual editor

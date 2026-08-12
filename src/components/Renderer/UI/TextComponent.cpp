@@ -30,7 +30,6 @@ void TextComponent::Destroy()
     UIRenderComponent::Destroy();
 }
 
-// TODO: Manage text overflow with height
 void TextComponent::Render()
 {
     UIRenderComponent::Render();

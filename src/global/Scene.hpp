@@ -13,6 +13,7 @@ class Scene
     std::string m_name;
 
     std::vector<GameObject *> m_gameObjects;
+    std::vector<GameObject *> m_gameObjectsToDestroy;
 
     CameraComponent *m_camComp;
     bool m_searchForCam;

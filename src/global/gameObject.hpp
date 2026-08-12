@@ -22,6 +22,7 @@ class GameObject
 
     bool m_isInit = false;
     bool m_isActive = true;
+    bool m_isDestroyed = false;
 
     template <typename T, typename... Args>
     T *AddComponentInternal(Args &&...args);
@@ -32,6 +33,7 @@ public:
 
     virtual void Start();
     virtual void Update();
+    virtual void LateUpdate();
 
     template <typename... Components>
     void AddComponents();
@@ -52,6 +54,9 @@ public:
 
     void SetActive(bool active);
     bool GetActive() const { return m_isActive; }
+
+    void Destroy();
+    bool IsDestroyed() const { return m_isDestroyed; }
 };
 
 template <typename... Components>

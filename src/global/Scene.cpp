@@ -22,6 +22,7 @@ Scene::Scene(std::string name)
 
     m_name = name;
     m_gameObjects = {};
+    m_gameObjectsToDestroy = {};
     m_camComp = nullptr;
     m_searchForCam = true;
 
@@ -61,8 +62,39 @@ void Scene::Update()
 
     for (int i = m_gameObjects.size() - 1; i >= 0; i--)
     {
+        if (m_gameObjects[i]->IsDestroyed())
+        {
+            m_gameObjectsToDestroy.push_back(m_gameObjects[i]);
+            continue;
+        }
+
         m_gameObjects[i]->Update();
     }
+
+    for (int i = m_gameObjects.size() - 1; i >= 0; i--)
+    {
+        if (m_gameObjects[i]->IsDestroyed())
+        {
+            continue;
+        }
+
+        m_gameObjects[i]->LateUpdate();
+    }
+
+    for (int i = m_gameObjectsToDestroy.size() - 1; i >= 0; i--)
+    {
+        GameObject *goToDestroy = m_gameObjectsToDestroy[i];
+
+        auto it = std::find(m_gameObjects.begin(), m_gameObjects.end(), goToDestroy);
+        if (it != m_gameObjects.end())
+        {
+            m_gameObjects.erase(it);
+        }
+
+        delete goToDestroy;
+    }
+
+    m_gameObjectsToDestroy.clear();
 }
 
 void Scene::Render()
@@ -115,8 +147,11 @@ void Scene::AddGameObject(GameObject *newGameObject)
 
 void Scene::RemoveGameObject(GameObject *gameObject)
 {
-    m_gameObjects.erase(std::remove(m_gameObjects.begin(), m_gameObjects.end(), gameObject), m_gameObjects.end());
-    delete gameObject;
+    auto it = std::find(m_gameObjects.begin(), m_gameObjects.end(), gameObject);
+    if (it != m_gameObjects.end())
+    {
+        (*it)->Destroy();
+    }
 }
 
 void Scene::SetCam()
@@ -142,7 +177,6 @@ Scene *Scene::GetScene()
     return m_curScene;
 }
 
-// TODO: Manage when gameobject is not found
 GameObject *Scene::FindGameObject(std::string name)
 {
     for (GameObject *curGo : m_gameObjects)

@@ -17,8 +17,8 @@ void Bird::Reset()
 {
     m_velocityMax = 500.f;
     m_velocity = raylib::Vector2(0.f, -m_velocityMax);
-    m_gravity = 600.f;
-    m_jumpForce = 390.f;
+    m_gravity = 800.f;
+    m_jumpForce = 450.f;
     targetRotation = 0.f;
     m_state = BirdState::ALIVE;
 
