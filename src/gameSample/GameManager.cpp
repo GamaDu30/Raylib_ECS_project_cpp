@@ -47,10 +47,8 @@ void GameManager::SetState(GameState state)
         return;
     }
 
-    for (auto &callback : m_stateChangeCallbacks)
-    {
-        callback.method(m_state, state);
-    }
+    const GameState previousState = m_state;
+    m_stateChangeCallbacks.Invoke(previousState, state);
 
     m_state = state;
 }
@@ -72,15 +70,12 @@ void GameManager::Reset()
     SetState(GameState::MENU);
 }
 
-void GameManager::RegisterStateChange(void *owner, std::function<void(GameState, GameState)> method)
+int GameManager::RegisterStateChange(std::function<void(GameState, GameState)> method)
 {
-    m_stateChangeCallbacks.push_back({owner, std::move(method)});
+    return m_stateChangeCallbacks.Add(method);
 }
 
-void GameManager::UnregisterStateChange(void *owner)
+int GameManager::UnregisterStateChange(size_t id)
 {
-    m_stateChangeCallbacks.erase(std::remove_if(m_stateChangeCallbacks.begin(), m_stateChangeCallbacks.end(),
-                                                [owner](const GameStateCallback &callback)
-                                                { return callback.owner == owner; }),
-                                 m_stateChangeCallbacks.end());
+    return m_stateChangeCallbacks.Remove(id);
 }

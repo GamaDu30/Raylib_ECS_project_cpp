@@ -1,8 +1,9 @@
 #include "Inputs.hpp"
 #include "components/Renderer/UI/ButtonComponent.hpp"
 #include "global/gameObject.hpp"
+#include "global/Event.hpp"
 
-std::unordered_map<KeyboardKey, std::array<std::vector<Inputs::InputCallback>, 2>> Inputs::inputMap = {};
+std::unordered_map<KeyboardKey, std::array<Event<>, 2>> Inputs::inputMap = {};
 
 KeyboardKey Inputs::inputKeys[349] = {
     KEY_NULL,
@@ -33,7 +34,7 @@ void Inputs::Init()
 {
     for (KeyboardKey curKey : inputKeys)
     {
-        std::array<std::vector<InputCallback>, 2> inputVector;
+        std::array<Event<>, 2> inputVector;
         inputVector[KeyState::PRESSED] = {};
         inputVector[KeyState::RELEASED] = {};
 
@@ -41,44 +42,43 @@ void Inputs::Init()
     }
 }
 
-void Inputs::RegisterInput(KeyboardKey key, KeyState keyState, void *owner, std::function<void()> method)
+int Inputs::RegisterInput(KeyboardKey key, KeyState keyState, std::function<void()> method)
 {
-    inputMap[key][keyState].push_back({owner, std::move(method)});
+    return inputMap[key][keyState].Add(method);
 }
 
 void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState)
 {
-    inputMap[key][keyState].clear();
+    inputMap[key][keyState].Clear();
 }
 
-void Inputs::UnregisterInput(KeyboardKey key, KeyState keyState, void *owner)
+void Inputs::UnregisterInput(size_t id)
 {
-    auto &callbacks = inputMap[key][keyState];
-    callbacks.erase(
-        std::remove_if(callbacks.begin(), callbacks.end(), [owner](const InputCallback &callback)
-                       { return callback.owner == owner; }),
-        callbacks.end());
+    for (auto &[key, val] : inputMap)
+    {
+        for (int i = 0; i < 2; i++)
+        {
+            if (val[i].Remove(id))
+            {
+                return;
+            }
+        }
+    }
 }
 
 void Inputs::Update()
 {
     // Input bindings
-    for (auto const &[key, val] : inputMap)
+    for (auto &[key, val] : inputMap)
     {
         if (IsKeyPressed(key))
         {
-            for (auto curMethod : val[KeyState::PRESSED])
-            {
-                curMethod.method();
-            }
+            val[KeyState::PRESSED].Invoke();
         }
 
         if (IsKeyReleased(key))
         {
-            for (auto curMethod : val[KeyState::RELEASED])
-            {
-                curMethod.method();
-            }
+            val[KeyState::RELEASED].Invoke();
         }
     }
 

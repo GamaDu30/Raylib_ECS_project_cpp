@@ -9,7 +9,7 @@ void UI::Start()
 {
     GameObject::Start();
 
-    GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
+    GameManager::GetInstance()->RegisterStateChange([this](GameState oldState, GameState newState)
                                                     { OnGameStateChange(oldState, newState); });
     GameManager::GetInstance()->SetUiReference(this);
 

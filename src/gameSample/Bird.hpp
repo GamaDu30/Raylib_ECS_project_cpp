@@ -22,6 +22,8 @@ class Bird : public GameObject
 
     BirdState m_state = BirdState::ALIVE;
 
+    size_t m_inputJumpId;
+
 public:
     Bird(std::string name = "");
     ~Bird() override;

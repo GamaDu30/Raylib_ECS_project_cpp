@@ -16,7 +16,7 @@ void PipeManager::Start()
     m_pipeSpeed = 200.f;
     m_limit = -SCREEN_W * 0.6f;
 
-    GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
+    GameManager::GetInstance()->RegisterStateChange([this](GameState oldState, GameState newState)
                                                     { OnGameStateChange(oldState, newState); });
 }
 

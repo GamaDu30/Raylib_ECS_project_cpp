@@ -10,7 +10,7 @@ Bird::Bird(std::string name) : GameObject(name)
 
 Bird::~Bird()
 {
-    Inputs::UnregisterInput(KEY_SPACE, KeyState::PRESSED, this);
+    Inputs::UnregisterInput(m_inputJumpId);
 }
 
 void Bird::Reset()
@@ -36,10 +36,10 @@ void Bird::Start()
     GetTransform()->GetScale() = raylib::Vector2(0.25f, 0.25f);
     AddComponent<CircleCollider>(sprite->GetTexture()->width * 0.4f);
 
-    Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, this, [this]
-                          { Jump(); });
+    m_inputJumpId = Inputs::RegisterInput(KEY_SPACE, KeyState::PRESSED, [this]
+                                          { Jump(); });
 
-    GameManager::GetInstance()->RegisterStateChange(this, [this](GameState oldState, GameState newState)
+    GameManager::GetInstance()->RegisterStateChange([this](GameState oldState, GameState newState)
                                                     { OnGameStateChange(oldState, newState); });
 }
 

@@ -120,7 +120,7 @@ void Scene::Render()
 
     if (DRAW_DEBUG)
     {
-        for (ColliderComponent *colComp : ComponentBase::GetInstancesOfType<ColliderComponent>())
+        for (ColliderComponent *colComp : ComponentBase::GetInstancesAssignable<ColliderComponent>())
         {
             colComp->DrawDebug();
         }

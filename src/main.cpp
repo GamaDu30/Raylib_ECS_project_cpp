@@ -58,9 +58,8 @@ int main()
 }
 
 // TODO:
-//  Make Event system with lifetime linked to entity
-
 // CameraComponent: Finish target system
+
 // GameObject: refacto Update like Component to block update when not active (OnUpdate)
 //  Make generalized asset manager like in Sprite for every type of asset (texture, audio, font, etc...)
 //  ColliderComponent: Optimize collision by doing a AABB of each collider before doing a precise check

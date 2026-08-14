@@ -2,6 +2,7 @@
 
 #include "global/gameObject.hpp"
 #include <functional>
+#include "global/Event.hpp"
 
 class UI;
 
@@ -12,19 +13,13 @@ enum GameState
     GAMEOVER
 };
 
-struct GameStateCallback
-{
-    void *owner;
-    std::function<void(GameState, GameState)> method;
-};
-
 class GameManager : public GameObject
 {
     static GameManager *m_instance;
 
     GameState m_state = GameState::MENU;
     int m_score = 0;
-    std::vector<GameStateCallback> m_stateChangeCallbacks = {};
+    Event<GameState, GameState> m_stateChangeCallbacks = {};
 
     UI *m_ui = nullptr;
 
@@ -45,8 +40,8 @@ public:
 
     void Reset();
 
-    void RegisterStateChange(void *owner, std::function<void(GameState, GameState)> method);
-    void UnregisterStateChange(void *owner);
+    int RegisterStateChange(std::function<void(GameState, GameState)> method);
+    int UnregisterStateChange(size_t id);
 
     void SetUiReference(UI *ui) { m_ui = ui; }
 };
