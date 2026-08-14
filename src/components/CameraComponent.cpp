@@ -26,12 +26,6 @@ CameraComponent::~CameraComponent()
 void CameraComponent::UpdateMatrix()
 {
     raylib::Vector3 ownerPos = m_owner->GetTransform()->GetPos();
-    // if target then make matrix to follow it
-    // else make matrix based on own trasnform
-    if (m_target != nullptr)
-    {
-        ownerPos = m_target->GetPos();
-    }
 
     m_matrix = MatrixMultiply(MatrixMultiply(
                                   MatrixScale(m_zoom, m_zoom, 1), MatrixRotateZ(m_rotation)),
@@ -76,7 +70,15 @@ void CameraComponent::PushMatrix()
 
     if (m_mainCam != nullptr)
     {
-        rlMultMatrixf(m_mainCam->m_matrix.ToFloatV().v);
+
+        if (m_target == nullptr)
+        {
+            rlMultMatrixf(m_mainCam->m_matrix.ToFloatV().v);
+        }
+        else
+        {
+            rlTranslatef(-m_target->GetPos().x + SCREEN_W * 0.5f, -m_target->GetPos().y + SCREEN_H * 0.5f, 0);
+        }
     }
 
     ClearBackground(m_mainCam->m_bgColor);
@@ -87,6 +89,11 @@ raylib::Vector2 CameraComponent::GetMousePos()
     mousePos.x += m_owner->GetTransform()->GetPos().x - SCREEN_W * 0.5f;
     mousePos.y += m_owner->GetTransform()->GetPos().y - SCREEN_H * 0.5f;
     return mousePos;
+}
+
+void CameraComponent::SetTarget(TransformComponent *target)
+{
+    m_target = target;
 }
 
 CameraComponent *CameraComponent::GetMainCam()

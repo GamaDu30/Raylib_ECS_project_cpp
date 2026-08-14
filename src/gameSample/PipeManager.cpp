@@ -81,5 +81,7 @@ void PipeManager::OnGameStateChange(GameState oldState, GameState newState)
             Scene::GetScene()->RemoveGameObject(pipe.pipeGo);
         }
         m_pipes.clear();
+
+        m_timer = 0.f;
     }
 }

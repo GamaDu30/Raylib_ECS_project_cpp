@@ -107,7 +107,7 @@ void Scene::Render()
         SetCam();
     }
 
-    CameraComponent::PushMatrix();
+    CameraComponent::GetMainCam()->PushMatrix();
 
     RenderComponent::RenderAll();
     rlPopMatrix();

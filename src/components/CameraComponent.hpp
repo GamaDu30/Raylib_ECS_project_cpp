@@ -22,7 +22,7 @@ class CameraComponent : public Component<CameraComponent>
 public:
     static CameraComponent *m_mainCam;
     static CameraComponent *GetMainCam();
-    static void PushMatrix();
+    void PushMatrix();
 
     raylib::Matrix m_matrix;
     CameraComponent(Color bgColor = BLACK);
@@ -34,7 +34,7 @@ public:
 
     void SetPos(raylib::Vector2 pos);
     void SetBgColor(raylib::Color color) { m_bgColor = color; }
-    void SetTarget(TransformComponent *target) { m_target = target; }
+    void SetTarget(TransformComponent *target);
 
     raylib::Vector2 GetMousePos();
 };
