@@ -29,7 +29,6 @@ public:
     ~Bird() override;
 
     void Start() override;
-    void Update() override;
     void Reset();
 
     void OnCollisionEnter(ColliderComponent *collider) override;
@@ -37,4 +36,7 @@ public:
     void OnGameStateChange(GameState oldState, GameState newState);
 
     void Jump();
+
+protected:
+    void OnUpdate() override;
 };

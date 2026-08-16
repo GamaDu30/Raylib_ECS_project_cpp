@@ -26,7 +26,9 @@ public:
     ~PipeManager() {}
 
     void Start() override;
-    void Update() override;
 
     void OnGameStateChange(GameState oldState, GameState newState);
+
+protected:
+    void OnUpdate() override;
 };

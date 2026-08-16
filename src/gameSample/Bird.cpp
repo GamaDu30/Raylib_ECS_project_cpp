@@ -43,10 +43,8 @@ void Bird::Start()
                                                     { OnGameStateChange(oldState, newState); });
 }
 
-void Bird::Update()
+void Bird::OnUpdate()
 {
-    GameObject::Update();
-
     if (GameManager::GetInstance()->GetState() == GameState::MENU)
     {
         return;

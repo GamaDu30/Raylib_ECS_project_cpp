@@ -48,9 +48,8 @@ void UI::Start()
     // m_scoreText->GetOwner()->GetTransform()->GetPos() = raylib::Vector3(SCREEN_W * 0.5f, 20.f, 0.f);
 }
 
-void UI::Update()
+void UI::OnUpdate()
 {
-    GameObject::Update();
 }
 
 void UI::OnGameStateChange(GameState oldState, GameState newState)

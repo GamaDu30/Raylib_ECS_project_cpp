@@ -84,6 +84,14 @@ void GameObject::Start()
 {
 }
 
+void GameObject::OnUpdate()
+{
+}
+
+void GameObject::OnLateUpdate()
+{
+}
+
 void GameObject::Update()
 {
     if (!m_isActive)
@@ -95,6 +103,8 @@ void GameObject::Update()
     {
         component->Update();
     }
+
+    OnUpdate();
 }
 
 void GameObject::LateUpdate()
@@ -103,4 +113,6 @@ void GameObject::LateUpdate()
     {
         return;
     }
+
+    OnLateUpdate();
 }

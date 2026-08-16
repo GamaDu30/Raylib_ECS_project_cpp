@@ -35,9 +35,8 @@ void GameManager::Start()
     GameObject::Start();
 }
 
-void GameManager::Update()
+void GameManager::OnUpdate()
 {
-    GameObject::Update();
 }
 
 void GameManager::SetState(GameState state)

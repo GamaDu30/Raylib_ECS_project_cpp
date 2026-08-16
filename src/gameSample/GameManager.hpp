@@ -30,7 +30,6 @@ public:
     static GameManager *GetInstance();
 
     void Start() override;
-    void Update() override;
 
     void SetState(GameState state);
     GameState GetState() const { return m_state; }
@@ -44,4 +43,7 @@ public:
     int UnregisterStateChange(size_t id);
 
     void SetUiReference(UI *ui) { m_ui = ui; }
+
+protected:
+    void OnUpdate() override;
 };

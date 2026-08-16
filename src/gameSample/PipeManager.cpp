@@ -20,10 +20,8 @@ void PipeManager::Start()
                                                     { OnGameStateChange(oldState, newState); });
 }
 
-void PipeManager::Update()
+void PipeManager::OnUpdate()
 {
-    GameObject::Update();
-
     if (GameManager::GetInstance()->GetState() != GameState::GAME)
     {
         return;

@@ -17,9 +17,11 @@ public:
     ~UI() {}
 
     void Start() override;
-    void Update() override;
 
     void OnGameStateChange(GameState oldState, GameState newState);
 
     void OnScoreChange(int newScore);
+
+protected:
+    void OnUpdate() override;
 };

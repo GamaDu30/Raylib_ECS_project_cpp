@@ -32,8 +32,8 @@ public:
     virtual ~GameObject();
 
     virtual void Start();
-    virtual void Update();
-    virtual void LateUpdate();
+    void Update();
+    void LateUpdate();
 
     template <typename... Components>
     void AddComponents();
@@ -57,6 +57,10 @@ public:
 
     void Destroy();
     bool IsDestroyed() const { return m_isDestroyed; }
+
+protected:
+    virtual void OnUpdate();
+    virtual void OnLateUpdate();
 };
 
 template <typename... Components>
