@@ -10,6 +10,7 @@
 #include "gameSample/PipeManager.hpp"
 #include "gameSample/UI.hpp"
 #include "gameSample/GameManager.hpp"
+#include "components/Renderer/UI/TextComponent.hpp"
 
 void Init()
 {
@@ -34,15 +35,27 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	GameObject *camera = scene->CreateGameObject<GameObject>("Camera");
-	camera->AddComponent<CameraComponent>()->SetBgColor(raylib::Color(135, 206, 235));
+	// GameObject *camera = scene->CreateGameObject<GameObject>("Camera");
+	// camera->AddComponent<CameraComponent>()->SetBgColor(raylib::Color(135, 206, 235));
 
-	Bird *bird = scene->CreateGameObject<Bird>("Player");
-	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
+	// Bird *bird = scene->CreateGameObject<Bird>("Player");
+	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
-	camera->GetComponent<CameraComponent>()->SetTarget(bird->GetTransform());
+	// camera->GetComponent<CameraComponent>()->SetTarget(bird->GetTransform());
 
-	UI *ui = scene->CreateGameObject<UI>("UI");
+	// UI *ui = scene->CreateGameObject<UI>("UI");
+
+	GameObject *UI = scene->CreateGameObject("UI")->AddComponent<CanvasComponent>()->GetOwner();
+
+	GameObject *textGo = Scene::GetScene()->CreateGameObject("Text");
+	textGo->GetTransform()->SetParent(UI->GetTransform());
+	textGo->AddComponent<TextComponent>(TextData{
+											.text = "Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.",
+											.fontSize = 30,
+											.alignmentH = TextAlignmentH::CENTER,
+											.alignmentV = TextAlignmentV::TOP})
+		->GetOwner();
+	textGo->GetComponent<RectTransformComponent>()->SetAnchors(0.25f, 0.25f, 0.75f, 0.75f);
 
 	// game loop
 	Scene::GetScene()->Start();
@@ -63,7 +76,6 @@ int main()
 // ColliderComponent: Optimize collision by doing a AABB of each collider before doing a precise check
 // GameObject: FixedUpdate() for physics
 // Scene: Load / Unload and persistent GameObjects between scenes
-// TextComponent: Manage text overflow with height
 // TransformComponent pos/scale/rotation: if there are performance issues -> change with getter/setter
 
 // Prefab System

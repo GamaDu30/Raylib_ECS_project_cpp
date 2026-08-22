@@ -23,6 +23,13 @@ void TextComponent::Init(GameObject *owner)
 void TextComponent::OnUpdate()
 {
     UIRenderComponent::OnUpdate();
+
+    // Compare rectangle
+    if (GetCollision().width != m_lastCollision.width || GetCollision().height != m_lastCollision.height)
+    {
+        Format();
+        m_lastCollision = GetCollision();
+    }
 }
 
 void TextComponent::Destroy()
@@ -35,6 +42,7 @@ void TextComponent::Render()
     UIRenderComponent::Render();
 
     raylib::Rectangle collision = GetCollision();
+    int bottomY = collision.y + collision.height;
     std::istringstream ss(m_formattedText);
     std::string line;
     int lineHeight = m_text.fontSize + 2;
@@ -50,6 +58,9 @@ void TextComponent::Render()
 
     while (std::getline(ss, line))
     {
+        if (y + lineHeight > bottomY)
+            break;
+
         int lineWidth = MeasureText(line.c_str(), m_text.fontSize);
         int x = collision.x;
 
@@ -68,28 +79,34 @@ void TextComponent::Format()
     std::stringstream ss(m_text.text);
     std::string word = "";
     std::string curLine = "";
-    float maxWidth = GetCollision().width;
+    // Keep a small inner padding to avoid visual overflow on edges
+    float maxWidth = std::max(0.0f, GetCollision().width - 10.0f);
 
     m_formattedText = "";
 
     // Split the text into lines based on the width of the RectTransformComponent
     while (ss >> word)
     {
-        if (MeasureText((curLine + word).c_str(), m_text.fontSize) > maxWidth)
+        std::string candidate = curLine.empty() ? word : (curLine + " " + word);
+
+        if (MeasureText(candidate.c_str(), m_text.fontSize) > maxWidth)
         {
-            m_formattedText += curLine + "\n";
-            curLine = word + " ";
+            if (!curLine.empty())
+                m_formattedText += curLine + "\n";
+
+            // If a single word is too long, keep it on its own line
+            curLine = word;
         }
         else
         {
-            curLine += word + " ";
+            curLine = candidate;
         }
     }
 
     if (!curLine.empty())
         m_formattedText += curLine;
 
-    if (!m_formattedText.empty() && m_formattedText.back() == ' ')
+    while (!m_formattedText.empty() && m_formattedText.back() == ' ')
         m_formattedText.pop_back();
 }
 

@@ -29,6 +29,8 @@ class TextComponent : public UIRenderComponent
     TextData m_text;
     std::string m_formattedText = "";
 
+    raylib::Rectangle m_lastCollision = raylib::Rectangle(0, 0, 0, 0);
+
 public:
     TextComponent(TextData data);
     ~TextComponent();

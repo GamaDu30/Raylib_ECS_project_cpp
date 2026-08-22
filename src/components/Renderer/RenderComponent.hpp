@@ -7,8 +7,6 @@ class GameObject;
 
 class RenderComponent : public Component<RenderComponent>
 {
-    static std::vector<RenderComponent *> m_renderers;
-
 protected:
     Anchor m_anchor;
     raylib::Vector2 m_offset;

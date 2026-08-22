@@ -124,6 +124,11 @@ void Scene::Render()
         {
             colComp->DrawDebug();
         }
+
+        for (RectTransformComponent *rectTransformComp : ComponentBase::GetInstancesAssignable<RectTransformComponent>())
+        {
+            rectTransformComp->DebugRender();
+        }
     }
 
     EndDrawing();
