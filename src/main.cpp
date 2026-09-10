@@ -35,27 +35,14 @@ int main()
 
 	Scene *scene = new Scene("Game");
 
-	// GameObject *camera = scene->CreateGameObject<GameObject>("Camera");
-	// camera->AddComponent<CameraComponent>()->SetBgColor(raylib::Color(135, 206, 235));
-
-	// Bird *bird = scene->CreateGameObject<Bird>("Player");
-	// PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
-
+	GameObject *camera = scene->CreateGameObject<GameObject>("Camera");
+	camera->AddComponent<CameraComponent>()->SetBgColor(raylib::Color(135, 206, 235));
 	// camera->GetComponent<CameraComponent>()->SetTarget(bird->GetTransform());
 
-	// UI *ui = scene->CreateGameObject<UI>("UI");
+	Bird *bird = scene->CreateGameObject<Bird>("Player");
+	PipeManager *pipe = scene->CreateGameObject<PipeManager>("PipeManager");
 
-	GameObject *UI = scene->CreateGameObject("UI")->AddComponent<CanvasComponent>()->GetOwner();
-
-	GameObject *textGo = Scene::GetScene()->CreateGameObject("Text");
-	textGo->GetTransform()->SetParent(UI->GetTransform());
-	textGo->AddComponent<TextComponent>(TextData{
-											.text = "Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.Hello World!\nThis is a test of the TextComponent.\nIt supports multiple lines and text alignment.",
-											.fontSize = 30,
-											.alignmentH = TextAlignmentH::CENTER,
-											.alignmentV = TextAlignmentV::TOP})
-		->GetOwner();
-	textGo->GetComponent<RectTransformComponent>()->SetAnchors(0.25f, 0.25f, 0.75f, 0.75f);
+	UI *ui = scene->CreateGameObject<UI>("UI");
 
 	// game loop
 	Scene::GetScene()->Start();
@@ -73,6 +60,7 @@ int main()
 // TODO:
 // Make generalized asset manager like in Sprite for every type of asset (texture, audio, font, etc...)
 
+// Add UID for the components (ex: for Sprites to remove the need to keep a ref to the component itself)
 // ColliderComponent: Optimize collision by doing a AABB of each collider before doing a precise check
 // GameObject: FixedUpdate() for physics
 // Scene: Load / Unload and persistent GameObjects between scenes

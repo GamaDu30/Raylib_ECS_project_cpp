@@ -56,5 +56,5 @@ public:
 
     void SetImageFillData(const ImageFillData data);
 
-    void Render() override;
+    void OnRender() override;
 };

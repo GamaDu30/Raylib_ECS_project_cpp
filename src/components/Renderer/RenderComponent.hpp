@@ -1,30 +1,23 @@
 #pragma once
 
 #include "global/definitions.hpp"
-#include "components/Component.hpp"
+#include "components/Renderer/RenderComponentBase.hpp"
 
 class GameObject;
 
-class RenderComponent : public Component<RenderComponent>
+class RenderComponent : public RenderComponentBase
 {
 protected:
     Anchor m_anchor;
     raylib::Vector2 m_offset;
-    raylib::Color m_color;
-
-    virtual void OnRender() = 0;
 
 public:
     RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
     ~RenderComponent();
 
-    static void RenderAll();
-
     virtual void Init(GameObject *owner);
     virtual void OnUpdate();
     virtual void Destroy();
 
-    void Render();
-
-    void SetColor(raylib::Color color);
+    virtual void OnRender();
 };

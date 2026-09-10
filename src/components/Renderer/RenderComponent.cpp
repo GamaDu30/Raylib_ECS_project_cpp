@@ -14,25 +14,9 @@ RenderComponent::~RenderComponent()
 {
 }
 
-void RenderComponent::RenderAll()
-{
-    std::vector<RenderComponent *> m_renderers = ComponentBase::GetInstancesAssignable<RenderComponent>();
-
-    std::sort(m_renderers.begin(), m_renderers.end(),
-              [](RenderComponent *a, RenderComponent *b)
-              {
-                  return a->m_owner->GetTransform()->GetPos().z < b->m_owner->GetTransform()->GetPos().z;
-              });
-
-    for (RenderComponent *renderComp : m_renderers)
-    {
-        renderComp->Render();
-    }
-}
-
 void RenderComponent::Init(GameObject *owner)
 {
-    Component::Init(owner);
+    RenderComponentBase::Init(owner);
 }
 
 void RenderComponent::OnUpdate()
@@ -41,27 +25,15 @@ void RenderComponent::OnUpdate()
 
 void RenderComponent::Destroy()
 {
-    Component::Destroy();
+    RenderComponentBase::Destroy();
 }
 
-void RenderComponent::Render()
+void RenderComponent::OnRender()
 {
-    if (!m_isActive)
-    {
-        return;
-    }
-
     TransformComponent *transform = m_owner->GetTransform();
 
     if (transform != nullptr)
     {
         transform->PushMatrix();
     }
-
-    OnRender();
-}
-
-void RenderComponent::SetColor(raylib::Color color)
-{
-    m_color = color;
 }

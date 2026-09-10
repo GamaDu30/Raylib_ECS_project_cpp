@@ -47,7 +47,7 @@ void ImageComponent::SetImageFillData(const ImageFillData data)
     m_imageData.fillData = data;
 }
 
-void ImageComponent::Render()
+void ImageComponent::OnRender()
 {
     raylib::Texture2D *texture = Sprites::GetSprite(this, m_imageData.textureName);
     raylib::Rectangle source = raylib::Rectangle(0, 0, texture->GetWidth(), texture->GetHeight());

@@ -1,8 +1,6 @@
-#include "components/Renderer/UI/TextComponent.hpp"
 #include "global/gameObject.hpp"
 #include "components/Renderer/UI/TextComponent.hpp"
 #include <bits/stdc++.h>
-#include "TextComponent.hpp"
 
 TextComponent::TextComponent(TextData data)
 {
@@ -37,9 +35,9 @@ void TextComponent::Destroy()
     UIRenderComponent::Destroy();
 }
 
-void TextComponent::Render()
+void TextComponent::OnRender()
 {
-    UIRenderComponent::Render();
+    UIRenderComponent::OnRender();
 
     raylib::Rectangle collision = GetCollision();
     int bottomY = collision.y + collision.height;

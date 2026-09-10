@@ -2,6 +2,7 @@
 
 #include "global/definitions.hpp"
 #include <unordered_map>
+#include "components/Renderer/RenderComponentBase.hpp"
 
 class ComponentBase;
 
@@ -20,10 +21,10 @@ class Sprites
     static std::unordered_map<std::string, Sprite *> m_sprites;
 
 public:
-    static raylib::Texture2D *GetSprite(ComponentBase *instance, std::string name);
+    static raylib::Texture2D *GetSprite(RenderComponentBase *instance, std::string name);
 
-    static void LoadSprite(ComponentBase *instance, std::string name);
-    static void OnRendererDeleted(ComponentBase *renderer);
+    static void LoadSprite(RenderComponentBase *instance, std::string name);
+    static void OnRendererDeleted(RenderComponentBase *renderer);
 
-    static bool IsRenderer(ComponentBase *instance);
+    static bool IsRenderer(RenderComponentBase *instance);
 };

@@ -1,6 +1,5 @@
 #include "global/Scene.hpp"
 #include "global/gameObject.hpp"
-#include "Scene.hpp"
 #include <algorithm>
 #include "components/TransformComponent.hpp"
 #include "components/CameraComponent.hpp"
@@ -109,7 +108,20 @@ void Scene::Render()
 
     CameraComponent::GetMainCam()->PushMatrix();
 
-    RenderComponent::RenderAll();
+    // GameObject render
+    std::vector<RenderComponent *> m_renderers = ComponentBase::GetInstancesAssignable<RenderComponent>();
+
+    std::sort(m_renderers.begin(), m_renderers.end(),
+              [](RenderComponent *a, RenderComponent *b)
+              {
+                  return a->GetOwner()->GetTransform()->GetPos().z < b->GetOwner()->GetTransform()->GetPos().z;
+              });
+
+    for (RenderComponent *renderComp : m_renderers)
+    {
+        renderComp->Render();
+    }
+
     rlPopMatrix();
 
     // UI

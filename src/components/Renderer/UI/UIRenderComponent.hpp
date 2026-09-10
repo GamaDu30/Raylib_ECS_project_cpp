@@ -1,16 +1,15 @@
 #pragma once
 
-#include "components/Component.hpp"
+#include "global/definitions.hpp"
+#include "components/Renderer/RenderComponentBase.hpp"
 
 class RectTransformComponent;
 class CanvasComponent;
 
-class UIRenderComponent : public Component<UIRenderComponent>
+class UIRenderComponent : public RenderComponentBase
 {
 protected:
     RectTransformComponent *m_rectTransformComp = nullptr;
-
-    raylib::Color m_color = raylib::Color(255, 255, 255, 255);
 
 public:
     UIRenderComponent();
@@ -20,9 +19,7 @@ public:
     virtual void OnUpdate();
     virtual void Destroy();
 
-    virtual void Render();
-
-    virtual void SetColor(raylib::Color color);
+    virtual void OnRender();
 
     raylib::Rectangle GetCollision();
 };

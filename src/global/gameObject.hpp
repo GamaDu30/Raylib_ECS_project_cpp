@@ -27,6 +27,10 @@ class GameObject
     template <typename T, typename... Args>
     T *AddComponentInternal(Args &&...args);
 
+protected:
+    virtual void OnUpdate();
+    virtual void OnLateUpdate();
+
 public:
     GameObject(std::string name = "");
     virtual ~GameObject();
@@ -57,10 +61,6 @@ public:
 
     void Destroy();
     bool IsDestroyed() const { return m_isDestroyed; }
-
-protected:
-    virtual void OnUpdate();
-    virtual void OnLateUpdate();
 };
 
 template <typename... Components>

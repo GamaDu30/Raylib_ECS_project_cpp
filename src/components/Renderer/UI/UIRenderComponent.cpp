@@ -13,7 +13,7 @@ UIRenderComponent::~UIRenderComponent()
 
 void UIRenderComponent::Init(GameObject *owner)
 {
-    Component::Init(owner);
+    RenderComponentBase::Init(owner);
 
     m_rectTransformComp = m_owner->GetComponent<RectTransformComponent>();
 }
@@ -26,13 +26,8 @@ void UIRenderComponent::Destroy()
 {
 }
 
-void UIRenderComponent::Render()
+void UIRenderComponent::OnRender()
 {
-}
-
-void UIRenderComponent::SetColor(raylib::Color color)
-{
-    m_color = color;
 }
 
 raylib::Rectangle UIRenderComponent::GetCollision()

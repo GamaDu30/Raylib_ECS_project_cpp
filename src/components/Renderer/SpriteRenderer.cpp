@@ -32,6 +32,8 @@ void SpriteRenderer::Destroy()
 
 void SpriteRenderer::OnRender()
 {
+    RenderComponent::OnRender();
+
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
     raylib::Texture2D *texture = Sprites::GetSprite(this, m_textureName);
 

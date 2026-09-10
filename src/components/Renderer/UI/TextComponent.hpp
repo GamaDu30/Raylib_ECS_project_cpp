@@ -38,7 +38,7 @@ public:
     virtual void Init(GameObject *owner);
     virtual void OnUpdate();
     virtual void Destroy();
-    virtual void Render();
+    virtual void OnRender();
 
     void Format();
     void SetText(std::string text);
