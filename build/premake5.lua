@@ -173,7 +173,7 @@ if (downloadRaylib) then
         includedirs {raylib_dir .. "/src" }
         includedirs {raylib_dir .."/src/external" }
         includedirs { raylib_dir .."/src/external/glfw/include" }
-        flags { "ShadowedVariables"}
+        --flags { "ShadowedVariables"}
         platform_defines()
 
         filter "action:vs*"
