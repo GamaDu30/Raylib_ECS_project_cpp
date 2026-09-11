@@ -28,6 +28,7 @@ protected:
     void UnregisterConcreteInstance();
 
     virtual void OnUpdate() = 0;
+    virtual void OnFixedUpdate() = 0;
 
 public:
     ComponentBase();
@@ -35,6 +36,7 @@ public:
 
     virtual void Init(GameObject *owner);
     void Update();
+    void FixedUpdate();
     virtual void Destroy();
 
     GameObject *GetOwner();

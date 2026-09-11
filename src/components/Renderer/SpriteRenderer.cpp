@@ -7,12 +7,12 @@ SpriteRenderer::SpriteRenderer(std::string fileLocation, Anchor anchor, raylib::
 {
     m_textureName = fileLocation;
 
-    Sprites::GetSprite(this, m_textureName);
+    Sprites::GetSprite(m_uid, m_textureName);
 }
 
 SpriteRenderer::~SpriteRenderer()
 {
-    Sprites::OnRendererDeleted(this);
+    Sprites::OnRendererDeleted(m_uid);
 }
 
 void SpriteRenderer::Init(GameObject *owner)
@@ -35,7 +35,7 @@ void SpriteRenderer::OnRender()
     RenderComponent::OnRender();
 
     raylib::Vector2 offset = GetAnchorOffset(m_anchor);
-    raylib::Texture2D *texture = Sprites::GetSprite(this, m_textureName);
+    raylib::Texture2D *texture = Sprites::GetSprite(m_uid, m_textureName);
 
     rlTranslatef(
         -texture->width * offset.x,
@@ -49,5 +49,5 @@ void SpriteRenderer::OnRender()
 
 raylib::Texture2D *SpriteRenderer::GetTexture()
 {
-    return Sprites::GetSprite(this, m_textureName);
+    return Sprites::GetSprite(m_uid, m_textureName);
 }

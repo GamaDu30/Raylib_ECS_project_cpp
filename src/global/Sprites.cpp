@@ -14,7 +14,6 @@ raylib::Texture2D *Sprites::GetSprite(unsigned int rendererUID, std::string name
         if (std::find(renderers.begin(), renderers.end(), rendererUID) == renderers.end())
         {
             renderers.push_back(rendererUID);
-            TraceLog(LOG_DEBUG, (name + " size: " + std::to_string(renderers.size())).c_str());
         }
 
         return &m_sprites[name]->texture;

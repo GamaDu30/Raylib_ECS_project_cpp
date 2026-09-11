@@ -5,7 +5,6 @@
 #include "components/Renderer/RenderComponent.hpp"
 #include "components/Collider/ColliderComponent.hpp"
 #include "components/Renderer/RectRenderer.hpp"
-#include "gameObject.hpp"
 
 unsigned int GameObject::m_curUID = 0;
 
@@ -88,6 +87,10 @@ void GameObject::OnUpdate()
 {
 }
 
+void GameObject::OnFixedUpdate()
+{
+}
+
 void GameObject::OnLateUpdate()
 {
 }
@@ -102,6 +105,21 @@ void GameObject::Update()
     for (ComponentBase *component : m_components)
     {
         component->Update();
+    }
+
+    OnUpdate();
+}
+
+void GameObject::FixedUpdate()
+{
+    if (!m_isActive)
+    {
+        return;
+    }
+
+    for (ComponentBase *component : m_components)
+    {
+        component->FixedUpdate();
     }
 
     OnUpdate();

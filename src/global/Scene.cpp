@@ -56,7 +56,16 @@ void Scene::Start()
 
 void Scene::Update()
 {
-    ColliderComponent::CheckCollisions();
+    m_fixedUpdateTimer += GetFrameTime();
+
+    if (m_fixedUpdateTimer > 1.f / FIXED_UPDATE_FREQUENCY)
+    {
+        ColliderComponent::CheckCollisions();
+        m_fixedUpdateTimer = 0.f;
+
+        TraceLog(LOG_DEBUG, "FIXED");
+    }
+
     Inputs::Update();
 
     for (int i = m_gameObjects.size() - 1; i >= 0; i--)

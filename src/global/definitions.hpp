@@ -8,6 +8,7 @@
 #define SCREEN_H 720
 #define DRAW_DEBUG false
 #define DEBUG_ACCESS true
+#define FIXED_UPDATE_FREQUENCY 60.f
 
 enum class Anchor
 {

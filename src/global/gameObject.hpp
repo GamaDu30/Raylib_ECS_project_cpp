@@ -29,6 +29,7 @@ class GameObject
 
 protected:
     virtual void OnUpdate();
+    virtual void OnFixedUpdate();
     virtual void OnLateUpdate();
 
 public:
@@ -37,6 +38,7 @@ public:
 
     virtual void Start();
     void Update();
+    void FixedUpdate();
     void LateUpdate();
 
     template <typename... Components>

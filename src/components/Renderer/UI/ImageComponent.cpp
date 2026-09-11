@@ -9,7 +9,7 @@ ImageComponent::ImageComponent(ImageData data)
     m_imageData = data;
     if (m_imageData.textureName != "")
     {
-        Sprites::GetSprite(this, m_imageData.textureName);
+        Sprites::GetSprite(m_uid, m_imageData.textureName);
     }
 }
 
@@ -49,7 +49,7 @@ void ImageComponent::SetImageFillData(const ImageFillData data)
 
 void ImageComponent::OnRender()
 {
-    raylib::Texture2D *texture = Sprites::GetSprite(this, m_imageData.textureName);
+    raylib::Texture2D *texture = Sprites::GetSprite(m_uid, m_imageData.textureName);
     raylib::Rectangle source = raylib::Rectangle(0, 0, texture->GetWidth(), texture->GetHeight());
     raylib::Rectangle worldRect = m_rectTransformComp->GetWorldRectangle();
     raylib::Rectangle dest = worldRect;

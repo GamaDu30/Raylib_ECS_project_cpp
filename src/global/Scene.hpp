@@ -18,6 +18,8 @@ class Scene
     CameraComponent *m_camComp;
     bool m_searchForCam;
 
+    float m_fixedUpdateTimer = 0.f;
+
 public:
     Scene(std::string name = "");
     ~Scene();

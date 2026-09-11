@@ -39,6 +39,14 @@ void ComponentBase::Update()
     }
 }
 
+void ComponentBase::FixedUpdate()
+{
+    if (m_isActive)
+    {
+        OnFixedUpdate();
+    }
+}
+
 void ComponentBase::Destroy()
 {
     UnregisterConcreteInstance();

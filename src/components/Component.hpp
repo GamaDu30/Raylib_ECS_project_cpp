@@ -15,6 +15,8 @@ public:
 
     virtual void Init(GameObject *owner);
     virtual void Destroy();
+
+    void OnFixedUpdate() override;
 };
 
 template <typename T>
@@ -27,4 +29,9 @@ template <typename T>
 void Component<T>::Destroy()
 {
     ComponentBase::Destroy();
+}
+
+template <typename T>
+void Component<T>::OnFixedUpdate()
+{
 }
