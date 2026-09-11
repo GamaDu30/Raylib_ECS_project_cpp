@@ -1,6 +1,8 @@
 #include "global/definitions.hpp"
 #include "components/ComponentBase.hpp"
 
+unsigned int ComponentBase::m_curUID = 0;
+
 std::unordered_map<std::type_index, std::vector<ComponentBase *>> &ComponentBase::GetRegistry()
 {
     // Heap allocation intentionally avoids static deinit order issues at shutdown.
@@ -15,6 +17,7 @@ ComponentBase::ComponentBase()
     m_isDirty = false;
     m_isActive = true;
     m_isRegistered = false;
+    m_uid = m_curUID++;
 }
 
 ComponentBase::~ComponentBase()
@@ -49,6 +52,11 @@ GameObject *ComponentBase::GetOwner()
 void ComponentBase::SetActive(bool active)
 {
     m_isActive = active;
+}
+
+unsigned int ComponentBase::GetUID()
+{
+    return m_uid;
 }
 
 void ComponentBase::RegisterConcreteInstance()

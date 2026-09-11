@@ -12,7 +12,7 @@ protected:
     raylib::Vector2 m_offset;
 
 public:
-    RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color);
+    RenderComponent(Anchor anchor = Anchor::Center, raylib::Vector2 offset = raylib::Vector2(), raylib::Color color = WHITE);
     ~RenderComponent();
 
     virtual void Init(GameObject *owner);

@@ -3,7 +3,7 @@
 #include "global/gameObject.hpp"
 #include "algorithm"
 
-RenderComponent::RenderComponent(Anchor anchor = Anchor::Center, raylib::Vector2 offset = raylib::Vector2(), raylib::Color color = WHITE)
+RenderComponent::RenderComponent(Anchor anchor, raylib::Vector2 offset, raylib::Color color)
 {
     m_anchor = anchor;
     m_offset = offset;

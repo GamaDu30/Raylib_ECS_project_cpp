@@ -21,6 +21,9 @@ protected:
     bool m_isRegistered;
     std::type_index m_registeredConcreteType;
 
+    int m_uid;
+    static unsigned int m_curUID;
+
     void RegisterConcreteInstance();
     void UnregisterConcreteInstance();
 
@@ -37,6 +40,8 @@ public:
     GameObject *GetOwner();
 
     void SetActive(bool active);
+
+    unsigned int GetUID();
 
     template <typename T>
     static std::vector<T *> GetInstancesOfType()

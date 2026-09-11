@@ -5,25 +5,26 @@
 
 std::unordered_map<std::string, Sprite *> Sprites::m_sprites = {};
 
-raylib::Texture2D *Sprites::GetSprite(RenderComponentBase *instance, std::string name)
+raylib::Texture2D *Sprites::GetSprite(unsigned int rendererUID, std::string name)
 {
     if (m_sprites.find(name) != m_sprites.end())
     {
-        std::vector<ComponentBase *> &renderers = m_sprites[name]->renderers;
+        std::vector<unsigned int> &renderers = m_sprites[name]->renderers;
 
-        if (std::find(renderers.begin(), renderers.end(), instance) == renderers.end())
+        if (std::find(renderers.begin(), renderers.end(), rendererUID) == renderers.end())
         {
-            renderers.push_back(instance);
+            renderers.push_back(rendererUID);
+            TraceLog(LOG_DEBUG, (name + " size: " + std::to_string(renderers.size())).c_str());
         }
 
         return &m_sprites[name]->texture;
     }
 
-    LoadSprite(instance, name);
+    LoadSprite(rendererUID, name);
     return &m_sprites[name]->texture;
 }
 
-void Sprites::OnRendererDeleted(RenderComponentBase *renderer)
+void Sprites::OnRendererDeleted(unsigned int rendererUID)
 {
     std::vector<std::string> spritesToDelete = {};
     std::vector<ComponentBase *> renderers;
@@ -33,7 +34,7 @@ void Sprites::OnRendererDeleted(RenderComponentBase *renderer)
         auto &curRenderers = it->second->renderers;
         auto oldSize = it->second->renderers.size();
 
-        curRenderers.erase(std::remove(curRenderers.begin(), curRenderers.end(), renderer), curRenderers.end());
+        curRenderers.erase(std::remove(curRenderers.begin(), curRenderers.end(), rendererUID), curRenderers.end());
 
         if (curRenderers.size() != oldSize)
         {
@@ -49,7 +50,7 @@ void Sprites::OnRendererDeleted(RenderComponentBase *renderer)
     }
 }
 
-void Sprites::LoadSprite(RenderComponentBase *instance, std::string name)
+void Sprites::LoadSprite(unsigned int instance, std::string name)
 {
     Sprite *newSprite = new Sprite();
     newSprite->texture = LoadTexture(name.c_str());
