@@ -32,17 +32,23 @@ void ColliderComponent::Destroy()
     Component::Destroy();
 }
 
-void ColliderComponent::CheckCollisions()
+std::vector<CollisionManifold> ColliderComponent::GetAllCollisions()
 {
+    std::vector<CollisionManifold> colManifolds = {};
     auto colliders = ComponentBase::GetInstancesAssignable<ColliderComponent>();
 
     for (size_t i = 0; i < colliders.size(); i++)
     {
         for (size_t j = i + 1; j < colliders.size(); j++)
         {
-            colliders[i]->IsColliding(colliders[j]);
+            CollisionManifold colMani = colliders[i]->IsColliding(colliders[j]);
+            colMani.object1 = colliders[i]->m_owner;
+            colMani.object2 = colliders[j]->m_owner;
+            colManifolds.push_back(colMani);
         }
     }
+
+    return colManifolds;
 }
 
 raylib::Vector2 ColliderComponent::GetPos()

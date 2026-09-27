@@ -7,9 +7,9 @@ class CircleCollider : public ColliderComponent
     float m_radius;
 
 protected:
-    virtual void IsColliding(ColliderComponent *other);
-    virtual void IsColliding(CircleCollider *other);
-    virtual void IsColliding(RectCollider *other);
+    virtual CollisionManifold IsColliding(ColliderComponent *other);
+    virtual CollisionManifold IsColliding(CircleCollider *other);
+    virtual CollisionManifold IsColliding(RectCollider *other);
 
 public:
     CircleCollider(float radius, raylib::Vector2 offset = raylib::Vector2());

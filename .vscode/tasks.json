@@ -119,6 +119,19 @@
                 "panel": "shared"
             },
             "problemMatcher": []
+        },
+        {
+            "label": "Create C++ Class",
+            "type": "shell",
+            "command": "powershell.exe",
+            "args": [
+                "-NoProfile",
+                "-ExecutionPolicy",
+                "Bypass",
+                "-File",
+                "${workspaceFolder}/tools/ClassCreator.ps1"
+            ],
+            "problemMatcher": []
         }
     ],
     "inputs": [

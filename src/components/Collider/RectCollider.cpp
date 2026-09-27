@@ -53,33 +53,59 @@ CollisionInfo *RectCollider::GetColInfo()
     return new PolyColInfo(localPoints);
 }
 
-void RectCollider::IsColliding(ColliderComponent *other)
+CollisionManifold RectCollider::IsColliding(ColliderComponent *other)
 {
-    other->IsColliding(this);
+    return other->IsColliding(this);
 }
 
-void RectCollider::IsColliding(RectCollider *other)
+CollisionManifold RectCollider::IsColliding(RectCollider *other)
 {
     std::unique_ptr<CollisionInfo> thisInfo(GetColInfo());
     std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
+    raylib::Vector3 contactPoint;
 
-    bool isCol = ColPolyPoly(
+    CollisionManifold colMani = ColPolyPoly(
         dynamic_cast<PolyColInfo *>(thisInfo.get()),
         dynamic_cast<PolyColInfo *>(otherInfo.get()));
 
-    ColliderComponent::HandleCollisionState(isCol, other);
+    contactPoint = (this->m_owner->GetTransform()->GetPos() + other->m_owner->GetTransform()->GetPos()) * 0.5f;
+    colMani.contactPoint = raylib::Vector2(contactPoint.x, contactPoint.y);
+
+    raylib::Vector3 direction = other->m_owner->GetTransform()->GetPos() - m_owner->GetTransform()->GetPos();
+
+    if (colMani.normal.DotProduct(raylib::Vector2(direction.x, direction.y)) < 0.0f)
+    {
+        colMani.normal = -colMani.normal;
+    }
+
+    ColliderComponent::HandleCollisionState(colMani.penetration >= 0.f, other);
+
+    // DEBUG
+    DrawText(std::to_string(colMani.penetration).c_str(), GetPos().x, GetPos().y - 300, 20, WHITE);
+    DrawCircle(colMani.contactPoint.x, colMani.contactPoint.y, 10, RED);
+    DrawLine(
+        colMani.contactPoint.x,
+        colMani.contactPoint.y,
+        colMani.contactPoint.x + colMani.normal.x * 100,
+        colMani.contactPoint.y + colMani.normal.y * 100,
+        GREEN);
+    //
+
+    return colMani;
 }
 
-void RectCollider::IsColliding(CircleCollider *other)
+CollisionManifold RectCollider::IsColliding(CircleCollider *other)
 {
     std::unique_ptr<CollisionInfo> thisInfo(this->GetColInfo());
     std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
 
-    bool isCol = ColPolyCircle(
+    CollisionManifold colMani = ColPolyCircle(
         dynamic_cast<PolyColInfo *>(thisInfo.get()),
         dynamic_cast<CircleColInfo *>(otherInfo.get()));
 
-    ColliderComponent::HandleCollisionState(isCol, other);
+    ColliderComponent::HandleCollisionState(colMani.penetration >= 0.f, other);
+
+    return colMani;
 }
 
 void RectCollider::DrawDebug()

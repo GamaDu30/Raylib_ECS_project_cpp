@@ -34,27 +34,27 @@ CollisionInfo *CircleCollider::GetColInfo()
     return new CircleColInfo(GetPos(), m_radius * m_owner->GetTransform()->GetScale().x);
 }
 
-void CircleCollider::IsColliding(ColliderComponent *other)
+CollisionManifold CircleCollider::IsColliding(ColliderComponent *other)
 {
     other->IsColliding(this);
 }
 
-void CircleCollider::IsColliding(CircleCollider *other)
+CollisionManifold CircleCollider::IsColliding(CircleCollider *other)
 {
     float d = other->m_owner->GetTransform()->GetPos().Distance(this->m_owner->GetTransform()->GetPos());
     ColliderComponent::HandleCollisionState(d <= m_radius + other->m_radius, other);
 }
 
-void CircleCollider::IsColliding(RectCollider *other)
+CollisionManifold CircleCollider::IsColliding(RectCollider *other)
 {
     std::unique_ptr<CollisionInfo> otherInfo(other->GetColInfo());
     std::unique_ptr<CollisionInfo> thisInfo(this->GetColInfo());
 
-    bool isCol = ColPolyCircle(
+    CollisionManifold colMani = ColPolyCircle(
         dynamic_cast<PolyColInfo *>(otherInfo.get()),
         dynamic_cast<CircleColInfo *>(thisInfo.get()));
 
-    ColliderComponent::HandleCollisionState(isCol, other);
+    ColliderComponent::HandleCollisionState(colMani.penetration >= 0.f, other);
 }
 
 void CircleCollider::DrawDebug()

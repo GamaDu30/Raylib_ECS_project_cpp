@@ -6,9 +6,12 @@
 
 #define SCREEN_W 1280
 #define SCREEN_H 720
-#define DRAW_DEBUG false
+#define DRAW_DEBUG true
 #define DEBUG_ACCESS true
 #define FIXED_UPDATE_FREQUENCY 60.f
+#define GRAVITY_FORCE 9.8f
+
+struct CollisionManifold;
 
 enum class Anchor
 {
@@ -50,8 +53,8 @@ struct CircleColInfo : public CollisionInfo
 raylib::Vector2 GetAnchorOffset(Anchor anchor);
 
 // Collisions Functions
-bool ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2);
-bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2);
-bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c);
+CollisionManifold ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2);
+CollisionManifold ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2);
+CollisionManifold ColPolyCircle(PolyColInfo *p, CircleColInfo *c);
 
 extern bool shouldExit;

@@ -7,6 +7,7 @@
 #include "components/Renderer/UI/CanvasComponent.hpp"
 #include "components/Collider/ColliderComponent.hpp"
 #include "global/Inputs.hpp"
+#include "Physics/PhysicsSystem.hpp"
 
 unsigned int Scene::m_curUID = 0;
 Scene *Scene::m_curScene = nullptr;
@@ -60,10 +61,20 @@ void Scene::Update()
 
     if (m_fixedUpdateTimer > 1.f / FIXED_UPDATE_FREQUENCY)
     {
-        ColliderComponent::CheckCollisions();
+        // ColliderComponent::CheckCollisions();
+        PhysicsSystem::FixedUpdate();
         m_fixedUpdateTimer = 0.f;
 
-        TraceLog(LOG_DEBUG, "FIXED");
+        for (int i = m_gameObjects.size() - 1; i >= 0; i--)
+        {
+            if (m_gameObjects[i]->IsDestroyed())
+            {
+                m_gameObjectsToDestroy.push_back(m_gameObjects[i]);
+                continue;
+            }
+
+            m_gameObjects[i]->FixedUpdate();
+        }
     }
 
     Inputs::Update();

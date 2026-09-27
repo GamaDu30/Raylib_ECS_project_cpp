@@ -31,15 +31,19 @@ raylib::Vector2 GetAnchorOffset(Anchor anchor)
     return {0.5f, 0.5f}; // fallback
 }
 
-bool ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2)
+CollisionManifold ColCircleCircle(CircleColInfo *c1, CircleColInfo *c2)
 {
-    return c1->pos.DistanceSqr(c2->pos) < std::powf(c1->radius + c2->radius, 2);
+    // return c1->pos.DistanceSqr(c2->pos) < std::powf(c1->radius + c2->radius, 2);
+    return CollisionManifold();
 }
 
-bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2)
+CollisionManifold ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2)
 {
     raylib::Vector2 rangeC1, rangeC2;
     std::array<PolyColInfo *, 2> shapes = {p1, p2};
+    float curP;
+
+    CollisionManifold colMani = CollisionManifold{.penetration = __FLT_MAX__};
 
     for (int y = 0; y < shapes.size(); y++)
     {
@@ -70,15 +74,24 @@ bool ColPolyPoly(PolyColInfo *p1, PolyColInfo *p2)
             if (rangeC1.y < rangeC2.x || rangeC2.y < rangeC1.x)
             {
                 // Axis without overlapping so no collision
-                return false;
+                colMani.penetration = -1.f;
+                return colMani;
+            }
+
+            curP = std::min(rangeC1.y, rangeC2.y) - std::max(rangeC1.x, rangeC2.x);
+
+            if (curP < colMani.penetration)
+            {
+                colMani.penetration = curP;
+                colMani.normal = curNormal;
             }
         }
     }
 
-    return true;
+    return colMani;
 }
 
-bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
+CollisionManifold ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
 {
     bool isInside = true;
 
@@ -92,7 +105,7 @@ bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
 
         if (c->pos.DistanceSqr(projection) < c->radius * c->radius || c->pos.DistanceSqr(p->points[i]) < c->radius * c->radius)
         {
-            return true;
+            return CollisionManifold();
         }
 
         // check with cross product if the point is on the right side of the edge
@@ -102,7 +115,7 @@ bool ColPolyCircle(PolyColInfo *p, CircleColInfo *c)
         }
     }
 
-    return isInside;
+    return CollisionManifold();
 }
 
 bool shouldExit = false;
